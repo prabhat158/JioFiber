@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:id="@+id/towergrpno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tower Group 1"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginRight="5dp"
+            android:id="@+id/textField0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Name of group"
+            android:layout_weight="2">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TextInputEditText0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField01"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Short Code"
+            android:layout_weight="1">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TextInputEditText01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:hint="Number of towers">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/TextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="4"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
