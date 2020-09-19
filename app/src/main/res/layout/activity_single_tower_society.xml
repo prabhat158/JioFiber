@@ -64,6 +64,8 @@
                 android:id="@+id/TextInputEditText01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:maxLength="3"
                 android:inputType="number"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -82,7 +84,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:maxLength="4"
+            android:digits="0123456789"
+            android:maxLength="2"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,6 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:digits="0123456789"
             android:maxLength="2"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -107,7 +111,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_gravity="right"
         android:id="@+id/nextbtn"
         android:layout_width="wrap_content"

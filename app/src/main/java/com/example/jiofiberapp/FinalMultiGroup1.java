@@ -1,7 +1,5 @@
 package com.example.jiofiberapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +14,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class FinalMultiGroup1 extends AppCompatActivity {
 
 
     LinearLayout linearLayout;
     MaterialButton materialButton;
+    private boolean isValidData = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +32,15 @@ public class FinalMultiGroup1 extends AppCompatActivity {
         linearLayout = findViewById(R.id.linearlayout);
         materialButton = findViewById(R.id.nextbtn);
 
-        final List<View> list=new ArrayList<View>();
+        final List<View> list = new ArrayList<View>();
 
         Intent intent = getIntent();
         int num = Integer.parseInt(intent.getStringExtra("number"));
-        for(int i=0; i< num; i++){
+        for (int i = 0; i < num; i++) {
             final LayoutInflater factory = getLayoutInflater();
             final View textEntryView = factory.inflate(R.layout.tg_group1, null);
             TextView textView = textEntryView.findViewById(R.id.towergrpno);
-            textView.setText("Group " + (i+1));
+            textView.setText("Group " + (i + 1));
             list.add(textEntryView);
             linearLayout.addView(textEntryView);
         }
@@ -47,22 +48,54 @@ public class FinalMultiGroup1 extends AppCompatActivity {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(View view1: list){
+                for (View view1 : list) {
+                    int count = 0;
+                    int textInputEditText1Number = 0;
+                    String textInputEditTextString = "";
+                    String textInputEditText2String = "";
+
                     TextInputEditText textInputEditText = view1.findViewById(R.id.TextInputEditText0);
                     TextInputEditText textInputEditText2 = view1.findViewById(R.id.TextInputEditText01);
-
                     TextInputEditText textInputEditText1 = view1.findViewById(R.id.TextInputEditText);
-                    FinalMultiGroup2.list_of_tower.add(new FinalMultiGroup2.tower_list(textInputEditText.getText().toString(),
-                            textInputEditText2.getText().toString(),
-                            Integer.parseInt(textInputEditText1.getText().toString())));
 
-                    Log.d("check",textInputEditText.getText().toString());
-                    Log.d("check",textInputEditText1.getText().toString());
+                    if (textInputEditText1.getText().toString().trim().equals("")) {
+                        textInputEditText1.setError("Enter Number of towers");
+                    } else {
+                        count++;
+                        textInputEditText1Number = Integer.parseInt(textInputEditText1.getText().toString());
+                    }
+
+                    if (textInputEditText.getText().toString().trim().equals("")) {
+                        textInputEditText.setError("Enter Name of group");
+                    } else {
+                        textInputEditTextString = textInputEditText.getText().toString();
+                        count++;
+                    }
+
+                    if (textInputEditText2.getText().toString().trim().equals("")) {
+                        textInputEditText2.setError("Enter Short Code");
+                    } else {
+                        textInputEditText2String = textInputEditText2.getText().toString();
+                        count++;
+                    }
+
+                    FinalMultiGroup2.list_of_tower.add(new FinalMultiGroup2.tower_list(textInputEditTextString,
+                            textInputEditText2String,
+                            textInputEditText1Number));
+
+                    Log.d("check", textInputEditText.getText().toString());
+                    Log.d("check", textInputEditText1.getText().toString());
+                    if (count == 3)
+                        isValidData = true;
+                    else
+                        isValidData = false;
                 }
 
-                Intent intent1 = new Intent(FinalMultiGroup1.this, FinalMultiGroup2.class);
-                intent1.putExtra("index", 0);
-                startActivity(intent1);
+                if (isValidData) {
+                    Intent intent1 = new Intent(FinalMultiGroup1.this, FinalMultiGroup2.class);
+                    intent1.putExtra("index", 0);
+                    startActivity(intent1);
+                }
             }
         });
     }

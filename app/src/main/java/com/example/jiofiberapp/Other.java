@@ -1,7 +1,5 @@
 package com.example.jiofiberapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,15 +17,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class Other extends AppCompatActivity {
+
+    String societyName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(AppConstants.SOCIETY_NAME))
+                societyName = bundle.getString(AppConstants.SOCIETY_NAME);
+        }
 
-
-        final TextInputEditText ti1 = findViewById(R.id.TextInputEditText0);
+//        final TextInputEditText ti1 = findViewById(R.id.TextInputEditText0);
         final TextInputEditText ti3 = findViewById(R.id.TextInputEditText1);
 
         MaterialButton materialButton = findViewById(R.id.nextbtn);
@@ -37,40 +43,42 @@ public class Other extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(ti1.getText().toString().equals("") || ti3.getText().toString().equals(""))
+                if (/*ti1.getText().toString().equals("") ||*/ ti3.getText().toString().equals("")) {
+                    ti3.setError("Enter Number of houses/flats/floors");
                     return;
-
+                }
                 try {
 //                    writer = new CSVWriter(new FileWriter(file));
 
                     List<String[]> data = new ArrayList<String[]>();
 
                     data.add(new String[]{"serial_number", "label", "short_code"});
-                    data.add(new String[]{"1", ti1.getText().toString()+"-"+ti3.getText().toString(), ti3.getText().toString()});
+//                    data.add(new String[]{"1", ti1.getText().toString()+"-"+ti3.getText().toString(), ti3.getText().toString()});
+                    data.add(new String[]{"1", societyName + "-" + ti3.getText().toString(), ti3.getText().toString()});
 
                     StringBuilder data1 = new StringBuilder();
-                    for(int i = 0; i<data.size(); i++){
-                        data1.append("\n"+data.get(i)[0]+","+data.get(i)[1]+","+ data.get(i)[2]);
+                    for (int i = 0; i < data.size(); i++) {
+                        data1.append("\n" + data.get(i)[0] + "," + data.get(i)[1] + "," + data.get(i)[2]);
                     }
                     String baseFolder;
-                    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                         baseFolder = getExternalFilesDir(null).getAbsolutePath();
-                    }else {
+                    } else {
                         baseFolder = getFilesDir().getAbsolutePath();
                     }
 
                     Date currentTime = Calendar.getInstance().getTime();
-                    File file = new File(baseFolder +"/"+ HomeActivity.name_of_society + "["+currentTime+"]" +".csv");
+                    File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
 
                     FileOutputStream out = new FileOutputStream(file);
                     out.write((data1.toString()).getBytes());
                     out.close();
 
                     startActivity(new Intent(Other.this, HomeActivity.class));
-                    Toast.makeText(getApplicationContext(),"Your inputs have been recorded", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Your inputs have been recorded", Toast.LENGTH_LONG).show();
 
                 } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(),"Error "+ e, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error " + e, Toast.LENGTH_LONG).show();
 
                     e.printStackTrace();
                 }

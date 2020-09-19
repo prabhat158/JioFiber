@@ -1,13 +1,13 @@
 package com.example.jiofiberapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MultiTowerGroupSociety extends AppCompatActivity {
 
@@ -27,14 +27,16 @@ public class MultiTowerGroupSociety extends AppCompatActivity {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!textInputEditText.getText().toString().equals("")){
-                    if(Integer.parseInt(textInputEditText.getText().toString())>0){
+                if (!textInputEditText.getText().toString().equals("")) {
+                    if (Integer.parseInt(textInputEditText.getText().toString()) > 0) {
                         FinalMultiGroup2.no_of_group = Integer.parseInt(textInputEditText.getText().toString());
-                        Intent intent =  new Intent(MultiTowerGroupSociety.this, FinalMultiGroup1.class);
+                        Intent intent = new Intent(MultiTowerGroupSociety.this, FinalMultiGroup1.class);
                         intent.putExtra("number", (textInputEditText.getText().toString()));
                         startActivity(intent);
-                    }
-                }
+                    } else
+                        textInputEditText.setError("Enter Number of tower groups/sectors in the society");
+                } else
+                    textInputEditText.setError("Enter Number of tower groups/sectors in the society");
             }
         });
     }
