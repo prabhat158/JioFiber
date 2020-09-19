@@ -4,16 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class FinalMultiGroup2 extends AppCompatActivity {
@@ -56,6 +65,20 @@ public class FinalMultiGroup2 extends AppCompatActivity {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                for(View view1: list){
+                    TextInputEditText t1 = view1.findViewById(R.id.TextInputEditText0);
+                    TextInputEditText t2 = view1.findViewById(R.id.TextInputEditText01);
+                    TextInputEditText t3 = view1.findViewById(R.id.TextInputEditText1);
+                    TextInputEditText t4 = view1.findViewById(R.id.TextInputEditText2);
+
+                    if (t1.getText().toString().equals("") || t2.getText().toString().equals("") || t3.getText().toString().equals("") || t4.getText().toString().equals(""))
+                        return;
+
+                    list_of_tower.get(index).getTowerDataList().add(new towerData(t1.getText().toString(),
+                            t2.getText().toString(),t3.getText().toString(),t4.getText().toString()
+                    ));
+                }
 //                for(View view1: list){
 //                    TextInputEditText textInputEditText = view1.findViewById(R.id.TextInputEditText);
 //                    Log.d("check",textInputEditText.getText().toString());
@@ -65,8 +88,62 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                     intent1.putExtra("index", index+1);
                     startActivity(intent1);
                 }else{
-                    Intent intent1 = new Intent(FinalMultiGroup2.this, HomeActivity.class);
-                    startActivity(intent1);
+
+                    int k = 1;
+
+                    try {
+                        List<String[]> data = new ArrayList<String[]>();
+                        data.add(new String[]{"serial_number", "label", "short_code"});
+
+                        for(tower_list twList: list_of_tower) {
+                            for(towerData twData: twList.getTowerDataList()){
+
+                                for (int i = 1; i < Integer.parseInt(twData.getFloor()) + 1; i++) {
+                                    for (int j = 1; j < Integer.parseInt(twData.getFlat()) + 1; j++) {
+                                        int room = i * 100 + j;
+                                        data.add(new String[]{""+k,
+                                                twList.getName()+"-"+
+//                                                        twList.getCode() + "-" +
+                                                        twData.getName() +"-"+
+//                                                        twData.getCode() + "-" +
+                                                        room,
+                                                twList.getCode()+twData.getCode() + room
+                                        });
+                                        k++;
+                                    }
+                                }
+
+                            }
+
+
+                        }
+
+
+                        StringBuilder data1 = new StringBuilder();
+                        for(int i = 0; i<data.size(); i++){
+                            data1.append("\n"+data.get(i)[0]+","+data.get(i)[1]+","+ data.get(i)[2]);
+                        }
+                        String baseFolder;
+                        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                            baseFolder = getExternalFilesDir(null).getAbsolutePath();
+                        }else {
+                            baseFolder = getFilesDir().getAbsolutePath();
+                        }
+
+                        Date currentTime = Calendar.getInstance().getTime();
+                        File file = new File(baseFolder +"/"+ HomeActivity.name_of_society + "["+currentTime+"]" +".csv");
+
+                        FileOutputStream out = new FileOutputStream(file);
+                        out.write((data1.toString()).getBytes());
+                        out.close();
+                        startActivity(new Intent(FinalMultiGroup2.this, HomeActivity.class));
+                        Toast.makeText(getApplicationContext(),"Your inputs have been recorded", Toast.LENGTH_LONG).show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             }
         });
@@ -75,11 +152,30 @@ public class FinalMultiGroup2 extends AppCompatActivity {
 
     public static class tower_list{
         String name;
+        String code;
         int no_of_tower;
+        List<towerData> towerDataList = new ArrayList<>();
 
-        public tower_list(String name, int no_of_tower) {
+        public tower_list(String name, String code, int no_of_tower) {
             this.name = name;
+            this.code = code;
             this.no_of_tower = no_of_tower;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public List<towerData> getTowerDataList() {
+            return towerDataList;
+        }
+
+        public void setTowerDataList(List<towerData> towerDataList) {
+            this.towerDataList = towerDataList;
         }
 
         public String getName() {
@@ -98,4 +194,50 @@ public class FinalMultiGroup2 extends AppCompatActivity {
             this.no_of_tower = no_of_tower;
         }
     }
+    public static class towerData{
+        String name;
+        String code;
+        String floor;
+        String flat;
+
+        public towerData(String name, String code, String floor, String flat) {
+            this.name = name;
+            this.code = code;
+            this.floor = floor;
+            this.flat = flat;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getFloor() {
+            return floor;
+        }
+
+        public void setFloor(String floor) {
+            this.floor = floor;
+        }
+
+        public String getFlat() {
+            return flat;
+        }
+
+        public void setFlat(String flat) {
+            this.flat = flat;
+        }
+    }
+
 }

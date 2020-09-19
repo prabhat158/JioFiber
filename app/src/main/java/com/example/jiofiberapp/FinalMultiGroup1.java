@@ -49,8 +49,11 @@ public class FinalMultiGroup1 extends AppCompatActivity {
             public void onClick(View view) {
                 for(View view1: list){
                     TextInputEditText textInputEditText = view1.findViewById(R.id.TextInputEditText0);
+                    TextInputEditText textInputEditText2 = view1.findViewById(R.id.TextInputEditText01);
+
                     TextInputEditText textInputEditText1 = view1.findViewById(R.id.TextInputEditText);
                     FinalMultiGroup2.list_of_tower.add(new FinalMultiGroup2.tower_list(textInputEditText.getText().toString(),
+                            textInputEditText2.getText().toString(),
                             Integer.parseInt(textInputEditText1.getText().toString())));
 
                     Log.d("check",textInputEditText.getText().toString());
