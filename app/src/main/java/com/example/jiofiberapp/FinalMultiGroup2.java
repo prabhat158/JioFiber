@@ -2,6 +2,7 @@ package com.example.jiofiberapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -191,7 +192,7 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         for (int i = 0; i < data.size(); i++) {
                             data1.append("\n" + data.get(i)[0] + "," + data.get(i)[1] + "," + data.get(i)[2]);
                         }
-                        String baseFolder;
+                        final String baseFolder;
                         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                             baseFolder = getExternalFilesDir(null).getAbsolutePath();
                         } else {
@@ -199,7 +200,8 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         }
 
                         Date currentTime = Calendar.getInstance().getTime();
-                        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
+//                        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
+                        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society  + ".csv");
 
                         FileOutputStream out = new FileOutputStream(file);
                         out.write((data1.toString()).getBytes());
@@ -214,7 +216,14 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
                             @Override
                             public void viewFile() {
-
+                                Uri selectedUri = Uri.parse(baseFolder + "/");
+                                Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
+                                chooser.addCategory(Intent.CATEGORY_OPENABLE);
+                                chooser.setDataAndType(selectedUri, "*/*");
+                                try {
+                                    startActivityForResult(chooser, 0);
+                                } catch (android.content.ActivityNotFoundException ex) {
+                                }
                             }
 
                             @Override

@@ -2,6 +2,7 @@ package com.example.jiofiberapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -12,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -53,7 +53,6 @@ public class FinalMuti extends AppCompatActivity {
         typeOfFlatNumberExposedDropdown.setAdapter(adapter);
         typeOfFlatNumberExposedDropdown.setInputType(InputType.TYPE_NULL);
         typeOfFlatNumberExposedDropdown.setKeyListener(null);
-
 
 
         Intent intent = getIntent();
@@ -142,7 +141,7 @@ public class FinalMuti extends AppCompatActivity {
                     for (int i = 0; i < data.size(); i++) {
                         data1.append("\n" + data.get(i)[0] + "," + data.get(i)[1] + "," + data.get(i)[2]);
                     }
-                    String baseFolder;
+                    final String baseFolder;
                     if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                         baseFolder = getExternalFilesDir(null).getAbsolutePath();
                     } else {
@@ -150,7 +149,8 @@ public class FinalMuti extends AppCompatActivity {
                     }
 
                     Date currentTime = Calendar.getInstance().getTime();
-                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
+                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + ".csv");
+//                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
 
                     FileOutputStream out = new FileOutputStream(file);
                     out.write((data1.toString()).getBytes());
@@ -164,7 +164,14 @@ public class FinalMuti extends AppCompatActivity {
                     bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
                         @Override
                         public void viewFile() {
-
+                            Uri selectedUri = Uri.parse(baseFolder + "/");
+                            Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
+                            chooser.addCategory(Intent.CATEGORY_OPENABLE);
+                            chooser.setDataAndType(selectedUri, "*/*");
+                            try {
+                                startActivityForResult(chooser, 0);
+                            } catch (android.content.ActivityNotFoundException ex) {
+                            }
                         }
 
                         @Override
