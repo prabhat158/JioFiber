@@ -1,13 +1,17 @@
 package com.example.jiofiberapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,6 +31,10 @@ public class FinalMultiGroup2 extends AppCompatActivity {
     public static int no_of_group = 0;
     public static List<tower_list> list_of_tower = new ArrayList<tower_list>();
 
+    String[] TYPE_OF_FLAT_NUMBER = new String[]{"11", "101", "0101"};
+    AutoCompleteTextView typeOfFlatNumberExposedDropdown;
+    String typeOfFlatNumber = "";
+
 
     LinearLayout linearLayout;
     MaterialButton materialButton;
@@ -39,6 +47,15 @@ public class FinalMultiGroup2 extends AppCompatActivity {
 
         linearLayout = findViewById(R.id.linearlayout);
         materialButton = findViewById(R.id.nextbtn);
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this,
+                        R.layout.list_item,
+                        TYPE_OF_FLAT_NUMBER);
+        typeOfFlatNumberExposedDropdown = findViewById(R.id.type_of_flat_number);
+        typeOfFlatNumberExposedDropdown.setAdapter(adapter);
+        typeOfFlatNumberExposedDropdown.setInputType(InputType.TYPE_NULL);
+        typeOfFlatNumberExposedDropdown.setKeyListener(null);
 
         Intent intent = getIntent();
         final int index = intent.getIntExtra("index", 0);
@@ -103,10 +120,43 @@ public class FinalMultiGroup2 extends AppCompatActivity {
 //                    Log.d("check",textInputEditText.getText().toString());
 //                }
                 if ((index + 1) != list_of_tower.size()) {
+                    typeOfFlatNumber = typeOfFlatNumberExposedDropdown.getText().toString();
+                    if (typeOfFlatNumber.trim().equals("")) {
+                        typeOfFlatNumberExposedDropdown.setError("Enter Type of Flat Number");
+                        typeOfFlatNumberExposedDropdown.requestFocus();
+                        return;
+                    }
+
+                    tower_list tList= list_of_tower.get(index);
+                    if (typeOfFlatNumber.equals("11"))
+                        tList.setCount(10);
+                    else if (typeOfFlatNumber.equals("101"))
+                        tList.setCount(100);
+                    else if (typeOfFlatNumber.equals("0101"))
+                        tList.setCount(1000);
+                    list_of_tower.set(index,tList);
+
                     Intent intent1 = new Intent(FinalMultiGroup2.this, FinalMultiGroup2.class);
                     intent1.putExtra("index", index + 1);
                     startActivity(intent1);
                 } else {
+
+                    typeOfFlatNumber = typeOfFlatNumberExposedDropdown.getText().toString();
+                    if (typeOfFlatNumber.trim().equals("")) {
+                        typeOfFlatNumberExposedDropdown.setError("Enter Type of Flat Number");
+                        typeOfFlatNumberExposedDropdown.requestFocus();
+                        return;
+                    }
+
+                    tower_list tList= list_of_tower.get(index);
+                    if (typeOfFlatNumber.equals("11"))
+                        tList.setCount(10);
+                    else if (typeOfFlatNumber.equals("101"))
+                        tList.setCount(100);
+                    else if (typeOfFlatNumber.equals("0101"))
+                        tList.setCount(1000);
+                    list_of_tower.set(index,tList);
+
 
                     int k = 1;
 
@@ -114,18 +164,20 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         List<String[]> data = new ArrayList<String[]>();
                         data.add(new String[]{"serial_number", "label", "short_code"});
 
-                        for (tower_list twList : list_of_tower) {
+                        /* for (tower_list twList : list_of_tower)*/
+                        for (int m = 0; m < list_of_tower.size(); m++) {
+                            tower_list twList = list_of_tower.get(m);
                             for (towerData twData : twList.getTowerDataList()) {
 
                                 for (int i = 1; i < Integer.parseInt(twData.getFloor()) + 1; i++) {
                                     for (int j = 1; j < Integer.parseInt(twData.getFlat()) + 1; j++) {
-                                        int room = i * 100 + j;
+                                        int room = i * (list_of_tower.get(m).getCount() == 1000 ? 100 : list_of_tower.get(m).getCount()) + j;
                                         data.add(new String[]{"" + k,
                                                 twList.getName() + "-" +
 //                                                        twList.getCode() + "-" +
                                                         twData.getName() + "-" +
 //                                                        twData.getCode() + "-" +
-                                                        room,
+                                                        (list_of_tower.get(m).getCount() == 1000 ? "0" + room : room),
                                                 twList.getCode() + twData.getCode() + room
                                         });
                                         k++;
@@ -151,8 +203,29 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         FileOutputStream out = new FileOutputStream(file);
                         out.write((data1.toString()).getBytes());
                         out.close();
-                        startActivity(new Intent(FinalMultiGroup2.this, HomeActivity.class));
-                        Toast.makeText(getApplicationContext(), "Your inputs have been recorded", Toast.LENGTH_LONG).show();
+
+
+                        final BottomDialogFragment bottomDialogFragment =
+                                BottomDialogFragment.newInstance();
+                        bottomDialogFragment.show(getSupportFragmentManager(),
+                                "botom");
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    bottomDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                        @Override
+                                                        public void onDismiss(DialogInterface dialogInterface) {
+                                                            Intent intent = new Intent(FinalMultiGroup2.this, HomeActivity.class);
+                                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                , 10);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -167,12 +240,22 @@ public class FinalMultiGroup2 extends AppCompatActivity {
         String name;
         String code;
         int no_of_tower;
+        int count;
         List<towerData> towerDataList = new ArrayList<>();
+
 
         public tower_list(String name, String code, int no_of_tower) {
             this.name = name;
             this.code = code;
             this.no_of_tower = no_of_tower;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
         }
 
         public String getCode() {

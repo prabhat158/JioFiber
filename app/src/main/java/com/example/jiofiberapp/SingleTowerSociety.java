@@ -1,10 +1,14 @@
 package com.example.jiofiberapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.text.InputType;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -19,15 +23,26 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-import fr.tvbarthel.intentshare.IntentShare;
 
 public class SingleTowerSociety extends AppCompatActivity {
+
+    String[] TYPE_OF_FLAT_NUMBER = new String[]{"11", "101", "0101"};
+    AutoCompleteTextView typeOfFlatNumberExposedDropdown;
+    String typeOfFlatNumber = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_tower_society);
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this,
+                        R.layout.list_item,
+                        TYPE_OF_FLAT_NUMBER);
+        typeOfFlatNumberExposedDropdown = findViewById(R.id.type_of_flat_number);
+        typeOfFlatNumberExposedDropdown.setAdapter(adapter);
+        typeOfFlatNumberExposedDropdown.setInputType(InputType.TYPE_NULL);
+        typeOfFlatNumberExposedDropdown.setKeyListener(null);
 
         final TextInputEditText ti1 = findViewById(R.id.TextInputEditText0);
         final TextInputEditText ti2 = findViewById(R.id.TextInputEditText01);
@@ -39,6 +54,8 @@ public class SingleTowerSociety extends AppCompatActivity {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                typeOfFlatNumber = typeOfFlatNumberExposedDropdown.getText().toString();
 
                 if (ti1.getText().toString().trim().equals("")) {
                     ti1.setError("Enter Name of tower");
@@ -64,19 +81,34 @@ public class SingleTowerSociety extends AppCompatActivity {
                     return;
                 }
 
+                if (typeOfFlatNumber.trim().equals("")) {
+                    typeOfFlatNumberExposedDropdown.setError("Enter Type of Flat Number");
+                    typeOfFlatNumberExposedDropdown.requestFocus();
+                    return;
+                }
+
                 try {
 //                    writer = new CSVWriter(new FileWriter(file));
+                    int code = 10;
+                    if (typeOfFlatNumber.equals("11"))
+                        code = 10;
+                    else if (typeOfFlatNumber.equals("101"))
+                        code = 100;
+                    else if (typeOfFlatNumber.equals("0101"))
+                        code = 1000;
 
+//                    typeOfFlatNumber
                     List<String[]> data = new ArrayList<String[]>();
 
                     data.add(new String[]{"serial_number", "label", "short_code"});
                     for (int i = 1; i < Integer.parseInt(ti3.getText().toString()) + 1; i++) {
                         for (int j = 1; j < Integer.parseInt(ti4.getText().toString()) + 1; j++) {
-                            int room = i * 100 + j;
+                            int room = i * (code == 1000 ? 100 : code) + j;
+
                             data.add(new String[]{"" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j),
                                     ti1.getText().toString() + "-"
 //                                            +ti2.getText().toString()+"-"
-                                            + room,
+                                            + (code == 1000 ? "0" + room : room),
                                     ti2.getText().toString() + room
                             });
                         }
@@ -104,21 +136,30 @@ public class SingleTowerSociety extends AppCompatActivity {
 //                            BuildConfig.APPLICATION_ID + ".provider", file);
 //                    grantUriPermission(getPackageName(), uriData, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //                    final Intent intent = new Intent(Intent.ACTION_VIEW)
-//                            .setDataAndType(uriData,  "text/csv")
+//                            .setDataAndType(uriData, "*/*")
 //                            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //                    startActivity(intent);
 
-//                    String filePath = RealPathUtil.getRealPath(SingleTowerSociety.this, Uri.parse(file.getAbsolutePath()));
-//                    IntentShare.with(SingleTowerSociety.this)
-//                            .chooserTitle("Select a sharing target : ")
-//                            .text("Default text you would like to share.")
-//                            .image(Uri.parse(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv"))
-//                            .mailSubject("Mail subject.")
-//                            .mailBody("Extended text you would like to share in mail body.")
-//                            .deliver();
+                    final BottomDialogFragment bottomDialogFragment =
+                            BottomDialogFragment.newInstance();
+                    bottomDialogFragment.show(getSupportFragmentManager(),
+                            "botom");
 
-                    startActivity(new Intent(SingleTowerSociety.this, HomeActivity.class));
-                    Toast.makeText(getApplicationContext(), "Your inputs have been recorded", Toast.LENGTH_LONG).show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                bottomDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                    @Override
+                                                    public void onDismiss(DialogInterface dialogInterface) {
+                                                        Intent intent = new Intent(SingleTowerSociety.this, HomeActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        finish(); }
+                                                });
+                                            }
+                                        }
+                            , 10);
 
                 } catch (IOException e) {
                     Toast.makeText(getApplicationContext(), "Error " + e, Toast.LENGTH_LONG).show();

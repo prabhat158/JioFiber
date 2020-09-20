@@ -1,10 +1,15 @@
 package com.example.jiofiberapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +32,10 @@ public class FinalMuti extends AppCompatActivity {
     LinearLayout linearLayout;
     MaterialButton materialButton;
 
+    String[] TYPE_OF_FLAT_NUMBER = new String[]{"11", "101", "0101"};
+    AutoCompleteTextView typeOfFlatNumberExposedDropdown;
+    String typeOfFlatNumber = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +43,17 @@ public class FinalMuti extends AppCompatActivity {
 
         linearLayout = findViewById(R.id.linearlayout);
         materialButton = findViewById(R.id.nextbtn);
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this,
+                        R.layout.list_item,
+                        TYPE_OF_FLAT_NUMBER);
+        typeOfFlatNumberExposedDropdown = findViewById(R.id.type_of_flat_number);
+        typeOfFlatNumberExposedDropdown.setAdapter(adapter);
+        typeOfFlatNumberExposedDropdown.setInputType(InputType.TYPE_NULL);
+        typeOfFlatNumberExposedDropdown.setKeyListener(null);
+
+
 
         Intent intent = getIntent();
         int num = Integer.parseInt(intent.getStringExtra("number"));
@@ -52,6 +72,22 @@ public class FinalMuti extends AppCompatActivity {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                typeOfFlatNumber = typeOfFlatNumberExposedDropdown.getText().toString();
+
+                if (typeOfFlatNumber.trim().equals("")) {
+                    typeOfFlatNumberExposedDropdown.setError("Enter Type of Flat Number");
+                    typeOfFlatNumberExposedDropdown.requestFocus();
+                    return;
+                }
+                int code = 10;
+                if (typeOfFlatNumber.equals("11"))
+                    code = 10;
+                else if (typeOfFlatNumber.equals("101"))
+                    code = 100;
+                else if (typeOfFlatNumber.equals("0101"))
+                    code = 1000;
+
+
                 int k = 1;
                 try {
                     List<String[]> data = new ArrayList<String[]>();
@@ -89,18 +125,17 @@ public class FinalMuti extends AppCompatActivity {
 
                         for (int i = 1; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
                             for (int j = 1; j < Integer.parseInt(t4.getText().toString()) + 1; j++) {
-                                int room = i * 100 + j;
+                                int room = i * (code == 1000 ? 100 : code) + j;
                                 data.add(new String[]{"" + k,
                                         t1.getText().toString() + "-" +
 //                                                t2.getText().toString() + "-" +
-                                                room,
+                                                (code == 1000 ? "0" + room : room),
                                         t2.getText().toString() + room
                                 });
                                 k++;
                             }
                         }
                     }
-
 
                     StringBuilder data1 = new StringBuilder();
                     for (int i = 0; i < data.size(); i++) {
@@ -120,8 +155,28 @@ public class FinalMuti extends AppCompatActivity {
                     out.write((data1.toString()).getBytes());
                     out.close();
 
-                    startActivity(new Intent(FinalMuti.this, HomeActivity.class));
-                    Toast.makeText(getApplicationContext(), "Your inputs have been recorded", Toast.LENGTH_LONG).show();
+                    final BottomDialogFragment bottomDialogFragment =
+                            BottomDialogFragment.newInstance();
+                    bottomDialogFragment.show(getSupportFragmentManager(),
+                            "botom");
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                bottomDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                    @Override
+                                                    public void onDismiss(DialogInterface dialogInterface) {
+                                                        Intent intent = new Intent(FinalMuti.this, HomeActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                });
+                                            }
+                                        }
+                            , 10);
+
 
                 } catch (IOException e) {
                     e.printStackTrace();

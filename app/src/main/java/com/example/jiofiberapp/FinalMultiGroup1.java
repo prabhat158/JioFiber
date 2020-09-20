@@ -2,9 +2,12 @@ package com.example.jiofiberapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +26,8 @@ public class FinalMultiGroup1 extends AppCompatActivity {
     MaterialButton materialButton;
     private boolean isValidData = false;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,8 @@ public class FinalMultiGroup1 extends AppCompatActivity {
 
         linearLayout = findViewById(R.id.linearlayout);
         materialButton = findViewById(R.id.nextbtn);
+
+
 
         final List<View> list = new ArrayList<View>();
 
@@ -48,6 +55,7 @@ public class FinalMultiGroup1 extends AppCompatActivity {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 for (View view1 : list) {
                     int count = 0;
                     int textInputEditText1Number = 0;
