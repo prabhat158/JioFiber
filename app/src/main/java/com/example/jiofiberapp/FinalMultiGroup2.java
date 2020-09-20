@@ -2,10 +2,10 @@ package com.example.jiofiberapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,13 +27,16 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
+import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
+import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
 
 public class FinalMultiGroup2 extends AppCompatActivity {
 
     public static int no_of_group = 0;
     public static List<tower_list> list_of_tower = new ArrayList<tower_list>();
 
-    String[] TYPE_OF_FLAT_NUMBER = new String[]{"11", "101", "0101"};
+    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
     AutoCompleteTextView typeOfFlatNumberExposedDropdown;
     String typeOfFlatNumber = "";
 
@@ -45,7 +48,6 @@ public class FinalMultiGroup2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_multi_group2);
-
 
         linearLayout = findViewById(R.id.linearlayout);
         materialButton = findViewById(R.id.nextbtn);
@@ -130,12 +132,21 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                     }
 
                     tower_list tList = list_of_tower.get(index);
-                    if (typeOfFlatNumber.equals("11"))
-                        tList.setCount(10);
-                    else if (typeOfFlatNumber.equals("101"))
-                        tList.setCount(100);
-                    else if (typeOfFlatNumber.equals("0101"))
-                        tList.setCount(1000);
+//                    if (typeOfFlatNumber.equals("11"))
+//                        tList.setCount(10);
+//                    else if (typeOfFlatNumber.equals("101"))
+//                        tList.setCount(100);
+//                    else if (typeOfFlatNumber.equals("0101"))
+//                        tList.setCount(1000);
+
+                    if (typeOfFlatNumber.equals("Two Digit")) {
+                        tList.setDigit(2);
+                    } else if (typeOfFlatNumber.equals("Three Digit")) {
+                        tList.setDigit(3);
+                    } else if (typeOfFlatNumber.equals("Four Digit")) {
+                        tList.setDigit(4);
+                    }
+
                     list_of_tower.set(index, tList);
 
                     Intent intent1 = new Intent(FinalMultiGroup2.this, FinalMultiGroup2.class);
@@ -151,17 +162,16 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                     }
 
                     tower_list tList = list_of_tower.get(index);
-                    if (typeOfFlatNumber.equals("11"))
-                        tList.setCount(10);
-                    else if (typeOfFlatNumber.equals("101"))
-                        tList.setCount(100);
-                    else if (typeOfFlatNumber.equals("0101"))
-                        tList.setCount(1000);
+                    if (typeOfFlatNumber.equals("Two Digit")) {
+                        tList.setDigit(2);
+                    } else if (typeOfFlatNumber.equals("Three Digit")) {
+                        tList.setDigit(3);
+                    } else if (typeOfFlatNumber.equals("Four Digit")) {
+                        tList.setDigit(4);
+                    }
                     list_of_tower.set(index, tList);
 
-
                     int k = 1;
-
                     try {
                         List<String[]> data = new ArrayList<String[]>();
                         data.add(new String[]{"serial_number", "label", "short_code"});
@@ -173,15 +183,29 @@ public class FinalMultiGroup2 extends AppCompatActivity {
 
                                 for (int i = 1; i < Integer.parseInt(twData.getFloor()) + 1; i++) {
                                     for (int j = 1; j < Integer.parseInt(twData.getFlat()) + 1; j++) {
-                                        int room = i * (list_of_tower.get(m).getCount() == 1000 ? 100 : list_of_tower.get(m).getCount()) + j;
-                                        data.add(new String[]{"" + k,
-                                                twList.getName() + "-" +
-//                                                        twList.getCode() + "-" +
-                                                        twData.getName() + "-" +
-//                                                        twData.getCode() + "-" +
+
+                                        String room = "";
+                                        if (list_of_tower.get(m).getDigit() == 2) {
+                                            room = (i == 1) ? "0" + j : ((i - 1) * 10 + j) + "";
+                                        } else if (list_of_tower.get(m).getDigit() == 3) {
+                                            room = (i == 1) ? "00" + j : ((i - 1) * 100 + j) + "";
+                                        } else if (list_of_tower.get(m).getDigit() == 4) {
+                                            room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
+                                        }
+
+//                                        int room = i * (list_of_tower.get(m).getCount() == 1000 ? 100 : list_of_tower.get(m).getCount()) + j;
+
+                                        String serial_number = "" + k;
+                                        String label = twList.getName() + "-" + twData.getName() + "-" + room;
+                                        String short_code =  twList.getCode() + twData.getCode() + room;
+
+                                        data.add(new String[]{serial_number, label, short_code});
+
+                                       /* data.add(new String[]{"" + k,
+                                                twList.getName() + "-" +*//*twList.getCode() + "-" +*//*twData.getName() + "-" +*//*twData.getCode() + "-" +*//*
                                                         (list_of_tower.get(m).getCount() == 1000 ? "0" + room : room),
                                                 twList.getCode() + twData.getCode() + room
-                                        });
+                                        });*/
                                         k++;
                                     }
                                 }
@@ -201,7 +225,7 @@ public class FinalMultiGroup2 extends AppCompatActivity {
 
                         Date currentTime = Calendar.getInstance().getTime();
 //                        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
-                        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society  + ".csv");
+                        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + ".csv");
 
                         FileOutputStream out = new FileOutputStream(file);
                         out.write((data1.toString()).getBytes());
@@ -216,14 +240,30 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
                             @Override
                             public void viewFile() {
-                                Uri selectedUri = Uri.parse(baseFolder + "/");
-                                Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
-                                chooser.addCategory(Intent.CATEGORY_OPENABLE);
-                                chooser.setDataAndType(selectedUri, "*/*");
-                                try {
-                                    startActivityForResult(chooser, 0);
-                                } catch (android.content.ActivityNotFoundException ex) {
-                                }
+                                DialogConfig dialogConfig = new DialogConfig.Builder()
+                                        .enableMultipleSelect(false) // default is false
+                                        .enableFolderSelect(true) // default is false
+                                        .initialDirectory(baseFolder) // default is sdcard
+                                        .supportFiles(new SupportFile(".csv", 0)) // default is showing all file types.
+                                        .build();
+
+                                new FilePickerDialogFragment.Builder()
+                                        .configs(dialogConfig)
+                                        .onFilesSelected(new FilePickerDialogFragment.OnFilesSelectedListener() {
+                                            @Override
+                                            public void onFileSelected(List<File> list) {
+                                                for (File file : list) {
+                                                    new ManageMethod().openFile(file, getApplicationContext());
+                                                }
+                                            }
+                                        })/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
+                                        @Override
+                                        public void onLoadFailed(String path) {
+                                            //Could not access folder because of user permissions, sdcard is not readable...
+                                        }
+                                    })*/
+                                        .build()
+                                        .show(getSupportFragmentManager(), null);
                             }
 
                             @Override
@@ -262,11 +302,19 @@ public class FinalMultiGroup2 extends AppCompatActivity {
 
     }
 
+    private void shareFileToUser(File file) {
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/jpg");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
+                BuildConfig.APPLICATION_ID + ".provider", file));
+        startActivity(Intent.createChooser(shareIntent, "Share image using"));
+    }
+
     public static class tower_list {
         String name;
         String code;
         int no_of_tower;
-        int count;
+        int digit;
         List<towerData> towerDataList = new ArrayList<>();
 
 
@@ -276,12 +324,12 @@ public class FinalMultiGroup2 extends AppCompatActivity {
             this.no_of_tower = no_of_tower;
         }
 
-        public int getCount() {
-            return count;
+        public int getDigit() {
+            return digit;
         }
 
-        public void setCount(int count) {
-            this.count = count;
+        public void setDigit(int digit) {
+            this.digit = digit;
         }
 
         public String getCode() {

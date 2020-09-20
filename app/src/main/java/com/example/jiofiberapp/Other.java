@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,6 +23,9 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
+import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
+import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
 
 public class Other extends AppCompatActivity {
 
@@ -87,14 +91,30 @@ public class Other extends AppCompatActivity {
                     bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
                         @Override
                         public void viewFile() {
-                            Uri selectedUri = Uri.parse(baseFolder + "/");
-                            Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
-                            chooser.addCategory(Intent.CATEGORY_OPENABLE);
-                            chooser.setDataAndType(selectedUri, "*/*");
-                            try {
-                                startActivityForResult(chooser, 0);
-                            } catch (android.content.ActivityNotFoundException ex) {
-                            }
+                            DialogConfig dialogConfig = new DialogConfig.Builder()
+                                    .enableMultipleSelect(false) // default is false
+                                    .enableFolderSelect(true) // default is false
+                                    .initialDirectory(baseFolder) // default is sdcard
+                                    .supportFiles(new SupportFile(".csv", 0)) // default is showing all file types.
+                                    .build();
+
+                            new FilePickerDialogFragment.Builder()
+                                    .configs(dialogConfig)
+                                    .onFilesSelected(new FilePickerDialogFragment.OnFilesSelectedListener() {
+                                        @Override
+                                        public void onFileSelected(List<File> list) {
+                                            for (File file : list) {
+                                                new ManageMethod().openFile(file, getApplicationContext());
+                                            }
+                                        }
+                                    })/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
+                                        @Override
+                                        public void onLoadFailed(String path) {
+                                            //Could not access folder because of user permissions, sdcard is not readable...
+                                        }
+                                    })*/
+                                    .build()
+                                    .show(getSupportFragmentManager(), null);
                         }
 
                         @Override
@@ -134,5 +154,13 @@ public class Other extends AppCompatActivity {
         });
 
 
+    }
+
+    private void shareFileToUser(File file) {
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/jpg");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
+                BuildConfig.APPLICATION_ID + ".provider", file));
+        startActivity(Intent.createChooser(shareIntent, "Share image using"));
     }
 }

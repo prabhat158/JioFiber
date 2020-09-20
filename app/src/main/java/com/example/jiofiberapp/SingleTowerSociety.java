@@ -2,10 +2,10 @@ package com.example.jiofiberapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,10 +25,13 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
+import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
+import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
 
 public class SingleTowerSociety extends AppCompatActivity {
 
-    String[] TYPE_OF_FLAT_NUMBER = new String[]{"11", "101", "0101"};
+    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
     AutoCompleteTextView typeOfFlatNumberExposedDropdown;
     String typeOfFlatNumber = "";
 
@@ -36,6 +39,8 @@ public class SingleTowerSociety extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_tower_society);
+
+
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this,
@@ -90,29 +95,42 @@ public class SingleTowerSociety extends AppCompatActivity {
                 }
 
                 try {
-//                    writer = new CSVWriter(new FileWriter(file));
-                    int code = 10;
-                    if (typeOfFlatNumber.equals("11"))
-                        code = 10;
-                    else if (typeOfFlatNumber.equals("101"))
-                        code = 100;
-                    else if (typeOfFlatNumber.equals("0101"))
-                        code = 1000;
+//                  writer = new CSVWriter(new FileWriter(file));
+                    int digit = 0;
+                    if (typeOfFlatNumber.equals("Two Digit")) {
+                        digit = 2;
+                    } else if (typeOfFlatNumber.equals("Three Digit")) {
+                        digit = 3;
+                    } else if (typeOfFlatNumber.equals("Four Digit")) {
+                        digit = 4;
+                    }
 
-//                    typeOfFlatNumber
                     List<String[]> data = new ArrayList<String[]>();
 
                     data.add(new String[]{"serial_number", "label", "short_code"});
                     for (int i = 1; i < Integer.parseInt(ti3.getText().toString()) + 1; i++) {
                         for (int j = 1; j < Integer.parseInt(ti4.getText().toString()) + 1; j++) {
-                            int room = i * (code == 1000 ? 100 : code) + j;
 
-                            data.add(new String[]{"" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j),
-                                    ti1.getText().toString() + "-"
-//                                            +ti2.getText().toString()+"-"
-                                            + (code == 1000 ? "0" + room : room),
-                                    ti2.getText().toString() + room
-                            });
+                            String room = "";
+                            if (digit == 2) {
+                                room = (i == 1) ? "0" + j : ((i - 1) * 10 + j) + "";
+                            } else if (digit == 3) {
+                                room = (i == 1) ? "00" + j :  ((i - 1) * 100 + j) + "";
+                            } else if (digit == 4) {
+                                room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
+                            }
+
+                            String serial_number = "" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j);
+                            String label = ti1.getText().toString() + "-" + room;
+                            String short_code = ti2.getText().toString() + room;
+
+                            data.add(new String[]{serial_number, label, short_code});
+
+                            /* data.add(
+                                    new String[]{"" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j),
+                                            ti1.getText().toString() + "-" + (code == 1000 ? "0" + room : room),
+                                            ti2.getText().toString() + room
+                                    });*/
                         }
                     }
                     StringBuilder data1 = new StringBuilder();
@@ -128,7 +146,7 @@ public class SingleTowerSociety extends AppCompatActivity {
 
                     Date currentTime = Calendar.getInstance().getTime();
 //                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
-                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society  + ".csv");
+                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + ".csv");
 
                     FileOutputStream out = new FileOutputStream(file);
                     out.write((data1.toString()).getBytes());
@@ -142,23 +160,35 @@ public class SingleTowerSociety extends AppCompatActivity {
                     bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
                         @Override
                         public void viewFile() {
-                            Uri selectedUri = Uri.parse(baseFolder + "/");
-                            Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
-                            chooser.addCategory(Intent.CATEGORY_OPENABLE);
-                            chooser.setDataAndType(selectedUri, "*/*");
-                            try {
-                                startActivityForResult(chooser, 0);
-                            } catch (android.content.ActivityNotFoundException ex) {
-                            }
+                            DialogConfig dialogConfig = new DialogConfig.Builder()
+                                    .enableMultipleSelect(false) // default is false
+                                    .enableFolderSelect(true) // default is false
+                                    .initialDirectory(baseFolder) // default is sdcard
+                                    .supportFiles(new SupportFile(".csv", 0)) // default is showing all file types.
+                                    .build();
+
+                            new FilePickerDialogFragment.Builder()
+                                    .configs(dialogConfig)
+                                    .onFilesSelected(new FilePickerDialogFragment.OnFilesSelectedListener() {
+                                        @Override
+                                        public void onFileSelected(List<File> list) {
+                                            for (File file : list) {
+                                                new ManageMethod().openFile(file, getApplicationContext());
+                                            }
+                                        }
+                                    })/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
+                                        @Override
+                                        public void onLoadFailed(String path) {
+                                            //Could not access folder because of user permissions, sdcard is not readable...
+                                        }
+                                    })*/
+                                    .build()
+                                    .show(getSupportFragmentManager(), null);
                         }
 
                         @Override
                         public void shareFile() {
-                            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                            shareIntent.setType("image/jpg");
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
-                                    BuildConfig.APPLICATION_ID + ".provider", file));
-                            startActivity(Intent.createChooser(shareIntent, "Share image using"));
+                            shareFileToUser(file);
                         }
                     });
 
@@ -185,5 +215,13 @@ public class SingleTowerSociety extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void shareFileToUser(File file) {
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/jpg");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
+                BuildConfig.APPLICATION_ID + ".provider", file));
+        startActivity(Intent.createChooser(shareIntent, "Share image using"));
     }
 }

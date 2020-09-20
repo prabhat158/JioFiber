@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,13 +28,16 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
+import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
+import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
 
 public class FinalMuti extends AppCompatActivity {
 
     LinearLayout linearLayout;
     MaterialButton materialButton;
 
-    String[] TYPE_OF_FLAT_NUMBER = new String[]{"11", "101", "0101"};
+    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
     AutoCompleteTextView typeOfFlatNumberExposedDropdown;
     String typeOfFlatNumber = "";
 
@@ -79,13 +83,15 @@ public class FinalMuti extends AppCompatActivity {
                     typeOfFlatNumberExposedDropdown.requestFocus();
                     return;
                 }
-                int code = 10;
-                if (typeOfFlatNumber.equals("11"))
-                    code = 10;
-                else if (typeOfFlatNumber.equals("101"))
-                    code = 100;
-                else if (typeOfFlatNumber.equals("0101"))
-                    code = 1000;
+
+                int digit = 0;
+                if (typeOfFlatNumber.equals("Two Digit")) {
+                    digit = 2;
+                } else if (typeOfFlatNumber.equals("Three Digit")) {
+                    digit = 3;
+                } else if (typeOfFlatNumber.equals("Four Digit")) {
+                    digit = 4;
+                }
 
 
                 int k = 1;
@@ -125,13 +131,31 @@ public class FinalMuti extends AppCompatActivity {
 
                         for (int i = 1; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
                             for (int j = 1; j < Integer.parseInt(t4.getText().toString()) + 1; j++) {
-                                int room = i * (code == 1000 ? 100 : code) + j;
-                                data.add(new String[]{"" + k,
+
+                                String room = "";
+                                if (digit == 2) {
+                                    room = (i == 1) ? "0" + j : ((i - 1) * 10 + j) + "";
+                                } else if (digit == 3) {
+                                    room = (i == 1) ? "00" + j :  ((i - 1) * 100 + j) + "";
+                                } else if (digit == 4) {
+                                    room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
+                                }
+//                                int room = i * (code == 1000 ? 100 : code) + j;
+
+
+                                String serial_number = "" + k;
+                                String label = t1.getText().toString() + "-" + room;
+                                String short_code = t2.getText().toString() + room;
+
+                                data.add(new String[]{serial_number, label, short_code});
+
+
+                              /*  data.add(new String[]{"" + k,
                                         t1.getText().toString() + "-" +
 //                                                t2.getText().toString() + "-" +
                                                 (code == 1000 ? "0" + room : room),
                                         t2.getText().toString() + room
-                                });
+                                });*/
                                 k++;
                             }
                         }
@@ -164,14 +188,30 @@ public class FinalMuti extends AppCompatActivity {
                     bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
                         @Override
                         public void viewFile() {
-                            Uri selectedUri = Uri.parse(baseFolder + "/");
-                            Intent chooser = new Intent(Intent.ACTION_GET_CONTENT);
-                            chooser.addCategory(Intent.CATEGORY_OPENABLE);
-                            chooser.setDataAndType(selectedUri, "*/*");
-                            try {
-                                startActivityForResult(chooser, 0);
-                            } catch (android.content.ActivityNotFoundException ex) {
-                            }
+                            DialogConfig dialogConfig = new DialogConfig.Builder()
+                                    .enableMultipleSelect(false) // default is false
+                                    .enableFolderSelect(true) // default is false
+                                    .initialDirectory(baseFolder) // default is sdcard
+                                    .supportFiles(new SupportFile(".csv", 0)) // default is showing all file types.
+                                    .build();
+
+                            new FilePickerDialogFragment.Builder()
+                                    .configs(dialogConfig)
+                                    .onFilesSelected(new FilePickerDialogFragment.OnFilesSelectedListener() {
+                                        @Override
+                                        public void onFileSelected(List<File> list) {
+                                            for (File file : list) {
+                                                new ManageMethod().openFile(file, getApplicationContext());
+                                            }
+                                        }
+                                    })/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
+                                        @Override
+                                        public void onLoadFailed(String path) {
+                                            //Could not access folder because of user permissions, sdcard is not readable...
+                                        }
+                                    })*/
+                                    .build()
+                                    .show(getSupportFragmentManager(), null);
                         }
 
                         @Override
@@ -207,5 +247,13 @@ public class FinalMuti extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void shareFileToUser(File file) {
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/jpg");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
+                BuildConfig.APPLICATION_ID + ".provider", file));
+        startActivity(Intent.createChooser(shareIntent, "Share image using"));
     }
 }
