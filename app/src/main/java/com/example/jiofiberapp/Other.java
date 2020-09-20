@@ -1,8 +1,10 @@
 package com.example.jiofiberapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 public class Other extends AppCompatActivity {
 
@@ -68,14 +71,50 @@ public class Other extends AppCompatActivity {
                     }
 
                     Date currentTime = Calendar.getInstance().getTime();
-                    File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
+                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
 
                     FileOutputStream out = new FileOutputStream(file);
                     out.write((data1.toString()).getBytes());
                     out.close();
 
-                    startActivity(new Intent(Other.this, HomeActivity.class));
-                    Toast.makeText(getApplicationContext(), "Your inputs have been recorded", Toast.LENGTH_LONG).show();
+                    final BottomDialogFragment bottomDialogFragment =
+                            BottomDialogFragment.newInstance();
+                    bottomDialogFragment.show(getSupportFragmentManager(),
+                            "botom");
+
+                    bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
+                        @Override
+                        public void viewFile() {
+
+                        }
+
+                        @Override
+                        public void shareFile() {
+                            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                            shareIntent.setType("image/jpg");
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
+                                    BuildConfig.APPLICATION_ID + ".provider", file));
+                            startActivity(Intent.createChooser(shareIntent, "Share image using"));
+                        }
+                    });
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                bottomDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                    @Override
+                                                    public void onDismiss(DialogInterface dialogInterface) {
+                                                        Intent intent = new Intent(Other.this, HomeActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                });
+                                            }
+                                        }
+                            , 10);
+
 
                 } catch (IOException e) {
                     Toast.makeText(getApplicationContext(), "Error " + e, Toast.LENGTH_LONG).show();

@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 public class FinalMultiGroup2 extends AppCompatActivity {
 
@@ -127,14 +128,14 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         return;
                     }
 
-                    tower_list tList= list_of_tower.get(index);
+                    tower_list tList = list_of_tower.get(index);
                     if (typeOfFlatNumber.equals("11"))
                         tList.setCount(10);
                     else if (typeOfFlatNumber.equals("101"))
                         tList.setCount(100);
                     else if (typeOfFlatNumber.equals("0101"))
                         tList.setCount(1000);
-                    list_of_tower.set(index,tList);
+                    list_of_tower.set(index, tList);
 
                     Intent intent1 = new Intent(FinalMultiGroup2.this, FinalMultiGroup2.class);
                     intent1.putExtra("index", index + 1);
@@ -148,14 +149,14 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         return;
                     }
 
-                    tower_list tList= list_of_tower.get(index);
+                    tower_list tList = list_of_tower.get(index);
                     if (typeOfFlatNumber.equals("11"))
                         tList.setCount(10);
                     else if (typeOfFlatNumber.equals("101"))
                         tList.setCount(100);
                     else if (typeOfFlatNumber.equals("0101"))
                         tList.setCount(1000);
-                    list_of_tower.set(index,tList);
+                    list_of_tower.set(index, tList);
 
 
                     int k = 1;
@@ -198,7 +199,7 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         }
 
                         Date currentTime = Calendar.getInstance().getTime();
-                        File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
+                        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
 
                         FileOutputStream out = new FileOutputStream(file);
                         out.write((data1.toString()).getBytes());
@@ -209,6 +210,22 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                                 BottomDialogFragment.newInstance();
                         bottomDialogFragment.show(getSupportFragmentManager(),
                                 "botom");
+
+                        bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
+                            @Override
+                            public void viewFile() {
+
+                            }
+
+                            @Override
+                            public void shareFile() {
+                                final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                shareIntent.setType("image/jpg");
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
+                                        BuildConfig.APPLICATION_ID + ".provider", file));
+                                startActivity(Intent.createChooser(shareIntent, "Share image using"));
+                            }
+                        });
 
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {

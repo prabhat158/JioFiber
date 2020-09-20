@@ -29,18 +29,30 @@ public class BottomDialogFragment extends BottomSheetDialogFragment {
         shareFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                contract.shareFile();
             }
         });
 
         viewFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                contract.viewFile();
             }
         });
 
 
         return view;
+    }
+
+    private ManageClickContract contract;
+
+    public void setManageClickContract(ManageClickContract contract) {
+        this.contract = contract;
+    }
+
+    public interface ManageClickContract {
+        void viewFile();
+
+        void shareFile();
     }
 }
