@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -23,8 +26,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
 import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
 import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
@@ -35,12 +36,11 @@ public class SingleTowerSociety extends AppCompatActivity {
     AutoCompleteTextView typeOfFlatNumberExposedDropdown;
     String typeOfFlatNumber = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_tower_society);
-
-
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this,
@@ -55,6 +55,7 @@ public class SingleTowerSociety extends AppCompatActivity {
         final TextInputEditText ti2 = findViewById(R.id.TextInputEditText01);
         final TextInputEditText ti3 = findViewById(R.id.TextInputEditText1);
         final TextInputEditText ti4 = findViewById(R.id.TextInputEditText2);
+        final CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
 
         MaterialButton materialButton = findViewById(R.id.nextbtn);
 
@@ -113,11 +114,23 @@ public class SingleTowerSociety extends AppCompatActivity {
 
                             String room = "";
                             if (digit == 2) {
-                                room = (i == 1) ? "0" + j : ((i - 1) * 10 + j) + "";
+                                if (skipGroundFloorCheckBox.isChecked()) {
+                                    room = (i * 10 + j) + "";
+                                } else {
+                                    room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
+                                }
                             } else if (digit == 3) {
-                                room = (i == 1) ? "00" + j :  ((i - 1) * 100 + j) + "";
+                                if (skipGroundFloorCheckBox.isChecked()) {
+                                    room = (i * 100 + j) + "";
+                                } else {
+                                    room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+                                }
                             } else if (digit == 4) {
-                                room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
+                                if (skipGroundFloorCheckBox.isChecked()) {
+                                    room = (i * 1000 + j) + "";
+                                } else {
+                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                }
                             }
 
                             String serial_number = "" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j);

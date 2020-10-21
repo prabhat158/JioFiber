@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -25,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
 import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
 import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
@@ -39,7 +40,6 @@ public class FinalMultiGroup2 extends AppCompatActivity {
     String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
     AutoCompleteTextView typeOfFlatNumberExposedDropdown;
     String typeOfFlatNumber = "";
-
 
     LinearLayout linearLayout;
     MaterialButton materialButton;
@@ -90,6 +90,7 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                     TextInputEditText t2 = view1.findViewById(R.id.TextInputEditText01);
                     TextInputEditText t3 = view1.findViewById(R.id.TextInputEditText1);
                     TextInputEditText t4 = view1.findViewById(R.id.TextInputEditText2);
+                    CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
 
                     if (t1.getText().toString().trim().equals("")) {
                         t1.setError("Enter Name of tower");
@@ -115,9 +116,10 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                         return;
                     }
 
-                    list_of_tower.get(index).getTowerDataList().add(new towerData(t1.getText().toString(),
-                            t2.getText().toString(), t3.getText().toString(), t4.getText().toString()
-                    ));
+                    towerData tData = new towerData(t1.getText().toString(), t2.getText().toString(), t3.getText().toString(), t4.getText().toString());
+                    tData.setSkipGroundFloor(skipGroundFloorCheckBox.isChecked());
+
+                    list_of_tower.get(index).getTowerDataList().add(tData);
                 }
 //                for(View view1: list){
 //                    TextInputEditText textInputEditText = view1.findViewById(R.id.TextInputEditText);
@@ -132,12 +134,7 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                     }
 
                     tower_list tList = list_of_tower.get(index);
-//                    if (typeOfFlatNumber.equals("11"))
-//                        tList.setCount(10);
-//                    else if (typeOfFlatNumber.equals("101"))
-//                        tList.setCount(100);
-//                    else if (typeOfFlatNumber.equals("0101"))
-//                        tList.setCount(1000);
+
 
                     if (typeOfFlatNumber.equals("Two Digit")) {
                         tList.setDigit(2);
@@ -186,11 +183,29 @@ public class FinalMultiGroup2 extends AppCompatActivity {
 
                                         String room = "";
                                         if (list_of_tower.get(m).getDigit() == 2) {
-                                            room = (i == 1) ? "0" + j : ((i - 1) * 10 + j) + "";
+
+                                            if (list_of_tower.get(m).isSkipGround()) {
+                                                room = (i * 10 + j) + "";
+                                            } else {
+                                                room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
+                                            }
+//                                            room = (i == 1) ? "0" + j : ((i - 1) * 10 + j) + "";
                                         } else if (list_of_tower.get(m).getDigit() == 3) {
-                                            room = (i == 1) ? "00" + j : ((i - 1) * 100 + j) + "";
+
+                                            if (list_of_tower.get(m).isSkipGround()) {
+                                                room = (i * 100 + j) + "";
+                                            } else {
+                                                room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+                                            }
+//                                            room = (i == 1) ? "00" + j : ((i - 1) * 100 + j) + "";
                                         } else if (list_of_tower.get(m).getDigit() == 4) {
-                                            room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
+
+                                            if (list_of_tower.get(m).isSkipGround()) {
+                                                room = (i * 1000 + j) + "";
+                                            } else {
+                                                room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                            }
+//                                            room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
                                         }
 
 //                                        int room = i * (list_of_tower.get(m).getCount() == 1000 ? 100 : list_of_tower.get(m).getCount()) + j;
@@ -315,6 +330,7 @@ public class FinalMultiGroup2 extends AppCompatActivity {
         String code;
         int no_of_tower;
         int digit;
+        boolean skipGround;
         List<towerData> towerDataList = new ArrayList<>();
 
 
@@ -322,6 +338,14 @@ public class FinalMultiGroup2 extends AppCompatActivity {
             this.name = name;
             this.code = code;
             this.no_of_tower = no_of_tower;
+        }
+
+        public boolean isSkipGround() {
+            return skipGround;
+        }
+
+        public void setSkipGround(boolean skipGround) {
+            this.skipGround = skipGround;
         }
 
         public int getDigit() {
@@ -370,12 +394,21 @@ public class FinalMultiGroup2 extends AppCompatActivity {
         String code;
         String floor;
         String flat;
+        boolean skipGroundFloor;
 
         public towerData(String name, String code, String floor, String flat) {
             this.name = name;
             this.code = code;
             this.floor = floor;
             this.flat = flat;
+        }
+
+        public boolean isSkipGroundFloor() {
+            return skipGroundFloor;
+        }
+
+        public void setSkipGroundFloor(boolean skipGroundFloor) {
+            this.skipGroundFloor = skipGroundFloor;
         }
 
         public String getName() {

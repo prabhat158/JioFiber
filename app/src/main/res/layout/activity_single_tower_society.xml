@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Single tower society"
-        android:textSize="23dp"></TextView>
+        android:textSize="23dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -121,6 +121,11 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
+        <CheckBox
+            android:id="@+id/skipGroundFloorCheckBox"
+            android:layout_width="match_parent"
+            android:text="Skip Ground Floor"
+            android:layout_height="wrap_content"/>
 
 
 

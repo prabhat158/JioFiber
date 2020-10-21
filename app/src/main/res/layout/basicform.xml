@@ -67,7 +67,6 @@
         android:id="@+id/textField2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:hint="Number of Flats on each floor">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/TextInputEditText2"
@@ -77,5 +76,14 @@
             android:digits="0123456789"
             android:maxLength="2"
             />
+
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <CheckBox
+        android:id="@+id/skipGroundFloorCheckBox"
+        android:layout_width="match_parent"
+        android:text="Skip Ground Floor"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

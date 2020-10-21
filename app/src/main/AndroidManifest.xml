@@ -10,7 +10,7 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Other"></activity>
+        <activity android:name=".Other"/>
         <activity android:name=".FinalMultiGroup2" />
         <activity android:name=".FinalMultiGroup1" />
         <activity android:name=".FinalMultiGroup" />

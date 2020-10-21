@@ -2,18 +2,20 @@ package com.example.jiofiberapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
 import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
 import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
@@ -104,6 +104,7 @@ public class FinalMuti extends AppCompatActivity {
                         TextInputEditText t2 = view1.findViewById(R.id.TextInputEditText01);
                         TextInputEditText t3 = view1.findViewById(R.id.TextInputEditText1);
                         TextInputEditText t4 = view1.findViewById(R.id.TextInputEditText2);
+                        CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
 
                         if (t1.getText().toString().trim().equals("")) {
                             t1.setError("Enter Number of towers");
@@ -134,14 +135,25 @@ public class FinalMuti extends AppCompatActivity {
 
                                 String room = "";
                                 if (digit == 2) {
-                                    room = (i == 1) ? "0" + j : ((i - 1) * 10 + j) + "";
+                                    if (skipGroundFloorCheckBox.isChecked()) {
+                                        room = (i * 10 + j) + "";
+                                    } else {
+                                        room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
+                                    }
                                 } else if (digit == 3) {
-                                    room = (i == 1) ? "00" + j :  ((i - 1) * 100 + j) + "";
+                                    if (skipGroundFloorCheckBox.isChecked()) {
+                                        room = (i * 100 + j) + "";
+                                    } else {
+                                        room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+                                    }
                                 } else if (digit == 4) {
-                                    room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
+                                    if (skipGroundFloorCheckBox.isChecked()) {
+                                        room = (i * 1000 + j) + "";
+                                    } else {
+                                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                    }
                                 }
 //                                int room = i * (code == 1000 ? 100 : code) + j;
-
 
                                 String serial_number = "" + k;
                                 String label = t1.getText().toString() + "-" + room;
