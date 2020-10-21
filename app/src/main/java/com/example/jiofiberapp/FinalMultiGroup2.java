@@ -203,7 +203,8 @@ public class FinalMultiGroup2 extends AppCompatActivity {
                                             if (list_of_tower.get(m).isSkipGround()) {
                                                 room = (i * 1000 + j) + "";
                                             } else {
-                                                room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+//                                                room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                                room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
                                             }
 //                                            room = (i == 1) ? "000" + j : ((i - 1) * 1000 + j) + "";
                                         }

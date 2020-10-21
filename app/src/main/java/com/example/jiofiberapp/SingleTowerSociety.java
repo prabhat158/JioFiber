@@ -127,9 +127,10 @@ public class SingleTowerSociety extends AppCompatActivity {
                                 }
                             } else if (digit == 4) {
                                 if (skipGroundFloorCheckBox.isChecked()) {
-                                    room = (i * 1000 + j) + "";
+                                    room = (i * 100 + j) + "";
                                 } else {
-                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+//                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
                                 }
                             }
 

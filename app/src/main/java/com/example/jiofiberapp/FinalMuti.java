@@ -150,7 +150,8 @@ public class FinalMuti extends AppCompatActivity {
                                     if (skipGroundFloorCheckBox.isChecked()) {
                                         room = (i * 1000 + j) + "";
                                     } else {
-                                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+//                                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                          room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
                                     }
                                 }
 //                                int room = i * (code == 1000 ? 100 : code) + j;
