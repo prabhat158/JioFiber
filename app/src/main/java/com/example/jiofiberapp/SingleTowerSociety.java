@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.text.InputType;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,30 +28,36 @@ import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment
 
 public class SingleTowerSociety extends AppCompatActivity {
 
-    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
-    AutoCompleteTextView typeOfFlatNumberExposedDropdown;
-    String typeOfFlatNumber = "";
-
+    //    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
+    //    AutoCompleteTextView typeOfFlatNumberExposedDropdown;
+    int digit;
+    int firstFlatNumber;
+    String nameOfTower;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_tower_society);
 
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this,
-                        R.layout.list_item,
-                        TYPE_OF_FLAT_NUMBER);
-        typeOfFlatNumberExposedDropdown = findViewById(R.id.type_of_flat_number);
-        typeOfFlatNumberExposedDropdown.setAdapter(adapter);
-        typeOfFlatNumberExposedDropdown.setInputType(InputType.TYPE_NULL);
-        typeOfFlatNumberExposedDropdown.setKeyListener(null);
+        Bundle bundle = getIntent().getExtras();
+        firstFlatNumber = bundle.getInt("firstFlatNumber");
+        digit = bundle.getInt("typeOfFlatNumber");
+        nameOfTower = bundle.getString("nameOfTower");
 
-        final TextInputEditText ti1 = findViewById(R.id.TextInputEditText0);
-        final TextInputEditText ti2 = findViewById(R.id.TextInputEditText01);
+//        ArrayAdapter<String> adapter =
+//                new ArrayAdapter<>(this,
+//                        R.layout.list_item,
+//                        TYPE_OF_FLAT_NUMBER);
+//        typeOfFlatNumberExposedDropdown = findViewById(R.id.type_of_flat_number);
+//        typeOfFlatNumberExposedDropdown.setAdapter(adapter);
+//        typeOfFlatNumberExposedDropdown.setInputType(InputType.TYPE_NULL);
+//        typeOfFlatNumberExposedDropdown.setKeyListener(null);
+
+//        final TextInputEditText ti1 = findViewById(R.id.TextInputEditText0);
+//        final TextInputEditText ti2 = findViewById(R.id.TextInputEditText01);
         final TextInputEditText ti3 = findViewById(R.id.TextInputEditText1);
         final TextInputEditText ti4 = findViewById(R.id.TextInputEditText2);
-        final CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
+//        final CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
 
         MaterialButton materialButton = findViewById(R.id.nextbtn);
 
@@ -63,19 +65,20 @@ public class SingleTowerSociety extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                typeOfFlatNumber = typeOfFlatNumberExposedDropdown.getText().toString();
+//                typeOfFlatNumber = typeOfFlatNumberExposedDropdown.getText().toString();
 
-                if (ti1.getText().toString().trim().equals("")) {
-                    ti1.setError("Enter Name of tower");
-                    ti1.requestFocus();
-                    return;
-                }
 
-                if (ti2.getText().toString().trim().equals("")) {
-                    ti2.setError("Enter Short Code");
-                    ti2.requestFocus();
-                    return;
-                }
+//                if (ti1.getText().toString().trim().equals("")) {
+//                    ti1.setError("Enter Name of tower");
+//                    ti1.requestFocus();
+//                    return;
+//                }
+
+//                if (ti2.getText().toString().trim().equals("")) {
+//                    ti2.setError("Enter Short Code");
+//                    ti2.requestFocus();
+//                    return;
+//                }
 
                 if (ti3.getText().toString().trim().equals("")) {
                     ti3.setError("Enter Number of floors in the tower");
@@ -89,22 +92,15 @@ public class SingleTowerSociety extends AppCompatActivity {
                     return;
                 }
 
-                if (typeOfFlatNumber.trim().equals("")) {
-                    typeOfFlatNumberExposedDropdown.setError("Enter Type of Flat Number");
-                    typeOfFlatNumberExposedDropdown.requestFocus();
-                    return;
-                }
+//                if (typeOfFlatNumber.trim().equals("")) {
+//                    typeOfFlatNumberExposedDropdown.setError("Enter Type of Flat Number");
+//                    typeOfFlatNumberExposedDropdown.requestFocus();
+//                    return;
+//                }
 
                 try {
 //                  writer = new CSVWriter(new FileWriter(file));
-                    int digit = 0;
-                    if (typeOfFlatNumber.equals("Two Digit")) {
-                        digit = 2;
-                    } else if (typeOfFlatNumber.equals("Three Digit")) {
-                        digit = 3;
-                    } else if (typeOfFlatNumber.equals("Four Digit")) {
-                        digit = 4;
-                    }
+
 
                     List<String[]> data = new ArrayList<String[]>();
 
@@ -114,30 +110,33 @@ public class SingleTowerSociety extends AppCompatActivity {
 
                             String room = "";
                             if (digit == 2) {
-                                if (skipGroundFloorCheckBox.isChecked()) {
-                                    room = (i * 10 + j) + "";
-                                } else {
-                                    room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
-                                }
+//                                if (skipGroundFloorCheckBox.isChecked()) {
+//                                    room = (i * 10 + j) + "";
+//                                } else {
+                                room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
+//                                }
                             } else if (digit == 3) {
-                                if (skipGroundFloorCheckBox.isChecked()) {
-                                    room = (i * 100 + j) + "";
-                                } else {
-                                    room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
-                                }
+//                                if (skipGroundFloorCheckBox.isChecked()) {
+//                                    room = (i * 100 + j) + "";
+//                                } else {
+                                room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+//                                }
                             } else if (digit == 4) {
-                                if (skipGroundFloorCheckBox.isChecked()) {
-                                    room = (i * 100 + j) + "";
-                                } else {
+//                                if (skipGroundFloorCheckBox.isChecked()) {
+//                                    room = (i * 100 + j) + "";
+//                                } else {
 //                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
-                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
-                                }
+                                room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
+//                                }
                             }
 
                             String serial_number = "" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j);
-                            String label = ti1.getText().toString() + "-" + room;
-                            String short_code = ti2.getText().toString() + room;
+//                            String label = ti1.getText().toString() + "-" + room;
+                            String label = nameOfTower + "-" + room;
+                            String short_code = room;
+//                            String short_code = ti2.getText().toString() + room;
 
+//                            data.add(new String[]{serial_number, label, short_code});
                             data.add(new String[]{serial_number, label, short_code});
 
                             /* data.add(

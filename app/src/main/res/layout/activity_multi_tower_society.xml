@@ -11,11 +11,20 @@
     android:padding="10dp">
 
     <TextView
+        android:id="@+id/societyName"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Multi tower society"
-        android:textSize="23dp"></TextView>
+        android:text="Name of society"
+        android:textSize="23dp"/>
+
+    <TextView
+        android:id="@+id/numberOfTowerTextView"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of tower"
+        android:textSize="23dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="30dp"
@@ -27,6 +36,7 @@
             android:id="@+id/TextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blue_light"
             android:inputType="number"
             android:digits="0123456789"
             android:maxLength="2"
@@ -40,5 +50,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
-        ></com.google.android.material.button.MaterialButton>
+        />
 </LinearLayout>

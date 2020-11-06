@@ -11,11 +11,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class HomeActivity extends AppCompatActivity {
     String TAG = "tag";
@@ -31,8 +31,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        String[] COUNTRIES = new String[]{"Single tower society", "Multi Tower society",
-                "Multi Tower group society", "Others"};
+        String[] COUNTRIES = new String[]{"Single Tower society", "Multi Tower society"};
+//        "Multi Tower group society", "Others"
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this,
@@ -65,18 +65,23 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
-
-                if (editTextFilledExposedDropdown.getText().toString().equals("Single tower society")) {
-                    startActivity(new Intent(HomeActivity.this, SingleTowerSociety.class));
+                if (editTextFilledExposedDropdown.getText().toString().equals("Single Tower society")) {
+                    Intent intent = new Intent(HomeActivity.this, NewSingleTowerActivity.class);
+                    intent.putExtra("nameOfTower", name_of_society);
+                    startActivity(intent);
                 } else if (editTextFilledExposedDropdown.getText().toString().equals("Multi Tower society")) {
-                    startActivity(new Intent(HomeActivity.this, MultiTowerSociety.class));
-                } else if (editTextFilledExposedDropdown.getText().toString().equals("Multi Tower group society")) {
-                    startActivity(new Intent(HomeActivity.this, MultiTowerGroupSociety.class));
-                } else if (editTextFilledExposedDropdown.getText().toString().equals("Others")) {
-                    Intent intent = new Intent(HomeActivity.this, Other.class);
-                    intent.putExtra(AppConstants.SOCIETY_NAME, textInputEditText.getText().toString());
+                    Intent intent = new Intent(HomeActivity.this, NewMultiTowerTowerActivity.class);
+                    intent.putExtra("nameOfSociety", name_of_society);
                     startActivity(intent);
                 }
+
+//                else if (editTextFilledExposedDropdown.getText().toString().equals("Multi Tower group society")) {
+//                    startActivity(new Intent(HomeActivity.this, MultiTowerGroupSociety.class));
+//                } else if (editTextFilledExposedDropdown.getText().toString().equals("Others")) {
+//                    Intent intent = new Intent(HomeActivity.this, Other.class);
+//                    intent.putExtra(AppConstants.SOCIETY_NAME, textInputEditText.getText().toString());
+//                    startActivity(intent);
+//                }
 
 //                Log.d("check", textInputEditText.getText().toString());
 //                Log.d("check", editTextFilledExposedDropdown.getText().toString());

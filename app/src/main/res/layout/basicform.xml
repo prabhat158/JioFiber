@@ -1,30 +1,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/towerno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tower 1"/>
+        android:paddingTop="20dp"
+        android:text="Tower 1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginRight="5dp"
             android:id="@+id/textField0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Name of tower"
+            android:hint="Name"
             android:layout_weight="2">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextInputEditText0"
                 android:layout_width="match_parent"
+                android:background="@color/blue_light"
                 android:layout_height="wrap_content"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -33,11 +34,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Short Code"
+            android:visibility="gone"
             android:layout_weight="1">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextInputEditText01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/blue_light"
                 android:inputType="number"
                 android:digits="0123456789"
                 android:maxLength="3"
@@ -51,15 +54,17 @@
         android:id="@+id/textField1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Number of floors in the tower">
+        android:layout_marginTop="8dp"
+        android:hint="# Floor">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/TextInputEditText1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blue_light"
             android:inputType="number"
             android:digits="0123456789"
-            android:maxLength="2"
-            />
+            android:maxLength="2" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -67,16 +72,36 @@
         android:id="@+id/textField2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Number of Flats on each floor">
+        android:layout_marginTop="8dp"
+        android:hint="# Flats on each floor">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/TextInputEditText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blue_light"
             android:inputType="number"
             android:digits="0123456789"
-            android:maxLength="2"
-            />
+            android:maxLength="2" />
 
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="First flat no. (It is the lowest floor of any tower)"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/TextInputEditText4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_light"
+            android:digits="0123456789"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -84,6 +109,7 @@
         android:id="@+id/skipGroundFloorCheckBox"
         android:layout_width="match_parent"
         android:text="Skip Ground Floor"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:layout_height="wrap_content"/>
+        android:visibility="gone" />
 </LinearLayout>

@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "JioSociety Intercom List"
+rootProject.name = "JioCentrex Intercom List"

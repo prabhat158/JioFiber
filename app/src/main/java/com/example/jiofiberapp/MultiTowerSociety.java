@@ -3,14 +3,17 @@ package com.example.jiofiberapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class MultiTowerSociety extends AppCompatActivity {
 
+    String nameOfSociety;
+    TextView societyName;
     TextInputEditText textInputEditText;
     MaterialButton materialButton;
 
@@ -20,6 +23,12 @@ public class MultiTowerSociety extends AppCompatActivity {
         setContentView(R.layout.activity_multi_tower_society);
         textInputEditText = findViewById(R.id.TextInputEditText);
         materialButton = findViewById(R.id.nextbtn);
+        societyName = findViewById(R.id.societyName);
+
+        Bundle bundle = getIntent().getExtras();
+        nameOfSociety = bundle.getString("nameOfSociety");
+
+        societyName.setText(nameOfSociety);
 
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,6 +37,7 @@ public class MultiTowerSociety extends AppCompatActivity {
                     if (Integer.parseInt(textInputEditText.getText().toString()) > 0) {
                         Intent intent = new Intent(MultiTowerSociety.this, FinalMuti.class);
                         intent.putExtra("number", (textInputEditText.getText().toString()));
+                        intent.putExtra("nameOfSociety", nameOfSociety);
                         startActivity(intent);
                     } else
                         textInputEditText.setError("Enter Number of towers in the society");

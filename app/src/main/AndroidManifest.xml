@@ -5,9 +5,9 @@
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/jiocentrex_logo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon"
+        android:roundIcon="@drawable/jiocentrex_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Other"/>
@@ -17,6 +17,8 @@
         <activity android:name=".FinalMuti" />
         <activity android:name=".MultiTowerGroupSociety" />
         <activity android:name=".MultiTowerSociety" />
+        <activity android:name=".NewMultiTowerTowerActivity" />
+        <activity android:name=".NewSingleTowerActivity" />
         <activity android:name=".SingleTowerSociety" />
         <activity
             android:name=".HomeActivity"

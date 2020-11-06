@@ -40,6 +40,7 @@
 
             <AutoCompleteTextView
                 android:inputType="none"
+                android:background="@color/blue_light"
                 android:id="@+id/type_of_flat_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

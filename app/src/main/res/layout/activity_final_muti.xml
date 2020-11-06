@@ -12,13 +12,20 @@
         android:orientation="vertical"
         android:padding="10dp">
         <TextView
+            android:id="@+id/societyName"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Multi tower society"
+            android:text="Name of society"
             android:textSize="23dp"/>
 
-
+        <TextView
+            android:id="@+id/numberOfTowerTextView"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name of society"
+            android:textSize="23dp"/>
 
         <LinearLayout
             android:id="@+id/linearlayout"
@@ -32,10 +39,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:inputType="none"
+            android:visibility="gone"
             android:hint="Type of Flat Number">
 
             <AutoCompleteTextView
                 android:inputType="none"
+                android:background="@color/blue_light"
                 android:id="@+id/type_of_flat_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -48,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Submit"
-                ></com.google.android.material.button.MaterialButton>
+                />
     </LinearLayout>
 
 </ScrollView>
