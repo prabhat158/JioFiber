@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.jiofiberapp.model.SingleTowerVO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -22,7 +23,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
 import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
@@ -35,6 +38,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
     public static String digits_in_flat_number = "";
 
     String nameOfTower;
+    HashSet<Integer> uniqueRoomList = new HashSet<>();
+
 
     String TAG = "tag";
     TextInputEditText TextInputEditText1;
@@ -210,8 +215,11 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         try {
 
             List<String[]> data = new ArrayList<String[]>();
-//            data.add(new String[]{"serial_number", "label", "short_code", "Blank1", "Blank2", "Tower", "Flat_Numbers"});
-            data.add(new String[]{"serial_number", "label", "short_code", "Blank1", "Blank2", "Flat_Numbers"});
+            boolean societyNameAdd = true;
+
+            data.add(new String[]{"Society_Name", "Serial_Number", "Label", "Short_Code", "Unique_Flat_Number", "Flat_Numbers"});
+//            data.add(new String[]{"serial_number", "label", "short_code", "Blank1", "Blank2", "Flat_Numbers"});
+
             int totalFlatIndex = 1;
             for (int i = Integer.parseInt(firstFlatNumber.substring(0, 1)); i < floor + 1; i++) {
                 for (int j = 1; j < flatsOnEachfloor + 1; j++) {
@@ -252,15 +260,40 @@ public class NewSingleTowerActivity extends AppCompatActivity {
                     String Tower = nameOfTower;
 //                            String short_code = ti2.getText().toString() + room;
 
-                    data.add(new String[]{serial_number, label, short_code, "", "", Flat_Numbers});
+                    uniqueRoomList.add(Integer.valueOf(room));
 
+//                    data.add(new String[]{serial_number, label, short_code, "", "", Flat_Numbers});
+                    data.add(new String[]{(societyNameAdd ? nameOfTower : ""), serial_number, label, short_code, "0", Flat_Numbers});
+                    societyNameAdd = false;
                     totalFlatIndex++;
                 }
             }
-            StringBuilder data1 = new StringBuilder();
+
+
+//          new String[]{"Society_Name 0", "Serial_Number 1", "Label 2", "Short_Code 3", "Unique_Flat_Number 4", "Flat_Numbers 5"}
+            List<SingleTowerVO> finalList = new ArrayList<>();
             for (int i = 0; i < data.size(); i++) {
-                data1.append("\n" + data.get(i)[0] + "," + data.get(i)[1] + "," + data.get(i)[2] + "," + data.get(i)[3] + "," + data.get(i)[4] + "," + data.get(i)[5]);
+                finalList.add(new SingleTowerVO(data.get(i)[1], data.get(i)[0], data.get(i)[5], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
             }
+
+
+            int counter = 1;
+            TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
+            for (Integer key : temp) {
+                SingleTowerVO singleTowerVO = finalList.get(counter);
+                singleTowerVO.setUniqueFlatNumber(String.valueOf(key));
+                finalList.set(counter, singleTowerVO);
+                counter++;
+            }
+
+
+            StringBuilder data1 = new StringBuilder();
+            for (int i = 0; i < finalList.size(); i++) {
+                SingleTowerVO multiTowerVO = finalList.get(i);
+                data1.append("\n" + multiTowerVO.getSerialNumber() + "," + multiTowerVO.getSocietyName() + "," + multiTowerVO.getLabel() + "," + multiTowerVO.getShortCode() + "," + (i == 0 ? multiTowerVO.getUniqueFlatNumber() : Integer.parseInt(multiTowerVO.getUniqueFlatNumber()) == 0 ? "" : multiTowerVO.getUniqueFlatNumber()));
+            }
+
+
             final String baseFolder;
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 baseFolder = getExternalFilesDir(null).getAbsolutePath();

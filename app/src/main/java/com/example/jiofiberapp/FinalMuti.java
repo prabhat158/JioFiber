@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.jiofiberapp.model.MultiTowerVO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -23,7 +24,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
 import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
@@ -36,6 +39,8 @@ public class FinalMuti extends AppCompatActivity {
     String nameOfSociety;
     TextView societyName;
     TextView numberOfTowerTextView;
+
+    HashSet<Integer> uniqueRoomList = new HashSet<>();
 
 //    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
 //    AutoCompleteTextView typeOfFlatNumberExposedDropdown;
@@ -119,10 +124,10 @@ public class FinalMuti extends AppCompatActivity {
 
 
                 int k = 1;
+                boolean societyNameAdd = true;
                 try {
                     List<String[]> data = new ArrayList<String[]>();
-                    data.add(new String[]{"serial_number", "label", "short_code", "Blank1", "Flat_Numbers"});
-
+                    data.add(new String[]{"Society_Name", "Serial_Number", "Label", "Short_Code", "Unique_Flat_Number", "Tower_Name", "Flat_Numbers"});
 
                     for (int m = 0; m < list.size(); m++) {
 
@@ -136,8 +141,9 @@ public class FinalMuti extends AppCompatActivity {
                         TextInputEditText firstFlatInTowerEditText = view1.findViewById(R.id.TextInputEditText4);
 //                        CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
 
+
                         if (t1.getText().toString().trim().equals("")) {
-                            t1.setError("Enter Number of towers");
+                            t1.setError("Enter name of towers");
                             t1.requestFocus();
                             return;
                         }
@@ -149,30 +155,27 @@ public class FinalMuti extends AppCompatActivity {
 //                        }
 
                         if (t3.getText().toString().trim().equals("")) {
-                            t3.setError("Enter Number of floors in the tower");
+                            t3.setError("Enter number of floors in the tower");
                             t3.requestFocus();
                             return;
                         }
 
                         if (t4.getText().toString().trim().equals("")) {
-                            t4.setError("Enter Number of Flats on each floor");
+                            t4.setError("Enter number of Flats on each floor");
                             t4.requestFocus();
                             return;
                         }
 
+                        String towerName = t1.getText().toString();
+
                         int startingFloor = 1;
-
                         boolean skipGround = false;
-
+                        boolean addTowerName = true;
 
                         if (isFixFirstFlatNumber) {
-
                             startingFloor = Integer.parseInt(fixFirstFlatNumber.substring(0, 1));
-
                             skipGround = Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1;
-
                         } else {
-
                             if (firstFlatInTowerEditText.getText().toString().equals("")) {
                                 firstFlatInTowerEditText.requestFocus();
                                 firstFlatInTowerEditText.setError("Enter first flat number on beginning of residential floor");
@@ -247,23 +250,57 @@ public class FinalMuti extends AppCompatActivity {
 
                                 String Flat_Numbers = room;
 
-                                data.add(new String[]{serial_number, label, short_code, "", Flat_Numbers});
+                                uniqueRoomList.add(Integer.valueOf(room));
 
-                              /*  data.add(new String[]{"" + k,
-                                        t1.getText().toString() + "-" +
-//                                                t2.getText().toString() + "-" +
-                                                (code == 1000 ? "0" + room : room),
-                                        t2.getText().toString() + room
-                                });*/
+                                data.add(new String[]{(societyNameAdd ? nameOfSociety : ""), serial_number, label, short_code, "0", (addTowerName ? towerName : ""), Flat_Numbers});
+                                addTowerName = false;
+                                societyNameAdd = false;
                                 k++;
                             }
                         }
                     }
 
-                    StringBuilder data1 = new StringBuilder();
+
+//                  new String[]{"Society_Name 0", "Serial_Number 1", "Label 2", "Short_Code 3", "Unique_Flat_Number 4", "Tower_Name 5", "Flat_Numbers 6"}
+                    List<MultiTowerVO> finalList = new ArrayList<>();
                     for (int i = 0; i < data.size(); i++) {
-                        data1.append("\n" + data.get(i)[0] + "," + data.get(i)[1] + "," + data.get(i)[2] + "," + data.get(i)[3] + "," + data.get(i)[4]);
+                        finalList.add(new MultiTowerVO(data.get(i)[1], data.get(i)[0], data.get(i)[5], data.get(i)[6], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
                     }
+
+                    int counter = 1;
+                    TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
+                    for (Integer key : temp) {
+                        MultiTowerVO multiTowerVO = finalList.get(counter);
+                        multiTowerVO.setUniqueFlatNumber(String.valueOf(key));
+                        finalList.set(counter, multiTowerVO);
+                        counter++;
+                    }
+
+
+                    List<String> towerNameList = new ArrayList<>();
+                    for (int i = 1; i < finalList.size(); i++) {
+                        MultiTowerVO multiTowerVO = finalList.get(i);
+                        if (multiTowerVO.getTowerName().length() > 0) {
+                            towerNameList.add(multiTowerVO.getTowerName());
+                            multiTowerVO.setTowerName("");
+                            finalList.set(i, multiTowerVO);
+                        }
+                    }
+
+                    for (int i = 0; i < towerNameList.size(); i++) {
+                        MultiTowerVO multiTowerVO = finalList.get(i+1);
+                        multiTowerVO.setTowerName(towerNameList.get(i));
+                        finalList.set(i + 1, multiTowerVO);
+                    }
+
+
+                    StringBuilder data1 = new StringBuilder();
+                    for (int i = 0; i < finalList.size(); i++) {
+                        MultiTowerVO multiTowerVO = finalList.get(i);
+                        data1.append("\n" + multiTowerVO.getSerialNumber() + "," + multiTowerVO.getSocietyName() + "," + multiTowerVO.getTowerName() + "," + multiTowerVO.getLabel() + "," + multiTowerVO.getShortCode() + "," + (i == 0 ? multiTowerVO.getUniqueFlatNumber() : Integer.parseInt(multiTowerVO.getUniqueFlatNumber()) == 0 ? "" : multiTowerVO.getUniqueFlatNumber()));
+                    }
+
+
                     final String baseFolder;
                     if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                         baseFolder = getExternalFilesDir(null).getAbsolutePath();
