@@ -21,7 +21,9 @@ public class HomeActivity extends AppCompatActivity {
     String TAG = "tag";
     public static String name_of_society = "";
     public static String type_of_society = "";
+    public static String building_id = "";
 
+    TextInputEditText TextInputEditText1;
     TextInputEditText textInputEditText;
     MaterialButton materialButton;
     AutoCompleteTextView editTextFilledExposedDropdown;
@@ -47,15 +49,18 @@ public class HomeActivity extends AppCompatActivity {
         editTextFilledExposedDropdown.setKeyListener(null);
 
         textInputEditText = findViewById(R.id.TextInputEditText);
+        TextInputEditText1 = findViewById(R.id.TextInputEditText1);
 
         materialButton = findViewById(R.id.nextbtn);
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                name_of_society = textInputEditText.getText().toString();
+                name_of_society = textInputEditText.getText().toString().trim();
                 type_of_society = editTextFilledExposedDropdown.getText().toString();
+                building_id = TextInputEditText1.getText().toString().trim();
 
                 if (name_of_society.equals("")) {
+                    textInputEditText.requestFocus();
                     textInputEditText.setError("Enter name of society");
                     return;
                 }
@@ -65,13 +70,22 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (building_id.equals("")) {
+                    TextInputEditText1.requestFocus();
+                    TextInputEditText1.setError("Enter building id");
+                    return;
+                }
+
+
                 if (editTextFilledExposedDropdown.getText().toString().equals("Single Tower society")) {
                     Intent intent = new Intent(HomeActivity.this, NewSingleTowerActivity.class);
                     intent.putExtra("nameOfTower", name_of_society);
+                    intent.putExtra("buildingID", building_id);
                     startActivity(intent);
                 } else if (editTextFilledExposedDropdown.getText().toString().equals("Multi Tower society")) {
                     Intent intent = new Intent(HomeActivity.this, NewMultiTowerTowerActivity.class);
                     intent.putExtra("nameOfSociety", name_of_society);
+                    intent.putExtra("buildingID", building_id);
                     startActivity(intent);
                 }
 

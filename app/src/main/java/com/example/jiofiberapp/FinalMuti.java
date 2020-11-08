@@ -47,6 +47,7 @@ public class FinalMuti extends AppCompatActivity {
 //    String typeOfFlatNumber = "";
 
     boolean isFixFirstFlatNumber;
+    String buildingID;
     String fixFirstFlatNumber;
     int digit;
 
@@ -56,6 +57,7 @@ public class FinalMuti extends AppCompatActivity {
         setContentView(R.layout.activity_final_muti);
 
         Bundle bundle = getIntent().getExtras();
+        buildingID = bundle.getString("buildingID");
         nameOfSociety = bundle.getString("nameOfSociety");
         final int num = Integer.parseInt(bundle.getString("number"));
         fixFirstFlatNumber = bundle.getString("fixFirstFlatNumber");
@@ -124,10 +126,10 @@ public class FinalMuti extends AppCompatActivity {
 
 
                 int k = 1;
-                boolean societyNameAdd = true;
+                boolean isBuildingId = true;
                 try {
                     List<String[]> data = new ArrayList<String[]>();
-                    data.add(new String[]{"Society_Name", "Serial_Number", "Label", "Short_Code", "Unique_Flat_Number", "Tower_Name", "Flat_Numbers"});
+                    data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Labels", "Short-code"});
 
                     for (int m = 0; m < list.size(); m++) {
 
@@ -241,7 +243,8 @@ public class FinalMuti extends AppCompatActivity {
 //                                int room = i * (code == 1000 ? 100 : code) + j;
 
                                 String serial_number = "" + k;
-                                String label = t1.getText().toString() + "-" + Integer.parseInt(room);
+//                                String label = t1.getText().toString() + "-" + Integer.parseInt(room);
+                                String label = nameOfSociety + "-" + t1.getText().toString() + "-" + Integer.parseInt(room);
 
 //                                String short_code = t2.getText().toString() + room;
 
@@ -252,26 +255,26 @@ public class FinalMuti extends AppCompatActivity {
 
                                 uniqueRoomList.add(Integer.valueOf(room));
 
-                                data.add(new String[]{(societyNameAdd ? nameOfSociety : ""), serial_number, label, short_code, "0", (addTowerName ? towerName : ""), Flat_Numbers});
+                                data.add(new String[]{serial_number, (isBuildingId ? buildingID : ""), (addTowerName ? towerName : ""), "0", label, short_code});
                                 addTowerName = false;
-                                societyNameAdd = false;
+                                isBuildingId = false;
                                 k++;
                             }
                         }
                     }
 
 
-//                  new String[]{"Society_Name 0", "Serial_Number 1", "Label 2", "Short_Code 3", "Unique_Flat_Number 4", "Tower_Name 5", "Flat_Numbers 6"}
+//                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
                     List<MultiTowerVO> finalList = new ArrayList<>();
                     for (int i = 0; i < data.size(); i++) {
-                        finalList.add(new MultiTowerVO(data.get(i)[1], data.get(i)[0], data.get(i)[5], data.get(i)[6], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
+                        finalList.add(new MultiTowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4], data.get(i)[5]));
                     }
 
                     int counter = 1;
                     TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
                     for (Integer key : temp) {
                         MultiTowerVO multiTowerVO = finalList.get(counter);
-                        multiTowerVO.setUniqueFlatNumber(String.valueOf(key));
+                        multiTowerVO.setFlats(String.valueOf(key));
                         finalList.set(counter, multiTowerVO);
                         counter++;
                     }
@@ -280,24 +283,30 @@ public class FinalMuti extends AppCompatActivity {
                     List<String> towerNameList = new ArrayList<>();
                     for (int i = 1; i < finalList.size(); i++) {
                         MultiTowerVO multiTowerVO = finalList.get(i);
-                        if (multiTowerVO.getTowerName().length() > 0) {
-                            towerNameList.add(multiTowerVO.getTowerName());
-                            multiTowerVO.setTowerName("");
+                        if (multiTowerVO.getTowers().length() > 0) {
+                            towerNameList.add(multiTowerVO.getTowers());
+                            multiTowerVO.setTowers("");
                             finalList.set(i, multiTowerVO);
                         }
                     }
 
                     for (int i = 0; i < towerNameList.size(); i++) {
                         MultiTowerVO multiTowerVO = finalList.get(i+1);
-                        multiTowerVO.setTowerName(towerNameList.get(i));
+                        multiTowerVO.setTowers(towerNameList.get(i));
                         finalList.set(i + 1, multiTowerVO);
                     }
 
 
+//                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
                     StringBuilder data1 = new StringBuilder();
                     for (int i = 0; i < finalList.size(); i++) {
                         MultiTowerVO multiTowerVO = finalList.get(i);
-                        data1.append("\n" + multiTowerVO.getSerialNumber() + "," + multiTowerVO.getSocietyName() + "," + multiTowerVO.getTowerName() + "," + multiTowerVO.getLabel() + "," + multiTowerVO.getShortCode() + "," + (i == 0 ? multiTowerVO.getUniqueFlatNumber() : Integer.parseInt(multiTowerVO.getUniqueFlatNumber()) == 0 ? "" : multiTowerVO.getUniqueFlatNumber()));
+                        data1.append("\n" + multiTowerVO.getSn() + ","
+                                + multiTowerVO.getBuildingId() + ","
+                                + multiTowerVO.getTowers() + ","
+                                + (i == 0 ? multiTowerVO.getFlats() : Integer.parseInt(multiTowerVO.getFlats()) == 0 ? "" : multiTowerVO.getFlats()) + ","
+                                + multiTowerVO.getLabel() + ","
+                                + multiTowerVO.getShortCode());
                     }
 
 

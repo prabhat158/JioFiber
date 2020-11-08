@@ -37,6 +37,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
     //    public static String number_of_digit_in_flat_number = "";
     public static String digits_in_flat_number = "";
 
+    String buildingID;
     String nameOfTower;
     HashSet<Integer> uniqueRoomList = new HashSet<>();
 
@@ -58,6 +59,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_single_tower);
 
         Bundle bundle = getIntent().getExtras();
+        buildingID = bundle.getString("buildingID");
         nameOfTower = bundle.getString("nameOfTower");
 
         TextInputEditText1 = findViewById(R.id.TextInputEditText1);
@@ -215,12 +217,11 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         try {
 
             List<String[]> data = new ArrayList<String[]>();
-            boolean societyNameAdd = true;
-
-            data.add(new String[]{"Society_Name", "Serial_Number", "Label", "Short_Code", "Unique_Flat_Number", "Flat_Numbers"});
-//            data.add(new String[]{"serial_number", "label", "short_code", "Blank1", "Blank2", "Flat_Numbers"});
+            data.add(new String[]{"SN", "Building id", "Flats", "Labels", "Short-code"});
 
             int totalFlatIndex = 1;
+            boolean isBuildingId = true;
+
             for (int i = Integer.parseInt(firstFlatNumber.substring(0, 1)); i < floor + 1; i++) {
                 for (int j = 1; j < flatsOnEachfloor + 1; j++) {
 
@@ -263,17 +264,17 @@ public class NewSingleTowerActivity extends AppCompatActivity {
                     uniqueRoomList.add(Integer.valueOf(room));
 
 //                    data.add(new String[]{serial_number, label, short_code, "", "", Flat_Numbers});
-                    data.add(new String[]{(societyNameAdd ? nameOfTower : ""), serial_number, label, short_code, "0", Flat_Numbers});
-                    societyNameAdd = false;
+                    data.add(new String[]{serial_number, (isBuildingId ? buildingID : ""), "0", label, short_code});
+                    isBuildingId = false;
                     totalFlatIndex++;
                 }
             }
 
 
-//          new String[]{"Society_Name 0", "Serial_Number 1", "Label 2", "Short_Code 3", "Unique_Flat_Number 4", "Flat_Numbers 5"}
+//          data.add(new String[]{"SN 0", "Building id 1", "Flats 2", "Labels 3", "Short-code 4"});
             List<SingleTowerVO> finalList = new ArrayList<>();
             for (int i = 0; i < data.size(); i++) {
-                finalList.add(new SingleTowerVO(data.get(i)[1], data.get(i)[0], data.get(i)[5], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
+                finalList.add(new SingleTowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
             }
 
 
@@ -281,7 +282,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
             TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
             for (Integer key : temp) {
                 SingleTowerVO singleTowerVO = finalList.get(counter);
-                singleTowerVO.setUniqueFlatNumber(String.valueOf(key));
+                singleTowerVO.setFlats(String.valueOf(key));
                 finalList.set(counter, singleTowerVO);
                 counter++;
             }
@@ -289,8 +290,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
 
             StringBuilder data1 = new StringBuilder();
             for (int i = 0; i < finalList.size(); i++) {
-                SingleTowerVO multiTowerVO = finalList.get(i);
-                data1.append("\n" + multiTowerVO.getSerialNumber() + "," + multiTowerVO.getSocietyName() + "," + multiTowerVO.getLabel() + "," + multiTowerVO.getShortCode() + "," + (i == 0 ? multiTowerVO.getUniqueFlatNumber() : Integer.parseInt(multiTowerVO.getUniqueFlatNumber()) == 0 ? "" : multiTowerVO.getUniqueFlatNumber()));
+                SingleTowerVO singleTowerVO = finalList.get(i);
+                data1.append("\n" + singleTowerVO.getSn() + "," + singleTowerVO.getBuildingId() + "," + (i == 0 ? singleTowerVO.getFlats() : Integer.parseInt(singleTowerVO.getFlats()) == 0 ? "" : singleTowerVO.getFlats()) + "," + singleTowerVO.getLabel() + "," + singleTowerVO.getShortCode());
             }
 
 

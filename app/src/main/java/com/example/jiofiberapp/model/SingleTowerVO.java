@@ -2,36 +2,42 @@ package com.example.jiofiberapp.model;
 
 public class SingleTowerVO {
 
-    String serialNumber;
-    String societyName;
-    String flatNumbers;
+    String sn;
+    String buildingId;
+    String flats;
     String label;
     String shortCode;
-    String uniqueFlatNumber;
 
-    public SingleTowerVO(String serialNumber, String societyName, String flatNumbers, String label, String shortCode, String uniqueFlatNumber) {
-        this.serialNumber = serialNumber;
-        this.societyName = societyName;
-        this.flatNumbers = flatNumbers;
+    public SingleTowerVO(String sn, String buildingId, String flats, String label, String shortCode) {
+        this.sn = sn;
+        this.buildingId = buildingId;
+        this.flats = flats;
         this.label = label;
         this.shortCode = shortCode;
-        this.uniqueFlatNumber = uniqueFlatNumber;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
+    public String getSn() {
+        return sn;
     }
 
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setSn(String sn) {
+        this.sn = sn;
     }
 
-    public String getSocietyName() {
-        return societyName;
+    public String getBuildingId() {
+        return buildingId;
     }
 
-    public void setSocietyName(String societyName) {
-        this.societyName = societyName;
+    public void setBuildingId(String buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public String getFlats() {
+        return flats;
+    }
+
+    public void setFlats(String flats) {
+        this.flats = flats;
     }
 
     public String getLabel() {
@@ -48,21 +54,5 @@ public class SingleTowerVO {
 
     public void setShortCode(String shortCode) {
         this.shortCode = shortCode;
-    }
-
-    public String getFlatNumbers() {
-        return flatNumbers;
-    }
-
-    public void setFlatNumbers(String flatNumbers) {
-        this.flatNumbers = flatNumbers;
-    }
-
-    public String getUniqueFlatNumber() {
-        return uniqueFlatNumber;
-    }
-
-    public void setUniqueFlatNumber(String uniqueFlatNumber) {
-        this.uniqueFlatNumber = uniqueFlatNumber;
     }
 }
