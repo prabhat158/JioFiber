@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.example.jiofiberapp.model.MultiTowerVO;
+import com.example.jiofiberapp.model.TowerVO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -58,7 +58,7 @@ public class FinalMuti extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         buildingID = bundle.getString("buildingID");
-        nameOfSociety = bundle.getString("nameOfSociety");
+        nameOfSociety = bundle.getString("nameOfTowerOrSociety");
         final int num = Integer.parseInt(bundle.getString("number"));
         fixFirstFlatNumber = bundle.getString("fixFirstFlatNumber");
         digit = bundle.getInt("digit");
@@ -130,6 +130,9 @@ public class FinalMuti extends AppCompatActivity {
                 try {
                     List<String[]> data = new ArrayList<String[]>();
                     data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Labels", "Short-code"});
+
+
+
 
                     for (int m = 0; m < list.size(); m++) {
 
@@ -265,48 +268,48 @@ public class FinalMuti extends AppCompatActivity {
 
 
 //                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
-                    List<MultiTowerVO> finalList = new ArrayList<>();
+                    List<TowerVO> finalList = new ArrayList<>();
                     for (int i = 0; i < data.size(); i++) {
-                        finalList.add(new MultiTowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4], data.get(i)[5]));
+                        finalList.add(new TowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4], data.get(i)[5]));
                     }
 
                     int counter = 1;
                     TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
                     for (Integer key : temp) {
-                        MultiTowerVO multiTowerVO = finalList.get(counter);
-                        multiTowerVO.setFlats(String.valueOf(key));
-                        finalList.set(counter, multiTowerVO);
+                        TowerVO towerVO = finalList.get(counter);
+                        towerVO.setFlats(String.valueOf(key));
+                        finalList.set(counter, towerVO);
                         counter++;
                     }
 
 
                     List<String> towerNameList = new ArrayList<>();
                     for (int i = 1; i < finalList.size(); i++) {
-                        MultiTowerVO multiTowerVO = finalList.get(i);
-                        if (multiTowerVO.getTowers().length() > 0) {
-                            towerNameList.add(multiTowerVO.getTowers());
-                            multiTowerVO.setTowers("");
-                            finalList.set(i, multiTowerVO);
+                        TowerVO towerVO = finalList.get(i);
+                        if (towerVO.getTowers().length() > 0) {
+                            towerNameList.add(towerVO.getTowers());
+                            towerVO.setTowers("");
+                            finalList.set(i, towerVO);
                         }
                     }
 
                     for (int i = 0; i < towerNameList.size(); i++) {
-                        MultiTowerVO multiTowerVO = finalList.get(i+1);
-                        multiTowerVO.setTowers(towerNameList.get(i));
-                        finalList.set(i + 1, multiTowerVO);
+                        TowerVO towerVO = finalList.get(i+1);
+                        towerVO.setTowers(towerNameList.get(i));
+                        finalList.set(i + 1, towerVO);
                     }
 
 
 //                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
                     StringBuilder data1 = new StringBuilder();
                     for (int i = 0; i < finalList.size(); i++) {
-                        MultiTowerVO multiTowerVO = finalList.get(i);
-                        data1.append("\n" + multiTowerVO.getSn() + ","
-                                + multiTowerVO.getBuildingId() + ","
-                                + multiTowerVO.getTowers() + ","
-                                + (i == 0 ? multiTowerVO.getFlats() : Integer.parseInt(multiTowerVO.getFlats()) == 0 ? "" : multiTowerVO.getFlats()) + ","
-                                + multiTowerVO.getLabel() + ","
-                                + multiTowerVO.getShortCode());
+                        TowerVO towerVO = finalList.get(i);
+                        data1.append("\n" + towerVO.getSn() + ","
+                                + towerVO.getBuildingId() + ","
+                                + towerVO.getTowers() + ","
+                                + (i == 0 ? towerVO.getFlats() : Integer.parseInt(towerVO.getFlats()) == 0 ? "" : towerVO.getFlats()) + ","
+                                + towerVO.getLabel() + ","
+                                + towerVO.getShortCode());
                     }
 
 

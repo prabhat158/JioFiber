@@ -38,7 +38,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         buildingID = bundle.getString("buildingID");
-        nameOfSociety = bundle.getString("nameOfSociety");
+        nameOfSociety = bundle.getString("nameOfTowerOrSociety");
 
         TextInputEditText1 = findViewById(R.id.TextInputEditText1);
         TextInputEditText2 = findViewById(R.id.TextInputEditText2);
@@ -137,7 +137,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
                 Intent intent = new Intent(NewMultiTowerTowerActivity.this, FinalMuti.class);
                 intent.putExtra("number", number_of_tower_in_society);
                 intent.putExtra("buildingID", buildingID);
-                intent.putExtra("nameOfSociety", nameOfSociety);
+                intent.putExtra("nameOfTowerOrSociety", nameOfSociety);
                 intent.putExtra("fixFirstFlatNumber", first_flat_number_on_beginning_of_residential_floor);
                 intent.putExtra("digit", Integer.parseInt(digits_in_flat_number));
                 intent.putExtra("isStartFlatNumberSame", isStartFlatNumberSameCheckBox.isChecked());

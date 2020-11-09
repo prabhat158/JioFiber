@@ -42,7 +42,7 @@ public class SingleTowerSociety extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         firstFlatNumber = bundle.getInt("firstFlatNumber");
         digit = bundle.getInt("typeOfFlatNumber");
-        nameOfTower = bundle.getString("nameOfTower");
+        nameOfTower = bundle.getString("nameOfTowerOrSociety");
 
 //        ArrayAdapter<String> adapter =
 //                new ArrayAdapter<>(this,

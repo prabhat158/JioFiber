@@ -76,18 +76,30 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
-
+                Intent intent;
                 if (editTextFilledExposedDropdown.getText().toString().equals("Single Tower society")) {
-                    Intent intent = new Intent(HomeActivity.this, NewSingleTowerActivity.class);
-                    intent.putExtra("nameOfTower", name_of_society);
-                    intent.putExtra("buildingID", building_id);
-                    startActivity(intent);
-                } else if (editTextFilledExposedDropdown.getText().toString().equals("Multi Tower society")) {
-                    Intent intent = new Intent(HomeActivity.this, NewMultiTowerTowerActivity.class);
-                    intent.putExtra("nameOfSociety", name_of_society);
-                    intent.putExtra("buildingID", building_id);
-                    startActivity(intent);
+                    intent = new Intent(HomeActivity.this, NewSingleTowerActivity.class);
+                } else {
+                    intent = new Intent(HomeActivity.this, NewMultiTowerTowerActivity.class);
                 }
+                intent.putExtra("nameOfTowerOrSociety", name_of_society);
+                intent.putExtra("buildingID", building_id);
+                startActivity(intent);
+
+
+//                if (editTextFilledExposedDropdown.getText().toString().equals("Single Tower society")) {
+////                    Intent intent = new Intent(HomeActivity.this, NewSingleTowerActivity.class);
+//                    Intent intent = new Intent(HomeActivity.this, SocietyCommonPointActivity1.class);
+//                    intent.putExtra("nameOfTowerOrSociety", name_of_society);
+//                    intent.putExtra("buildingID", building_id);
+//                    startActivity(intent);
+//                } else if (editTextFilledExposedDropdown.getText().toString().equals("Multi Tower society")) {
+////                    Intent intent = new Intent(HomeActivity.this, NewMultiTowerTowerActivity.class);
+//                    Intent intent = new Intent(HomeActivity.this, SocietyCommonPointActivity1.class);
+//                    intent.putExtra("nameOfSociety", name_of_society);
+//                    intent.putExtra("buildingID", building_id);
+//                    startActivity(intent);
+//                }
 
 //                else if (editTextFilledExposedDropdown.getText().toString().equals("Multi Tower group society")) {
 //                    startActivity(new Intent(HomeActivity.this, MultiTowerGroupSociety.class));
