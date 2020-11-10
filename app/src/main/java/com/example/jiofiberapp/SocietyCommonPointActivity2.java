@@ -18,6 +18,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,27 +69,26 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
 
     private void moveToNext() {
 
-        extraVO.setOtherRepresentative(Integer.parseInt(otherRepresentativeTextInputEditText.getText().toString()));
-        extraVO.setOtherOffice(Integer.parseInt(otherOfficeTextInputEditText.getText().toString()));
-        extraVO.setSocietyRepairServices(Integer.parseInt(societyRepairServicesTextInputEditText.getText().toString()));
-        extraVO.setPoolSportsOthers(Integer.parseInt(poolSportsOthersTextInputEditText.getText().toString()));
-        extraVO.setSocietyResidentsOwnVentures(Integer.parseInt(societyResidentsOwnVenturesTextInputEditText.getText().toString()));
+        extraVO.setOtherRepresentative(Integer.parseInt(otherRepresentativeTextInputEditText.getText().toString().trim().length() == 0 ? "0" : otherRepresentativeTextInputEditText.getText().toString()));
+        extraVO.setOtherOffice(Integer.parseInt(otherOfficeTextInputEditText.getText().toString().trim().length() == 0 ? "0" : otherOfficeTextInputEditText.getText().toString()));
+        extraVO.setSocietyRepairServices(Integer.parseInt(societyRepairServicesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : societyRepairServicesTextInputEditText.getText().toString()));
+        extraVO.setPoolSportsOthers(Integer.parseInt(poolSportsOthersTextInputEditText.getText().toString().trim().length() == 0 ? "0" : poolSportsOthersTextInputEditText.getText().toString()));
+        extraVO.setSocietyResidentsOwnVentures(Integer.parseInt(societyResidentsOwnVenturesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : societyResidentsOwnVenturesTextInputEditText.getText().toString()));
 
+        extraVO.setTowerLiftSecurity(Integer.parseInt(towerLiftSecurityTextInputEditText.getText().toString().trim().length() == 0 ? "0" : towerLiftSecurityTextInputEditText.getText().toString()));
+        extraVO.setOtherGates(Integer.parseInt(otherGatesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : otherGatesTextInputEditText.getText().toString()));
+        extraVO.setParking(Integer.parseInt(parkingTextInputEditText.getText().toString().trim().length() == 0 ? "0" : parkingTextInputEditText.getText().toString()));
+        extraVO.setMaidsCooks(Integer.parseInt(maidsCooksTextInputEditText.getText().toString().trim().length() == 0 ? "0" : maidsCooksTextInputEditText.getText().toString()));
+        extraVO.setCarBikeWash(Integer.parseInt(carBikeWashTextInputEditText.getText().toString().trim().length() == 0 ? "0" : carBikeWashTextInputEditText.getText().toString()));
+        extraVO.setOtherHousekeeping(Integer.parseInt(otherHousekeepingTextInputEditText.getText().toString().trim().length() == 0 ? "0" : otherHousekeepingTextInputEditText.getText().toString()));
 
-        extraVO.setTowerLiftSecurity(Integer.parseInt(towerLiftSecurityTextInputEditText.getText().toString()));
-        extraVO.setOtherGates(Integer.parseInt(otherGatesTextInputEditText.getText().toString()));
-        extraVO.setParking(Integer.parseInt(parkingTextInputEditText.getText().toString()));
-        extraVO.setMaidsCooks(Integer.parseInt(maidsCooksTextInputEditText.getText().toString()));
-        extraVO.setCarBikeWash(Integer.parseInt(carBikeWashTextInputEditText.getText().toString()));
-        extraVO.setOtherHousekeeping(Integer.parseInt(otherHousekeepingTextInputEditText.getText().toString()));
+        extraVO.setKiranaItemsShops(Integer.parseInt(kiranaItemsShopsTextInputEditText.getText().toString().trim().length() == 0 ? "0" : kiranaItemsShopsTextInputEditText.getText().toString()));
+        extraVO.setFoodOutlets(Integer.parseInt(foodOutletsTextInputEditText.getText().toString().trim().length() == 0 ? "0" : foodOutletsTextInputEditText.getText().toString()));
+        extraVO.setHouseholdItems(Integer.parseInt(householdItemsTextInputEditText.getText().toString().trim().length() == 0 ? "0" : householdItemsTextInputEditText.getText().toString()));
 
-        extraVO.setKiranaItemsShops(Integer.parseInt(kiranaItemsShopsTextInputEditText.getText().toString()));
-        extraVO.setFoodOutlets(Integer.parseInt(foodOutletsTextInputEditText.getText().toString()));
-        extraVO.setHouseholdItems(Integer.parseInt(householdItemsTextInputEditText.getText().toString()));
-
-        extraVO.setPersonalServices(Integer.parseInt(personalServicesTextInputEditText.getText().toString()));
-        extraVO.setHouseholdServices(Integer.parseInt(householdItemsTextInputEditText.getText().toString()));
-        extraVO.setRepairSupportServices(Integer.parseInt(repairSupportServicesTextInputEditText.getText().toString()));
+        extraVO.setPersonalServices(Integer.parseInt(personalServicesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : personalServicesTextInputEditText.getText().toString()));
+        extraVO.setHouseholdServices(Integer.parseInt(householdItemsTextInputEditText.getText().toString().trim().length() == 0 ? "0" : householdItemsTextInputEditText.getText().toString()));
+        extraVO.setRepairSupportServices(Integer.parseInt(repairSupportServicesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : repairSupportServicesTextInputEditText.getText().toString()));
 
         if (isSingleTower) {
             try {
@@ -97,12 +97,283 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else {
-            forMultiTower();
+            try {
+                forMultiTower();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void forMultiTower() {
+    private void forMultiTower() throws IOException {
 
+        mainList.add(new TowerVO("", "", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "", "0", "", ""));
+        mainList.add(new TowerVO("Common Point SN", "", "", "0", "Labels", "Short-code"));
+
+
+        // Manage  Form 1
+        int count = 1;
+
+        if (extraVO.isSocietyRepresentative()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Society Representative", extraVO.getSocietyRepresentativeCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isSocietyOffice()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Society Office", extraVO.getSocietyOfficeCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isClubHouse()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Club House", extraVO.getClubHouseCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isMainGateSecurity()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Main Gate Security", extraVO.getMainGateSecurityCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isSocietyHousekeeping()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Society Housekeeping", extraVO.getSocietyHousekeepingCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isGardener()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Gardener", extraVO.getGardenerCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isGrocery()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Grocery", extraVO.getGroceryCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isPharmacy()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Pharmacy", extraVO.getPharmacyCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isMilkShop()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Milk Shop", extraVO.getMilkShopCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isParlor()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Parlor", extraVO.getParlorCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isIroningShop()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Ironing Shop", extraVO.getIroningShopCode() + ""));
+            count++;
+        }
+
+        if (extraVO.isBarber()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "", "0", "Barber", extraVO.getBarberCode() + ""));
+            count++;
+        }
+
+
+        // Manage  Form 2
+        List<Integer> list1 = extraVO.getOtherRepresentativeList();
+        for (int i = 0; i < extraVO.getOtherRepresentative(); i++) {
+            int code = list1.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Other Representative " + (i + 1), code + ""));
+        }
+
+        List<Integer> list2 = extraVO.getOtherOfficeList();
+        for (int i = 0; i < extraVO.getOtherOffice(); i++) {
+            int code = list2.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Other Office " + (i + 1), code + ""));
+        }
+
+        List<Integer> list3 = extraVO.getSocietyRepairServicesList();
+        for (int i = 0; i < extraVO.getSocietyRepairServices(); i++) {
+            int code = list3.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Society Repair Service " + (i + 1), code + ""));
+        }
+
+        List<Integer> list4 = extraVO.getPoolSportsOthersList();
+        for (int i = 0; i < extraVO.getPoolSportsOthers(); i++) {
+            int code = list4.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Pool Sports Others " + (i + 1), code + ""));
+        }
+
+        List<Integer> list5 = extraVO.getSocietyResidentsOwnVenturesList();
+        for (int i = 0; i < extraVO.getSocietyResidentsOwnVentures(); i++) {
+            int code = list5.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Society Residents Own Ventures " + (i + 1), code + ""));
+        }
+
+        //////////////////////////////////////
+        List<Integer> list6 = extraVO.getTowerLiftSecurityList();
+        for (int i = 0; i < extraVO.getTowerLiftSecurity(); i++) {
+            int code = list6.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Tower / Lift Security " + (i + 1), code + ""));
+        }
+
+        List<Integer> list7 = extraVO.getOtherGatesList();
+        for (int i = 0; i < extraVO.getOtherGates(); i++) {
+            int code = list7.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Other Gates " + (i + 1), code + ""));
+        }
+
+        List<Integer> list8 = extraVO.getParkingList();
+        for (int i = 0; i < extraVO.getParking(); i++) {
+            int code = list8.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Parking " + (i + 1), code + ""));
+        }
+
+        List<Integer> list9 = extraVO.getMaidsCooksPair();
+        for (int i = 0; i < extraVO.getMaidsCooks(); i++) {
+            int code = list9.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Maid Cooks " + (i + 1), code + ""));
+        }
+
+        List<Integer> list10 = extraVO.getCarBikeWashList();
+        for (int i = 0; i < extraVO.getCarBikeWash(); i++) {
+            int code = list10.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Car Bike Wash " + (i + 1), code + ""));
+        }
+
+
+        List<Integer> list11 = extraVO.getOtherHousekeepingList();
+        for (int i = 0; i < extraVO.getOtherHousekeeping(); i++) {
+            int code = list11.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Housekeeping " + (i + 1), code + ""));
+        }
+
+        //////////////////////////////////
+        List<Integer> list12 = extraVO.getKiranaItemsShopsList();
+        for (int i = 0; i < extraVO.getKiranaItemsShops(); i++) {
+            int code = list12.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Kirana Items Shops " + (i + 1), code + ""));
+        }
+
+        List<Integer> list13 = extraVO.getFoodOutletsList();
+        for (int i = 0; i < extraVO.getFoodOutlets(); i++) {
+            int code = list13.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Food Outlet " + (i + 1), code + ""));
+        }
+
+        List<Integer> list14 = extraVO.getHouseholdItemsList();
+        for (int i = 0; i < extraVO.getHouseholdItems(); i++) {
+            int code = list14.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Household Items " + (i + 1), code + ""));
+        }
+
+        List<Integer> list15 = extraVO.getPersonalServicesList();
+        for (int i = 0; i < extraVO.getPersonalServices(); i++) {
+            int code = list15.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Personal Services " + (i + 1), code + ""));
+        }
+
+        List<Integer> list16 = extraVO.getHouseholdServicesList();
+        for (int i = 0; i < extraVO.getHouseholdServices(); i++) {
+            int code = list16.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Household Services " + (i + 1), code + ""));
+        }
+
+
+        List<Integer> list17 = extraVO.getRepairSupportServicesList();
+        for (int i = 0; i < extraVO.getRepairSupportServices(); i++) {
+            int code = list17.get(i);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Household Services " + (i + 1), code + ""));
+        }
+
+
+//      data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
+        StringBuilder data1 = new StringBuilder();
+        for (int i = 0; i < mainList.size(); i++) {
+            TowerVO towerVO = mainList.get(i);
+            data1.append("\n" + towerVO.getSn() + ","
+                    + towerVO.getBuildingId() + ","
+                    + towerVO.getTowers() + ","
+                    + (i == 0 ? towerVO.getFlats() : Integer.parseInt(towerVO.getFlats()) == 0 ? "" : towerVO.getFlats()) + ","
+                    + towerVO.getLabel() + ","
+                    + towerVO.getShortCode());
+        }
+
+
+        final String baseFolder;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            baseFolder = getExternalFilesDir(null).getAbsolutePath();
+        } else {
+            baseFolder = getFilesDir().getAbsolutePath();
+        }
+
+        Date currentTime = Calendar.getInstance().getTime();
+        final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + ".csv");
+//                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
+
+        FileOutputStream out = new FileOutputStream(file);
+        out.write((data1.toString()).getBytes());
+        out.close();
+
+        final BottomDialogFragment bottomDialogFragment =
+                BottomDialogFragment.newInstance();
+        bottomDialogFragment.show(getSupportFragmentManager(),
+                "botom");
+
+
+        bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
+            @Override
+            public void viewFile() {
+                DialogConfig dialogConfig = new DialogConfig.Builder()
+                        .enableMultipleSelect(false) // default is false
+                        .enableFolderSelect(true) // default is false
+                        .initialDirectory(baseFolder) // default is sdcard
+                        .supportFiles(new SupportFile(".csv", 0)) // default is showing all file types.
+                        .build();
+
+                new FilePickerDialogFragment.Builder()
+                        .configs(dialogConfig)
+                        .onFilesSelected(new FilePickerDialogFragment.OnFilesSelectedListener() {
+                            @Override
+                            public void onFileSelected(List<File> list) {
+                                for (File file : list) {
+                                    new ManageMethod().openFile(file, getApplicationContext());
+                                }
+                            }
+                        })/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
+                                        @Override
+                                        public void onLoadFailed(String path) {
+                                            //Could not access folder because of user permissions, sdcard is not readable...
+                                        }
+                                    })*/
+                        .build()
+                        .show(getSupportFragmentManager(), null);
+            }
+
+            @Override
+            public void shareFile() {
+                final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("image/jpg");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
+                        BuildConfig.APPLICATION_ID + ".provider", file));
+                startActivity(Intent.createChooser(shareIntent, "Share image using"));
+            }
+        });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    bottomDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialogInterface) {
+                                            Intent intent = new Intent(SocietyCommonPointActivity2.this, HomeActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                                }
+                            }
+                , 10);
     }
 
     private void setDefaultValue() {
@@ -131,7 +402,6 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
         householdServicesTextInputEditText.setText("0");
         repairSupportServicesTextInputEditText.setText("0");
     }
-
 
     private void manageSocietyCoreServiceListener() {
 
@@ -685,7 +955,6 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
         manageCommercialServicesListener();
     }
 
-
     private void forSingleTower() throws IOException {
 
         mainList.add(new TowerVO("", "", "0", "", ""));
@@ -697,149 +966,171 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
         // Manage  Form 1
         int count = 1;
 
-        if (extraVO.isSocietyRepresentative())
+        if (extraVO.isSocietyRepresentative()) {
             mainList.add(new TowerVO(String.valueOf(count), "", "0", "Society Representative", extraVO.getSocietyRepresentativeCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isSocietyOffice())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Office", extraVO.getSocietyOfficeCode() + ""));
+        if (extraVO.isSocietyOffice()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Society Office", extraVO.getSocietyOfficeCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isClubHouse())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Club House", extraVO.getClubHouseCode() + ""));
+        if (extraVO.isClubHouse()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Club House", extraVO.getClubHouseCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isMainGateSecurity())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Main Gate Security", extraVO.getMainGateSecurityCode() + ""));
+        if (extraVO.isMainGateSecurity()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Main Gate Security", extraVO.getMainGateSecurityCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isSocietyHousekeeping())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Housekeeping", extraVO.getSocietyHousekeepingCode() + ""));
+        if (extraVO.isSocietyHousekeeping()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Society Housekeeping", extraVO.getSocietyHousekeepingCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isGardener())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Gardener", extraVO.getGardenerCode() + ""));
+        if (extraVO.isGardener()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Gardener", extraVO.getGardenerCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isGrocery())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Grocery", extraVO.getGroceryCode() + ""));
+        if (extraVO.isGrocery()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Grocery", extraVO.getGroceryCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isPharmacy())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Pharmacy", extraVO.getPharmacyCode() + ""));
+        if (extraVO.isPharmacy()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Pharmacy", extraVO.getPharmacyCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isMilkShop())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Milk Shop", extraVO.isMilkShop() + ""));
+        if (extraVO.isMilkShop()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Milk Shop", extraVO.getMilkShopCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isParlor())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Parlor", extraVO.getParlorCode() + ""));
+        if (extraVO.isParlor()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Parlor", extraVO.getParlorCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isIroningShop())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Ironing Shop", extraVO.getIroningShopCode() + ""));
+        if (extraVO.isIroningShop()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Ironing Shop", extraVO.getIroningShopCode() + ""));
+            count++;
+        }
 
-        if (extraVO.isBarber())
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Barber", extraVO.getBarberCode() + ""));
-
+        if (extraVO.isBarber()) {
+            mainList.add(new TowerVO(String.valueOf(count), "", "0", "Barber", extraVO.getBarberCode() + ""));
+            count++;
+        }
 
         // Manage  Form 2
-
         List<Integer> list1 = extraVO.getOtherRepresentativeList();
         for (int i = 0; i < extraVO.getOtherRepresentative(); i++) {
             int code = list1.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Other Representative", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Other Representative " + (i + 1), code + ""));
         }
 
         List<Integer> list2 = extraVO.getOtherOfficeList();
         for (int i = 0; i < extraVO.getOtherOffice(); i++) {
             int code = list2.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Other Office", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Other Office " + (i + 1), code + ""));
         }
 
         List<Integer> list3 = extraVO.getSocietyRepairServicesList();
         for (int i = 0; i < extraVO.getSocietyRepairServices(); i++) {
             int code = list3.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Repair Service", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Repair Service " + (i + 1), code + ""));
         }
 
         List<Integer> list4 = extraVO.getPoolSportsOthersList();
         for (int i = 0; i < extraVO.getPoolSportsOthers(); i++) {
             int code = list4.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Pool Sports Others", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Pool Sports Others " + (i + 1), code + ""));
         }
 
         List<Integer> list5 = extraVO.getSocietyResidentsOwnVenturesList();
         for (int i = 0; i < extraVO.getSocietyResidentsOwnVentures(); i++) {
             int code = list5.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Residents Own Ventures", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Residents Own Ventures " + (i + 1), code + ""));
         }
 
         //////////////////////////////////////
         List<Integer> list6 = extraVO.getTowerLiftSecurityList();
         for (int i = 0; i < extraVO.getTowerLiftSecurity(); i++) {
             int code = list6.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Tower Lift Security", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Tower / Lift Security " + (i + 1), code + ""));
         }
 
         List<Integer> list7 = extraVO.getOtherGatesList();
         for (int i = 0; i < extraVO.getOtherGates(); i++) {
             int code = list7.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Other Gates", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Other Gates " + (i + 1), code + ""));
         }
 
         List<Integer> list8 = extraVO.getParkingList();
         for (int i = 0; i < extraVO.getParking(); i++) {
             int code = list8.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Parking", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Parking " + (i + 1), code + ""));
         }
 
         List<Integer> list9 = extraVO.getMaidsCooksPair();
         for (int i = 0; i < extraVO.getMaidsCooks(); i++) {
             int code = list9.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Maid Cooks", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Maid Cooks " + (i + 1), code + ""));
         }
 
         List<Integer> list10 = extraVO.getCarBikeWashList();
         for (int i = 0; i < extraVO.getCarBikeWash(); i++) {
             int code = list10.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Car Bike Wash", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Car Bike Wash " + (i + 1), code + ""));
         }
 
 
         List<Integer> list11 = extraVO.getOtherHousekeepingList();
         for (int i = 0; i < extraVO.getOtherHousekeeping(); i++) {
             int code = list11.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Housekeeping", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Housekeeping " + (i + 1), code + ""));
         }
 
         //////////////////////////////////
         List<Integer> list12 = extraVO.getKiranaItemsShopsList();
         for (int i = 0; i < extraVO.getKiranaItemsShops(); i++) {
             int code = list12.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Kirana Items Shops", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Kirana Items Shops " + (i + 1), code + ""));
         }
 
         List<Integer> list13 = extraVO.getFoodOutletsList();
         for (int i = 0; i < extraVO.getFoodOutlets(); i++) {
             int code = list13.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Food Outlet", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Food Outlet " + (i + 1), code + ""));
         }
 
         List<Integer> list14 = extraVO.getHouseholdItemsList();
         for (int i = 0; i < extraVO.getHouseholdItems(); i++) {
             int code = list14.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Household Items", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Household Items " + (i + 1), code + ""));
         }
 
         List<Integer> list15 = extraVO.getPersonalServicesList();
         for (int i = 0; i < extraVO.getPersonalServices(); i++) {
             int code = list15.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Personal Services", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Personal Services " + (i + 1), code + ""));
         }
 
         List<Integer> list16 = extraVO.getHouseholdServicesList();
         for (int i = 0; i < extraVO.getHouseholdServices(); i++) {
             int code = list16.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Household Services", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Household Services " + (i + 1), code + ""));
         }
 
 
         List<Integer> list17 = extraVO.getRepairSupportServicesList();
         for (int i = 0; i < extraVO.getRepairSupportServices(); i++) {
             int code = list17.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Household Services", code + ""));
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Household Services " + (i + 1), code + ""));
         }
 
 

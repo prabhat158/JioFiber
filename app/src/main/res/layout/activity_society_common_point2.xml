@@ -37,7 +37,8 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold">
 
@@ -159,7 +160,8 @@
                 android:layout_marginTop="14dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold">
 
@@ -299,7 +301,8 @@
                 android:layout_marginTop="14dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold">
 
@@ -386,7 +389,8 @@
                 android:layout_marginTop="14dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold">
 
@@ -395,7 +399,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Commercial Service"
+                    android:text="Commercial services"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

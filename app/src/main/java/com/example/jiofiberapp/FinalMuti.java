@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -127,31 +128,27 @@ public class FinalMuti extends AppCompatActivity {
 
                 int k = 1;
                 boolean isBuildingId = true;
-                try {
-                    List<String[]> data = new ArrayList<String[]>();
-                    data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Labels", "Short-code"});
+                List<String[]> data = new ArrayList<String[]>();
+                data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Labels", "Short-code"});
+
+                for (int m = 0; m < list.size(); m++) {
+
+                    View view1 = list.get(m);
 
 
-
-
-                    for (int m = 0; m < list.size(); m++) {
-
-                        View view1 = list.get(m);
-
-
-                        TextInputEditText t1 = view1.findViewById(R.id.TextInputEditText0);
+                    TextInputEditText t1 = view1.findViewById(R.id.TextInputEditText0);
 //                        TextInputEditText t2 = view1.findViewById(R.id.TextInputEditText01);
-                        TextInputEditText t3 = view1.findViewById(R.id.TextInputEditText1);
-                        TextInputEditText t4 = view1.findViewById(R.id.TextInputEditText2);
-                        TextInputEditText firstFlatInTowerEditText = view1.findViewById(R.id.TextInputEditText4);
+                    TextInputEditText t3 = view1.findViewById(R.id.TextInputEditText1);
+                    TextInputEditText t4 = view1.findViewById(R.id.TextInputEditText2);
+                    TextInputEditText firstFlatInTowerEditText = view1.findViewById(R.id.TextInputEditText4);
 //                        CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
 
 
-                        if (t1.getText().toString().trim().equals("")) {
-                            t1.setError("Enter name of towers");
-                            t1.requestFocus();
-                            return;
-                        }
+                    if (t1.getText().toString().trim().equals("")) {
+                        t1.setError("Enter name of towers");
+                        t1.requestFocus();
+                        return;
+                    }
 
 //                        if (t2.getText().toString().trim().equals("")) {
 //                            t2.setError("Enter Short Code");
@@ -159,240 +156,150 @@ public class FinalMuti extends AppCompatActivity {
 //                            return;
 //                        }
 
-                        if (t3.getText().toString().trim().equals("")) {
-                            t3.setError("Enter number of floors in the tower");
-                            t3.requestFocus();
+                    if (t3.getText().toString().trim().equals("")) {
+                        t3.setError("Enter number of floors in the tower");
+                        t3.requestFocus();
+                        return;
+                    }
+
+                    if (t4.getText().toString().trim().equals("")) {
+                        t4.setError("Enter number of Flats on each floor");
+                        t4.requestFocus();
+                        return;
+                    }
+
+                    String towerName = t1.getText().toString();
+
+                    int startingFloor = 1;
+                    boolean skipGround = false;
+                    boolean addTowerName = true;
+
+                    if (isFixFirstFlatNumber) {
+                        startingFloor = Integer.parseInt(fixFirstFlatNumber.substring(0, 1));
+                        skipGround = Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1;
+                    } else {
+                        if (firstFlatInTowerEditText.getText().toString().equals("")) {
+                            firstFlatInTowerEditText.requestFocus();
+                            firstFlatInTowerEditText.setError("Enter first flat number on beginning of residential floor");
                             return;
                         }
 
-                        if (t4.getText().toString().trim().equals("")) {
-                            t4.setError("Enter number of Flats on each floor");
-                            t4.requestFocus();
+                        int digit2 = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(firstFlatInTowerEditText.getText().toString())))) + 1;
+
+                        if (digit2 < 0) {
+                            firstFlatInTowerEditText.requestFocus();
+                            firstFlatInTowerEditText.setError("Please enter valid input");
                             return;
                         }
 
-                        String towerName = t1.getText().toString();
-
-                        int startingFloor = 1;
-                        boolean skipGround = false;
-                        boolean addTowerName = true;
-
-                        if (isFixFirstFlatNumber) {
-                            startingFloor = Integer.parseInt(fixFirstFlatNumber.substring(0, 1));
-                            skipGround = Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1;
-                        } else {
-                            if (firstFlatInTowerEditText.getText().toString().equals("")) {
-                                firstFlatInTowerEditText.requestFocus();
-                                firstFlatInTowerEditText.setError("Enter first flat number on beginning of residential floor");
-                                return;
-                            }
-
-                            int digit2 = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(firstFlatInTowerEditText.getText().toString())))) + 1;
-
-                            if (digit2 < 0) {
-                                firstFlatInTowerEditText.requestFocus();
-                                firstFlatInTowerEditText.setError("Please enter valid input");
-                                return;
-                            }
-
-                            if (digit2 <= 2) {
-                                firstFlatInTowerEditText.requestFocus();
-                                firstFlatInTowerEditText.setError("Enter 3 digit number");
-                                return;
-                            }
-
-                            startingFloor = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1));
-                            skipGround = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) >= 1;
-
+                        if (digit2 <= 2) {
+                            firstFlatInTowerEditText.requestFocus();
+                            firstFlatInTowerEditText.setError("Enter 3 digit number");
+                            return;
                         }
+
+                        startingFloor = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1));
+                        skipGround = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) >= 1;
+
+                    }
 
 
 //                        for (int i = 1; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
-                        for (int i = startingFloor; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
-                            for (int j = 1; j < Integer.parseInt(t4.getText().toString()) + 1; j++) {
+                    for (int i = startingFloor; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
+                        for (int j = 1; j < Integer.parseInt(t4.getText().toString()) + 1; j++) {
 
-                                String room = "";
-                                if (digit == 2) {
-                                    if (skipGround) {
-                                        room = (i * 10 + j) + "";
+                            String room = "";
+                            if (digit == 2) {
+                                if (skipGround) {
+                                    room = (i * 10 + j) + "";
 
-                                    } else {
-                                        room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
-                                    }
-                                } else if (digit == 3) {
-                                    if (skipGround) {
-                                        room = (i * 100 + j) + "";
-
-                                     
-                                    } else {
-                                        room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
-                                    }
-                                } else if (digit == 4) {
-                                    if (skipGround) {
-//                                        room = (i * 1000 + j) + "";
-                                        room = (i * 100 + j) + "";
-
-                                        // This is for if number length 3 digit then append 0 at begging
-                                        int roomLength = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(room)))) + 1;
-                                        if (roomLength == 3) {
-                                            room = "0" + room;
-                                        }
-
-                                    } else {
-//                                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
-                                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
-                                    }
+                                } else {
+                                    room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
                                 }
+                            } else if (digit == 3) {
+                                if (skipGround) {
+                                    room = (i * 100 + j) + "";
+
+
+                                } else {
+                                    room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+                                }
+                            } else if (digit == 4) {
+                                if (skipGround) {
+//                                        room = (i * 1000 + j) + "";
+                                    room = (i * 100 + j) + "";
+
+                                    // This is for if number length 3 digit then append 0 at begging
+                                    int roomLength = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(room)))) + 1;
+                                    if (roomLength == 3) {
+                                        room = "0" + room;
+                                    }
+
+                                } else {
+//                                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
+                                }
+                            }
 //                                int room = i * (code == 1000 ? 100 : code) + j;
 
-                                String serial_number = "" + k;
+                            String serial_number = "" + k;
 //                                String label = t1.getText().toString() + "-" + Integer.parseInt(room);
-                                String label = nameOfSociety + "-" + t1.getText().toString() + "-" + Integer.parseInt(room);
+                            String label = nameOfSociety + "-" + t1.getText().toString() + "-" + Integer.parseInt(room);
 
 //                                String short_code = t2.getText().toString() + room;
 
-                                String short_code = getShortCode(num, room, m, range0TO9ShortsCode, range21To99ShortsCode);
+                            String short_code = getShortCode(num, room, m, range0TO9ShortsCode, range21To99ShortsCode);
 
 
-                                String Flat_Numbers = room;
+                            String Flat_Numbers = room;
 
-                                uniqueRoomList.add(Integer.valueOf(room));
+                            uniqueRoomList.add(Integer.valueOf(room));
 
-                                data.add(new String[]{serial_number, (isBuildingId ? buildingID : ""), (addTowerName ? towerName : ""), "0", label, short_code});
-                                addTowerName = false;
-                                isBuildingId = false;
-                                k++;
-                            }
+                            data.add(new String[]{serial_number, (isBuildingId ? buildingID : ""), (addTowerName ? towerName : ""), "0", label, short_code});
+                            addTowerName = false;
+                            isBuildingId = false;
+                            k++;
                         }
                     }
-
-
-//                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
-                    List<TowerVO> finalList = new ArrayList<>();
-                    for (int i = 0; i < data.size(); i++) {
-                        finalList.add(new TowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4], data.get(i)[5]));
-                    }
-
-                    int counter = 1;
-                    TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
-                    for (Integer key : temp) {
-                        TowerVO towerVO = finalList.get(counter);
-                        towerVO.setFlats(String.valueOf(key));
-                        finalList.set(counter, towerVO);
-                        counter++;
-                    }
-
-
-                    List<String> towerNameList = new ArrayList<>();
-                    for (int i = 1; i < finalList.size(); i++) {
-                        TowerVO towerVO = finalList.get(i);
-                        if (towerVO.getTowers().length() > 0) {
-                            towerNameList.add(towerVO.getTowers());
-                            towerVO.setTowers("");
-                            finalList.set(i, towerVO);
-                        }
-                    }
-
-                    for (int i = 0; i < towerNameList.size(); i++) {
-                        TowerVO towerVO = finalList.get(i+1);
-                        towerVO.setTowers(towerNameList.get(i));
-                        finalList.set(i + 1, towerVO);
-                    }
-
-
-//                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
-                    StringBuilder data1 = new StringBuilder();
-                    for (int i = 0; i < finalList.size(); i++) {
-                        TowerVO towerVO = finalList.get(i);
-                        data1.append("\n" + towerVO.getSn() + ","
-                                + towerVO.getBuildingId() + ","
-                                + towerVO.getTowers() + ","
-                                + (i == 0 ? towerVO.getFlats() : Integer.parseInt(towerVO.getFlats()) == 0 ? "" : towerVO.getFlats()) + ","
-                                + towerVO.getLabel() + ","
-                                + towerVO.getShortCode());
-                    }
-
-
-                    final String baseFolder;
-                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                        baseFolder = getExternalFilesDir(null).getAbsolutePath();
-                    } else {
-                        baseFolder = getFilesDir().getAbsolutePath();
-                    }
-
-                    Date currentTime = Calendar.getInstance().getTime();
-                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + ".csv");
-//                    final File file = new File(baseFolder + "/" + HomeActivity.name_of_society + "[" + currentTime + "]" + ".csv");
-
-                    FileOutputStream out = new FileOutputStream(file);
-                    out.write((data1.toString()).getBytes());
-                    out.close();
-
-                    final BottomDialogFragment bottomDialogFragment =
-                            BottomDialogFragment.newInstance();
-                    bottomDialogFragment.show(getSupportFragmentManager(),
-                            "botom");
-
-                    bottomDialogFragment.setManageClickContract(new BottomDialogFragment.ManageClickContract() {
-                        @Override
-                        public void viewFile() {
-                            DialogConfig dialogConfig = new DialogConfig.Builder()
-                                    .enableMultipleSelect(false) // default is false
-                                    .enableFolderSelect(true) // default is false
-                                    .initialDirectory(baseFolder) // default is sdcard
-                                    .supportFiles(new SupportFile(".csv", 0)) // default is showing all file types.
-                                    .build();
-
-                            new FilePickerDialogFragment.Builder()
-                                    .configs(dialogConfig)
-                                    .onFilesSelected(new FilePickerDialogFragment.OnFilesSelectedListener() {
-                                        @Override
-                                        public void onFileSelected(List<File> list) {
-                                            for (File file : list) {
-                                                new ManageMethod().openFile(file, getApplicationContext());
-                                            }
-                                        }
-                                    })/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
-                                        @Override
-                                        public void onLoadFailed(String path) {
-                                            //Could not access folder because of user permissions, sdcard is not readable...
-                                        }
-                                    })*/
-                                    .build()
-                                    .show(getSupportFragmentManager(), null);
-                        }
-
-                        @Override
-                        public void shareFile() {
-                            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                            shareIntent.setType("image/jpg");
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
-                                    BuildConfig.APPLICATION_ID + ".provider", file));
-                            startActivity(Intent.createChooser(shareIntent, "Share image using"));
-                        }
-                    });
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                bottomDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                                    @Override
-                                                    public void onDismiss(DialogInterface dialogInterface) {
-                                                        Intent intent = new Intent(FinalMuti.this, HomeActivity.class);
-                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                        startActivity(intent);
-                                                        finish();
-                                                    }
-                                                });
-                                            }
-                                        }
-                            , 10);
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+
+
+//                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
+                List<TowerVO> finalList = new ArrayList<>();
+                for (int i = 0; i < data.size(); i++) {
+                    finalList.add(new TowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4], data.get(i)[5]));
+                }
+
+                int counter = 1;
+                TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
+                for (Integer key : temp) {
+                    TowerVO towerVO = finalList.get(counter);
+                    towerVO.setFlats(String.valueOf(key));
+                    finalList.set(counter, towerVO);
+                    counter++;
+                }
+
+
+                List<String> towerNameList = new ArrayList<>();
+                for (int i = 1; i < finalList.size(); i++) {
+                    TowerVO towerVO = finalList.get(i);
+                    if (towerVO.getTowers().length() > 0) {
+                        towerNameList.add(towerVO.getTowers());
+                        towerVO.setTowers("");
+                        finalList.set(i, towerVO);
+                    }
+                }
+
+                for (int i = 0; i < towerNameList.size(); i++) {
+                    TowerVO towerVO = finalList.get(i+1);
+                    towerVO.setTowers(towerNameList.get(i));
+                    finalList.set(i + 1, towerVO);
+                }
+
+                Intent intent = new Intent(FinalMuti.this, SocietyCommonPointActivity1.class);
+                intent.putParcelableArrayListExtra("LIST", (ArrayList<? extends Parcelable>) finalList);
+                intent.putExtra("isSingleTower", false);
+                startActivity(intent);
             }
         });
     }
@@ -430,13 +337,5 @@ public class FinalMuti extends AppCompatActivity {
             list.add(String.valueOf(i));
         }
         return list;
-    }
-
-    private void shareFileToUser(File file) {
-        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("image/jpg");
-        shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
-                BuildConfig.APPLICATION_ID + ".provider", file));
-        startActivity(Intent.createChooser(shareIntent, "Share image using"));
     }
 }
