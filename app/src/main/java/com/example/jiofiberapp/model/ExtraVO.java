@@ -7,151 +7,138 @@ import java.util.List;
 
 public class ExtraVO implements Serializable {
 
-    private boolean societyRepresentative;
-    private boolean societyOffice;
-    private boolean clubHouse;
+
+    // Screen 1
     private boolean mainGateSecurity;
+    private boolean societyOffice;
+    private boolean societyManager;
     private boolean societyHousekeeping;
-    private boolean gardener;
-    private boolean grocery;
-    private boolean pharmacy;
-    private boolean milkShop;
-    private boolean parlor;
-    private boolean ironingShop;
-    private boolean barber;
+    private boolean clubHouse;
+    private boolean parking;
+    private boolean morePointInSociety;
+    private int numberOfGates;
+    private int otherOfficesInSociety;
+    private int towerLiftLobbySecurity;
+    private int committeeMembers;
+    private int moreCommonPoints;
+    private int otherSocietyStaff;
+    private int moreParkingAreas;
+    private int residentOwnVentures;
+    private List<CommonVO> moreCommonPointsData = new ArrayList<>();
+    private List<CommonVO> towerLiftLobbySecurityData = new ArrayList<>();
 
-    private int otherRepresentative;
-    private int otherOffice;
-    private int societyRepairServices;
-    private int poolSportsOthers;
-    private int societyResidentsOwnVentures;
 
-    private int towerLiftSecurity;
-    private int otherGates;
-    private int parking;
-    private int maidsCooks;
-    private int carBikeWash;
-    private int otherHousekeeping;
-
+    /// No Use
+//    private boolean societyRepresentative;
+//
+//    private boolean gardener;
+//    private boolean grocery;
+//    private boolean pharmacy;
+//    private boolean milkShop;
+//    private boolean parlor;
+//    private boolean ironingShop;
+//    private boolean barber;
+//
+//    private int otherRepresentative;
+//    private int otherOffice;
+//    private int societyRepairServices;
+//    private int poolSportsOthers;
+//    private int societyResidentsOwnVentures;
+//
+//    private int towerLiftSecurity;
+//    private int otherGates;
+//    private int parking;
+//    private int maidsCooks;
+//    private int carBikeWash;
+//    private int otherHousekeeping;
+//
     private int kiranaItemsShops;
+
+    public List<CommonVO> getTowerLiftLobbySecurityData() {
+        return towerLiftLobbySecurityData;
+    }
+
+    public void setTowerLiftLobbySecurityData(List<CommonVO> towerLiftLobbySecurityData) {
+        this.towerLiftLobbySecurityData = towerLiftLobbySecurityData;
+    }
+
+    public List<CommonVO> getMoreCommonPointsData() {
+        return moreCommonPointsData;
+    }
+
+    public void setMoreCommonPointsData(List<CommonVO> moreCommonPointsData) {
+        this.moreCommonPointsData = moreCommonPointsData;
+    }
+
+    public List<Integer> getTowerLiftLobbySecurityList() {
+        List<Integer> list = new ArrayList<>();
+
+        //(830-879)
+        for (int i = 830; i < 880; i++) {
+            list.add(i);
+        }
+        //(890-899)
+        for (int i = 890; i < 900; i++) {
+            list.add(i);
+        }
+
+        return list;
+    }
+
+    public List<Integer> getMoreCommonPointList() {
+        List<Integer> list = new ArrayList<>();
+//        (910-949)
+        for (int i = 910; i < 950; i++) {
+            list.add(i);
+        }
+        return list;
+    }
+
     private int foodOutlets;
     private int householdItems;
     private int personalServices;
-    private int householdServices;
-    private int repairSupportServices;
+//    private int householdServices;
+//    private int repairSupportServices;
+
+
+    public int getHouseholdItems() {
+        return householdItems;
+    }
+
+    public void setHouseholdItems(int householdItems) {
+        this.householdItems = householdItems;
+    }
 
     public List<Integer> getKiranaItemsShopsList() {
         List<Integer> list = new ArrayList<>();
-        list.add(770);
-        list.add(771);
-        list.add(772);
-        list.add(773);
-        list.add(774);
-        list.add(775);
-        list.add(776);
-        list.add(778);
-        list.add(779);
 
-        list.add(780);
-        list.add(781);
-        list.add(782);
-        list.add(783);
-        list.add(784);
-        list.add(785);
-        list.add(786);
-        list.add(787);
-        list.add(788);
-        list.add(789);
-
-        list.add(790);
-        list.add(791);
-        list.add(792);
-        list.add(793);
-        list.add(794);
-        list.add(795);
-        list.add(796);
-        list.add(797);
-        list.add(798);
-        list.add(799);
+        for (int i = 770; i < 800; i++) {
+            list.add(i);
+        }
         return list;
     }
 
     public List<Integer> getFoodOutletsList() {
         List<Integer> list = new ArrayList<>();
-        list.add(710);
-        list.add(712);
-        list.add(713);
-        list.add(714);
-        list.add(715);
-        list.add(716);
-        list.add(717);
-        list.add(718);
-        list.add(719);
-
-        list.add(720);
-        list.add(721);
-        list.add(722);
-        list.add(723);
-        list.add(724);
-        list.add(725);
-        list.add(726);
-        list.add(727);
-        list.add(728);
-        list.add(729);
-
+        for (int i = 710; i < 730; i++) {
+            list.add(i);
+        }
         return list;
     }
 
     public List<Integer> getHouseholdItemsList() {
-
         List<Integer> list = new ArrayList<>();
-        list.add(750);
-        list.add(751);
-        list.add(752);
-        list.add(753);
-        list.add(754);
-        list.add(756);
-        list.add(757);
-        list.add(758);
-        list.add(759);
-
-        list.add(760);
-        list.add(761);
-        list.add(762);
-        list.add(763);
-        list.add(764);
-        list.add(765);
-        list.add(766);
-        list.add(767);
-        list.add(768);
-        list.add(769);
+        for (int i = 750; i < 770; i++) {
+            list.add(i);
+        }
         return list;
-
     }
 
     public List<Integer> getPersonalServicesList() {
         List<Integer> list = new ArrayList<>();
-        list.add(670);
-        list.add(671);
-        list.add(672);
-        list.add(673);
-        list.add(674);
-        list.add(675);
-        list.add(676);
-        list.add(677);
-        list.add(678);
-        list.add(679);
-
-        list.add(680);
-        list.add(681);
-        list.add(682);
-        list.add(683);
-        list.add(684);
-        list.add(685);
-        list.add(686);
-        list.add(687);
-        list.add(688);
-        list.add(689);
+        for (int i = 670; i < 690; i++) {
+            list.add(i);
+        }
         return list;
     }
 
@@ -175,6 +162,7 @@ public class ExtraVO implements Serializable {
         list.add(665);
         list.add(667);
         list.add(668);
+        list.add(669);
 
         list.add(690);
         list.add(691);
@@ -447,13 +435,6 @@ public class ExtraVO implements Serializable {
         return 966;
     }
 
-    public boolean isSocietyRepresentative() {
-        return societyRepresentative;
-    }
-
-    public void setSocietyRepresentative(boolean societyRepresentative) {
-        this.societyRepresentative = societyRepresentative;
-    }
 
     public boolean isSocietyOffice() {
         return societyOffice;
@@ -487,156 +468,84 @@ public class ExtraVO implements Serializable {
         this.societyHousekeeping = societyHousekeeping;
     }
 
-    public boolean isGardener() {
-        return gardener;
+    public boolean isSocietyManager() {
+        return societyManager;
     }
 
-    public void setGardener(boolean gardener) {
-        this.gardener = gardener;
+    public void setSocietyManager(boolean societyManager) {
+        this.societyManager = societyManager;
     }
 
-    public boolean isGrocery() {
-        return grocery;
-    }
-
-    public void setGrocery(boolean grocery) {
-        this.grocery = grocery;
-    }
-
-    public boolean isPharmacy() {
-        return pharmacy;
-    }
-
-    public void setPharmacy(boolean pharmacy) {
-        this.pharmacy = pharmacy;
-    }
-
-    public boolean isMilkShop() {
-        return milkShop;
-    }
-
-    public void setMilkShop(boolean milkShop) {
-        this.milkShop = milkShop;
-    }
-
-    public boolean isParlor() {
-        return parlor;
-    }
-
-    public void setParlor(boolean parlor) {
-        this.parlor = parlor;
-    }
-
-    public boolean isIroningShop() {
-        return ironingShop;
-    }
-
-    public void setIroningShop(boolean ironingShop) {
-        this.ironingShop = ironingShop;
-    }
-
-    public boolean isBarber() {
-        return barber;
-    }
-
-    public void setBarber(boolean barber) {
-        this.barber = barber;
-    }
-
-    public int getOtherRepresentative() {
-        return otherRepresentative;
-    }
-
-    public void setOtherRepresentative(int otherRepresentative) {
-        this.otherRepresentative = otherRepresentative;
-    }
-
-    public int getOtherOffice() {
-        return otherOffice;
-    }
-
-    public void setOtherOffice(int otherOffice) {
-        this.otherOffice = otherOffice;
-    }
-
-    public int getSocietyRepairServices() {
-        return societyRepairServices;
-    }
-
-    public void setSocietyRepairServices(int societyRepairServices) {
-        this.societyRepairServices = societyRepairServices;
-    }
-
-    public int getPoolSportsOthers() {
-        return poolSportsOthers;
-    }
-
-    public void setPoolSportsOthers(int poolSportsOthers) {
-        this.poolSportsOthers = poolSportsOthers;
-    }
-
-    public int getSocietyResidentsOwnVentures() {
-        return societyResidentsOwnVentures;
-    }
-
-    public void setSocietyResidentsOwnVentures(int societyResidentsOwnVentures) {
-        this.societyResidentsOwnVentures = societyResidentsOwnVentures;
-    }
-
-    public int getTowerLiftSecurity() {
-        return towerLiftSecurity;
-    }
-
-    public void setTowerLiftSecurity(int towerLiftSecurity) {
-        this.towerLiftSecurity = towerLiftSecurity;
-    }
-
-    public int getOtherGates() {
-        return otherGates;
-    }
-
-    public void setOtherGates(int otherGates) {
-        this.otherGates = otherGates;
-    }
-
-    public int getParking() {
+    public boolean isParking() {
         return parking;
     }
 
-    public void setParking(int parking) {
+    public void setParking(boolean parking) {
         this.parking = parking;
     }
 
-    public int getMaidsCooks() {
-        return maidsCooks;
+    public int getNumberOfGates() {
+        return numberOfGates;
     }
 
-    public void setMaidsCooks(int maidsCooks) {
-        this.maidsCooks = maidsCooks;
+    public void setNumberOfGates(int numberOfGates) {
+        this.numberOfGates = numberOfGates;
     }
 
-    public int getCarBikeWash() {
-        return carBikeWash;
+    public int getTowerLiftLobbySecurity() {
+        return towerLiftLobbySecurity;
     }
 
-    public void setCarBikeWash(int carBikeWash) {
-        this.carBikeWash = carBikeWash;
+    public void setTowerLiftLobbySecurity(int towerLiftLobbySecurity) {
+        this.towerLiftLobbySecurity = towerLiftLobbySecurity;
     }
 
-    public int getOtherHousekeeping() {
-        return otherHousekeeping;
+    public int getOtherOfficesInSociety() {
+        return otherOfficesInSociety;
     }
 
-    public void setOtherHousekeeping(int otherHousekeeping) {
-        this.otherHousekeeping = otherHousekeeping;
+    public void setOtherOfficesInSociety(int otherOfficesInSociety) {
+        this.otherOfficesInSociety = otherOfficesInSociety;
     }
 
-    public int getKiranaItemsShops() {
-        return kiranaItemsShops;
+    public int getCommitteeMembers() {
+        return committeeMembers;
     }
 
-    public void setKiranaItemsShops(int kiranaItemsShops) {
-        this.kiranaItemsShops = kiranaItemsShops;
+    public void setCommitteeMembers(int committeeMembers) {
+        this.committeeMembers = committeeMembers;
+    }
+
+    public int getOtherSocietyStaff() {
+        return otherSocietyStaff;
+    }
+
+    public void setOtherSocietyStaff(int otherSocietyStaff) {
+        this.otherSocietyStaff = otherSocietyStaff;
+    }
+
+    public int getMoreParkingAreas() {
+        return moreParkingAreas;
+    }
+
+    public void setMoreParkingAreas(int moreParkingAreas) {
+        this.moreParkingAreas = moreParkingAreas;
+    }
+
+    public int getResidentOwnVentures() {
+        return residentOwnVentures;
+    }
+
+    public void setResidentOwnVentures(int residentOwnVentures) {
+        this.residentOwnVentures = residentOwnVentures;
+    }
+
+    public int getMoreCommonPoints() {
+        return moreCommonPoints;
+    }
+
+    public void setMoreCommonPoints(int moreCommonPoints) {
+        this.moreCommonPoints = moreCommonPoints;
     }
 
     public int getFoodOutlets() {
@@ -647,12 +556,12 @@ public class ExtraVO implements Serializable {
         this.foodOutlets = foodOutlets;
     }
 
-    public int getHouseholdItems() {
-        return householdItems;
+    public int getKiranaItemsShops() {
+        return kiranaItemsShops;
     }
 
-    public void setHouseholdItems(int householdItems) {
-        this.householdItems = householdItems;
+    public void setKiranaItemsShops(int kiranaItemsShops) {
+        this.kiranaItemsShops = kiranaItemsShops;
     }
 
     public int getPersonalServices() {
@@ -663,19 +572,11 @@ public class ExtraVO implements Serializable {
         this.personalServices = personalServices;
     }
 
-    public int getHouseholdServices() {
-        return householdServices;
+    public boolean isMorePointInSociety() {
+        return morePointInSociety;
     }
 
-    public void setHouseholdServices(int householdServices) {
-        this.householdServices = householdServices;
-    }
-
-    public int getRepairSupportServices() {
-        return repairSupportServices;
-    }
-
-    public void setRepairSupportServices(int repairSupportServices) {
-        this.repairSupportServices = repairSupportServices;
+    public void setMorePointInSociety(boolean morePointInSociety) {
+        this.morePointInSociety = morePointInSociety;
     }
 }

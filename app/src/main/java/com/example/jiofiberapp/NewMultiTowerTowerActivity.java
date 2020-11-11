@@ -116,7 +116,8 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
                 }
 
 
-                if (digit2 <= 2) {
+//                if (digit2 <= 2) {
+                if (first_flat_number_on_beginning_of_residential_floor.length() < 1 && Integer.parseInt(first_flat_number_on_beginning_of_residential_floor) == 0) {
                     TextInputEditText2.requestFocus();
                     TextInputEditText2.setError("Enter 3 digit number");
                     return;

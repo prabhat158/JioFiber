@@ -1,10 +1,7 @@
 package com.example.jiofiberapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,26 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import com.example.jiofiberapp.model.TowerVO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
-
-import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
-import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
-import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
 
 public class FinalMuti extends AppCompatActivity {
 
@@ -244,7 +231,8 @@ public class FinalMuti extends AppCompatActivity {
 
                             String serial_number = "" + k;
 //                                String label = t1.getText().toString() + "-" + Integer.parseInt(room);
-                            String label = nameOfSociety + "-" + t1.getText().toString() + "-" + Integer.parseInt(room);
+//                            String label = nameOfSociety + "-" + t1.getText().toString() + "-" + Integer.parseInt(room);
+                            String label = t1.getText().toString() + "-" + Integer.parseInt(room);
 
 //                                String short_code = t2.getText().toString() + room;
 
@@ -296,7 +284,7 @@ public class FinalMuti extends AppCompatActivity {
                     finalList.set(i + 1, towerVO);
                 }
 
-                Intent intent = new Intent(FinalMuti.this, SocietyCommonPointActivity1.class);
+                Intent intent = new Intent(FinalMuti.this, SampleActivity.class);
                 intent.putParcelableArrayListExtra("LIST", (ArrayList<? extends Parcelable>) finalList);
                 intent.putExtra("isSingleTower", false);
                 startActivity(intent);

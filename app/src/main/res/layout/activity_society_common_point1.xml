@@ -235,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Commercial services"
+                    android:text="Commercial Services"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

@@ -19,9 +19,9 @@
         <activity android:name=".MultiTowerSociety" />
         <activity android:name=".NewMultiTowerTowerActivity" />
         <activity android:name=".SocietyCommonPointActivity1" />
-        <activity android:name=".SocietyCommonPointActivity2" />
         <activity android:name=".NewSingleTowerActivity" />
         <activity android:name=".SingleTowerSociety" />
+        <activity android:name=".SampleActivity" />
         <activity
             android:name=".HomeActivity"
             android:theme="@style/AppTheme" />

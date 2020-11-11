@@ -1,3 +1,4 @@
+/*
 package com.example.jiofiberapp;
 
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -18,7 +20,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,9 +34,23 @@ import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment
 public class SocietyCommonPointActivity2 extends AppCompatActivity {
 
 
+    /////////////////////
     MaterialButton submitButton;
+    private CheckBox groceryCheckBox;
+    private CheckBox pharmacyCheckBox;
+    private CheckBox milkShopCheckBox;
+    private TextInputEditText kiranaItemsShopsTextInputEditText;
+    private TextInputEditText foodOutletsTextInputEditText;
+    private TextInputEditText householdItemsTextInputEditText;
+    private CheckBox ironingShopCheckBox;
+    private CheckBox parlorCheckBox;
+    private CheckBox barberCheckBox;
+    private TextInputEditText personalServicesTextInputEditText;
+    private TextInputEditText householdServicesTextInputEditText;
+    private TextInputEditText repairSupportServicesTextInputEditText;
     boolean isSingleTower;
     ExtraVO extraVO;
+
     private List<Integer> householdServicesList = new ArrayList<>();
     private List<Integer> householdItemsList = new ArrayList<>();
     private List<Integer> foodOutletsList = new ArrayList<>();
@@ -45,27 +60,20 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
     private List<Integer> otherOfficeList = new ArrayList<>();
     private ArrayList<TowerVO> mainList = new ArrayList<>();
 
-    // 1
-    private TextInputEditText otherRepresentativeTextInputEditText;
-    private TextInputEditText otherOfficeTextInputEditText;
-    private TextInputEditText societyRepairServicesTextInputEditText;
-    private TextInputEditText poolSportsOthersTextInputEditText;
-    private TextInputEditText societyResidentsOwnVenturesTextInputEditText;
-    //2
-    private TextInputEditText towerLiftSecurityTextInputEditText;
-    private TextInputEditText otherGatesTextInputEditText;
-    private TextInputEditText parkingTextInputEditText;
-    private TextInputEditText maidsCooksTextInputEditText;
-    private TextInputEditText carBikeWashTextInputEditText;
-    private TextInputEditText otherHousekeepingTextInputEditText;
-    //3
-    private TextInputEditText kiranaItemsShopsTextInputEditText;
-    private TextInputEditText foodOutletsTextInputEditText;
-    private TextInputEditText householdItemsTextInputEditText;
-    //4
-    private TextInputEditText personalServicesTextInputEditText;
-    private TextInputEditText householdServicesTextInputEditText;
-    private TextInputEditText repairSupportServicesTextInputEditText;
+
+//    private TextInputEditText otherRepresentativeTextInputEditText;
+//    private TextInputEditText otherOfficeTextInputEditText;
+//    private TextInputEditText societyRepairServicesTextInputEditText;
+//    private TextInputEditText poolSportsOthersTextInputEditText;
+//    private TextInputEditText societyResidentsOwnVenturesTextInputEditText;
+//    //2
+//    private TextInputEditText towerLiftSecurityTextInputEditText;
+//    private TextInputEditText otherGatesTextInputEditText;
+//    private TextInputEditText parkingTextInputEditText;
+//    private TextInputEditText maidsCooksTextInputEditText;
+//    private TextInputEditText carBikeWashTextInputEditText;
+//    private TextInputEditText otherHousekeepingTextInputEditText;
+
 
     private void moveToNext() {
 
@@ -73,7 +81,7 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
         extraVO.setOtherOffice(Integer.parseInt(otherOfficeTextInputEditText.getText().toString().trim().length() == 0 ? "0" : otherOfficeTextInputEditText.getText().toString()));
         extraVO.setSocietyRepairServices(Integer.parseInt(societyRepairServicesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : societyRepairServicesTextInputEditText.getText().toString()));
         extraVO.setPoolSportsOthers(Integer.parseInt(poolSportsOthersTextInputEditText.getText().toString().trim().length() == 0 ? "0" : poolSportsOthersTextInputEditText.getText().toString()));
-        extraVO.setSocietyResidentsOwnVentures(Integer.parseInt(societyResidentsOwnVenturesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : societyResidentsOwnVenturesTextInputEditText.getText().toString()));
+        extraVO.setResidentOwnVentures(Integer.parseInt(societyResidentsOwnVenturesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : societyResidentsOwnVenturesTextInputEditText.getText().toString()));
 
         extraVO.setTowerLiftSecurity(Integer.parseInt(towerLiftSecurityTextInputEditText.getText().toString().trim().length() == 0 ? "0" : towerLiftSecurityTextInputEditText.getText().toString()));
         extraVO.setOtherGates(Integer.parseInt(otherGatesTextInputEditText.getText().toString().trim().length() == 0 ? "0" : otherGatesTextInputEditText.getText().toString()));
@@ -203,7 +211,7 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
         }
 
         List<Integer> list5 = extraVO.getSocietyResidentsOwnVenturesList();
-        for (int i = 0; i < extraVO.getSocietyResidentsOwnVentures(); i++) {
+        for (int i = 0; i < extraVO.getResidentOwnVentures(); i++) {
             int code = list5.get(i);
             mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Society Residents Own Ventures " + (i + 1), code + ""));
         }
@@ -338,12 +346,14 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
                                     new ManageMethod().openFile(file, getApplicationContext());
                                 }
                             }
-                        })/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
+                        })*/
+/*.onFolderLoadListener(new FilePickerDialogFragment.OnFolderLoadListener() {
                                         @Override
                                         public void onLoadFailed(String path) {
                                             //Could not access folder because of user permissions, sdcard is not readable...
                                         }
-                                    })*/
+                                    })*//*
+
                         .build()
                         .show(getSupportFragmentManager(), null);
             }
@@ -378,29 +388,14 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
 
     private void setDefaultValue() {
 
-        otherRepresentativeTextInputEditText.setText("0");
-        otherOfficeTextInputEditText.setText("0");
-        societyRepairServicesTextInputEditText.setText("0");
-        poolSportsOthersTextInputEditText.setText("0");
-        societyResidentsOwnVenturesTextInputEditText.setText("0");
-
-        //2
-        towerLiftSecurityTextInputEditText.setText("0");
-        otherGatesTextInputEditText.setText("0");
-        parkingTextInputEditText.setText("0");
-        maidsCooksTextInputEditText.setText("0");
-        carBikeWashTextInputEditText.setText("0");
-        otherHousekeepingTextInputEditText.setText("0");
-
-        //3
         kiranaItemsShopsTextInputEditText.setText("0");
         foodOutletsTextInputEditText.setText("0");
         householdItemsTextInputEditText.setText("0");
 
-        //4
         personalServicesTextInputEditText.setText("0");
         householdServicesTextInputEditText.setText("0");
         repairSupportServicesTextInputEditText.setText("0");
+
     }
 
     private void manageSocietyCoreServiceListener() {
@@ -530,16 +525,16 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
                                       int before, int count) {
                 if (s.length() != 0) {
                     int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = list2.size();
+//                    int maxValue = list2.size();
 
-                    if (currentValue > maxValue) {
-                        societyResidentsOwnVenturesTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
+//                    if (currentValue > maxValue) {
+//                        societyResidentsOwnVenturesTextInputEditText.setError("Range between 0-29");
+//                        return;
+//                    }
 
-                    extraVO.setSocietyResidentsOwnVentures(currentValue);
+                    extraVO.setResidentOwnVentures(currentValue);
                 } else
-                    extraVO.setSocietyResidentsOwnVentures(0);
+                    extraVO.setResidentOwnVentures(0);
             }
         });
     }
@@ -693,10 +688,9 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
 
     private void manageCommercialShopListener() {
 
-
-        final List<Integer> temp1 = extraVO.getKiranaItemsShopsList();
+        final List<Integer> temp1 = extraVO.getKiranaItemsShopsList(); //ok
         temp1.add(extraVO.getGroceryCode());
-        kiranaItemsShopsList = extraVO.isGrocery() ? extraVO.getKiranaItemsShopsList() : temp1;
+        kiranaItemsShopsList = groceryCheckBox.isChecked() ? extraVO.getKiranaItemsShopsList() : temp1;
         kiranaItemsShopsTextInputEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -711,22 +705,15 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = extraVO.isGrocery() ? temp1.size() : kiranaItemsShopsList.size();
-
-                    if (currentValue > maxValue) {
-                        kiranaItemsShopsTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
-
                     extraVO.setKiranaItemsShops(currentValue);
                 } else extraVO.setKiranaItemsShops(0);
 
             }
         });
 
-        final List<Integer> temp2 = extraVO.getFoodOutletsList();
+        final List<Integer> temp2 = extraVO.getFoodOutletsList(); //ok
         temp2.add(extraVO.getMilkShopCode());
-        foodOutletsList = extraVO.isMilkShop() ? extraVO.getFoodOutletsList() : temp2;
+        foodOutletsList = milkShopCheckBox.isChecked() ? extraVO.getFoodOutletsList() : temp2;
         foodOutletsTextInputEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -743,13 +730,6 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
                                       int before, int count) {
                 if (s.length() != 0) {
                     int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = extraVO.isMilkShop() ? temp1.size() : foodOutletsList.size();
-
-                    if (currentValue > maxValue) {
-                        foodOutletsTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
-
                     extraVO.setFoodOutlets(currentValue);
                 } else extraVO.setFoodOutlets(0);
 
@@ -757,9 +737,9 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
         });
 
 
-        final List<Integer> temp3 = extraVO.getHouseholdItemsList();
+        final List<Integer> temp3 = extraVO.getHouseholdItemsList(); // ok
         temp3.add(extraVO.getPharmacyCode());
-        householdItemsList = extraVO.isPharmacy() ? extraVO.getHouseholdItemsList() : temp3;
+        householdItemsList = pharmacyCheckBox.isChecked() ? extraVO.getHouseholdItemsList() : temp3;
         householdItemsTextInputEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -776,24 +756,14 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
                                       int before, int count) {
                 if (s.length() != 0) {
                     int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = extraVO.isPharmacy() ? temp1.size() : householdItemsList.size();
-
-                    if (currentValue > maxValue) {
-                        householdItemsTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
-
                     extraVO.setHouseholdItems(currentValue);
                 } else extraVO.setHouseholdItems(0);
-
             }
         });
-
     }
 
     private void manageCommercialServicesListener() {
 
-        final List<Integer> list1 = extraVO.getPersonalServicesList();
         personalServicesTextInputEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -808,12 +778,6 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = list1.size();
-
-                    if (currentValue > maxValue) {
-                        personalServicesTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
                     extraVO.setPersonalServices(currentValue);
                 } else extraVO.setPersonalServices(0);
 
@@ -857,12 +821,12 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = householdServicesList.size();
-
-                    if (currentValue > maxValue) {
-                        householdServicesTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
+//                    int maxValue = householdServicesList.size();
+//
+//                    if (currentValue > maxValue) {
+//                        householdServicesTextInputEditText.setError("Range between 0-9, 0-20, 0-30");
+//                        return;
+//                    }
 
                     extraVO.setHouseholdServices(currentValue);
                 } else
@@ -889,12 +853,12 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
                                       int before, int count) {
                 if (s.length() != 0) {
                     int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = list2.size();
-
-                    if (currentValue > maxValue) {
-                        repairSupportServicesTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
+//                    int maxValue = list2.size();
+//
+//                    if (currentValue > maxValue) {
+//                        repairSupportServicesTextInputEditText.setError("Range between 0-9, 0-20");
+//                        return;
+//                    }
                     extraVO.setRepairSupportServices(currentValue);
                 } else
                     extraVO.setRepairSupportServices(0);
@@ -951,7 +915,7 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
 
         manageSocietyCoreServiceListener();
         manageSocietyCommonHelpListener();
-        manageCommercialShopListener();
+        manageCommercialShopListener(); // ok
         manageCommercialServicesListener();
     }
 
@@ -1052,7 +1016,7 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
         }
 
         List<Integer> list5 = extraVO.getSocietyResidentsOwnVenturesList();
-        for (int i = 0; i < extraVO.getSocietyResidentsOwnVentures(); i++) {
+        for (int i = 0; i < extraVO.getResidentOwnVentures(); i++) {
             int code = list5.get(i);
             mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Residents Own Ventures " + (i + 1), code + ""));
         }
@@ -1216,4 +1180,4 @@ public class SocietyCommonPointActivity2 extends AppCompatActivity {
                 BuildConfig.APPLICATION_ID + ".provider", file));
         startActivity(Intent.createChooser(shareIntent, "Share image using"));
     }
-}
+}*/

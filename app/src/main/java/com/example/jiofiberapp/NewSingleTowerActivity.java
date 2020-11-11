@@ -21,7 +21,7 @@ import java.util.TreeSet;
 public class NewSingleTowerActivity extends AppCompatActivity {
     public static String top_floor_last_flat_number_in_the_tallest_tower = "";
     public static String first_flat_number_on_beginning_of_residential_floor = "";
-    //    public static String number_of_digit_in_flat_number = "";
+    public static String number_of_digit_in_flat_number = "";
     public static String digits_in_flat_number = "";
 
     String buildingID;
@@ -32,7 +32,6 @@ public class NewSingleTowerActivity extends AppCompatActivity {
     String TAG = "tag";
     TextInputEditText TextInputEditText1;
     TextInputEditText TextInputEditText2;
-    //    TextInputEditText TextInputEditText3;
     TextInputEditText TextInputEditText4;
     TextInputEditText TextInputEditText5;
     TextInputEditText TextInputEditText6;
@@ -51,7 +50,6 @@ public class NewSingleTowerActivity extends AppCompatActivity {
 
         TextInputEditText1 = findViewById(R.id.TextInputEditText1);
         TextInputEditText2 = findViewById(R.id.TextInputEditText2);
-//        TextInputEditText3 = findViewById(R.id.TextInputEditText3);
         TextInputEditText4 = findViewById(R.id.TextInputEditText4);
         TextInputEditText5 = findViewById(R.id.TextInputEditText5);
         TextInputEditText6 = findViewById(R.id.TextInputEditText6);
@@ -73,7 +71,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if (s.length() != 0 && s.length() > 2) {
+
+                if (s.length() != 0 && s.length() >= 2) {
                     int typeOfFlatNumber = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(s.toString())))) + 1;
                     TextInputEditText4.setText(typeOfFlatNumber > 0 ? String.valueOf(typeOfFlatNumber) : "");
 
@@ -117,7 +116,6 @@ public class NewSingleTowerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 top_floor_last_flat_number_in_the_tallest_tower = TextInputEditText1.getText().toString();
                 first_flat_number_on_beginning_of_residential_floor = TextInputEditText2.getText().toString();
-//                number_of_digit_in_flat_number = TextInputEditText3.getText().toString();
                 digits_in_flat_number = TextInputEditText4.getText().toString();
 
 
@@ -158,17 +156,19 @@ public class NewSingleTowerActivity extends AppCompatActivity {
                 }
 
 
-                if (digit2 <= 2) {
+//                if (digit2 <= 2) {
+                if (first_flat_number_on_beginning_of_residential_floor.length() < 1 && Integer.parseInt(first_flat_number_on_beginning_of_residential_floor) == 0) {
                     TextInputEditText2.requestFocus();
                     TextInputEditText2.setError("Enter 3 digit number");
                     return;
                 }
 
-//                if (number_of_digit_in_flat_number.equals("")) {
-//                    TextInputEditText3.requestFocus();
-//                    TextInputEditText3.setError("Enter Number of digits in flat numbers");
-//                    return;
-//                }
+
+                if (Integer.parseInt(top_floor_last_flat_number_in_the_tallest_tower) < Integer.parseInt(first_flat_number_on_beginning_of_residential_floor)) {
+                    TextInputEditText2.requestFocus();
+                    TextInputEditText2.setError("First flat no should be less than last flat no");
+                    return;
+                }
 
                 if (TextInputEditText5.getText().toString().equals("") || Integer.parseInt(TextInputEditText5.getText().toString()) == 0) {
                     TextInputEditText5.requestFocus();
@@ -191,8 +191,22 @@ public class NewSingleTowerActivity extends AppCompatActivity {
 
 
     private void manageLogic(int digit, String firstFlatNumber, String nameOfTower, int floor, int flatsOnEachfloor) {
+//        int temp = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(firstFlatNumber)))) + 1;
+        boolean skipGround;
+        if ((Integer.parseInt(firstFlatNumber) == 1) && (Integer.parseInt(firstFlatNumber.substring(0, 1)) == 0) && (Integer.parseInt(firstFlatNumber.substring(0, 2)) == 0) && (firstFlatNumber.length() == 3 || firstFlatNumber.length() == 4)) {
+//            skipGround = true;
+            skipGround = false;
+        } else if ((Integer.parseInt(firstFlatNumber) == 1) && (Integer.parseInt(firstFlatNumber.substring(0, 1)) == 0) && firstFlatNumber.length() == 2) {
+//            skipGround = true;
+            skipGround = false;
+        } else if ((firstFlatNumber.length() == 2 || firstFlatNumber.length() == 3) && Integer.parseInt(firstFlatNumber.substring(0, 1)) == 1) {
+            skipGround = (Integer.parseInt(firstFlatNumber.substring(0, 1)) >= 1);
+        } else if (Integer.parseInt(firstFlatNumber.substring(0, 1)) < 9 && firstFlatNumber.length() == 1) {
+            skipGround = false;
+        } else
+            skipGround = (Integer.parseInt(firstFlatNumber.substring(0, 1)) >= 1);
 
-        boolean skipGround = Integer.parseInt(firstFlatNumber.substring(0, 1)) >= 1;
+
         boolean isGreaterThanOne = Integer.parseInt(firstFlatNumber.substring(0, 1)) > 1;
 
         List<String[]> data = new ArrayList<String[]>();
@@ -201,44 +215,136 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         int totalFlatIndex = 1;
         boolean isBuildingId = true;
 
-        for (int i = Integer.parseInt(firstFlatNumber.substring(0, 1)); i < floor + 1; i++) {
+
+//        for (int i = Integer.parseInt(firstFlatNumber.substring(0, 1)); i < floor + 1; i++) {
+        for (int i = skipGround ? 1 : 0; i < floor + 1; i++) {
             for (int j = 1; j < flatsOnEachfloor + 1; j++) {
 
                 String room = "";
                 if (digit == 2) {
                     if (skipGround) {
-                        room = (i * 10 + j) + "";
+//                        room = (i * 10 + j) + "";
+
+                        if (firstFlatNumber.length() == 1) {
+
+                            if (i == 1)
+                                room = j >= 10 ? "0" + j : "0" + j;
+                            else
+                                room = (i * 10 + j) + "";
+
+                        } else if (firstFlatNumber.length() == 2) {
+                            room = (i * 10 + j) + "";
+
+                        } else
+                            room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
+
                     } else {
                         room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
                     }
                 } else if (digit == 3) {
                     if (skipGround) {
-                        room = (i * 100 + j) + "";
+//                        room = (i * 100 + j) + "";
+
+                        if (firstFlatNumber.length() == 1) {
+
+                            if (i == 1)
+                                room = j >= 10 ? "0" + j : "00" + j;
+                            else if (i >= 2 && i <= 9)
+                                room = "0" + (i * 100 + j) + "";
+                            else
+                                room = (i * 100 + j) + "";
+
+                        } else if (firstFlatNumber.length() == 2) {
+
+                            if (i == 1)
+                                room = "0" + (i * 10 + j) + "";
+                            else if (i >= 2 && i <= 9)
+                                room = "0" + (i * 100 + j) + "";
+                            else
+                                room = (i * 100 + j) + "";
+
+                        } else
+                            room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+
                     } else {
-                        room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+
+                        if (i == 0)
+                            room = (j >= 10 ? "0" + j : "00" + j);
+                        else if (i >= 1 && i <= 9)
+                            room = (i * 100 + j) + "";
+                        else
+                            room = (i * 100 + j) + "";
+
+//                        room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
                     }
                 } else if (digit == 4) {
                     if (skipGround) {
-                        room = (i * 100 + j) + "";
 
-                        // This is for if number length 3 digit then append 0 at begging
-                        int roomLength = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(room)))) + 1;
-                        if (roomLength == 3) {
-                            room = "0" + room;
+                        int temp = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(firstFlatNumber)))) + 1;
+                        // Check first room number is 1 or 3  or 2 digit
+
+                        if ((firstFlatNumber.length() == 2 || firstFlatNumber.length() == 3 || firstFlatNumber.length() == 4) && temp == 1) {
+                            if (i == 0)
+                                room = "000" + (i * 10 + j) + "";
+                            else if (i >= 1 && i <= 9)
+                                room = "0" + (i * 100 + j) + "";
+                            else
+                                room = (i * 100 + j) + "";
+
+                        } else if (firstFlatNumber.length() == 1) {
+
+                            if (i == 1)
+                                room = j >= 10 ? "00" + j : "000" + j;
+                            else if (i >= 2 && i <= 9)
+                                room = "0" + (i * 100 + j) + "";
+                            else
+                                room = (i * 100 + j) + "";
+
+                        } else if (firstFlatNumber.length() == 2) {
+
+                            if (i == 1)
+                                room = "00" + (i * 10 + j) + "";
+                            else if (i >= 2 && i <= 9)
+                                room = "0" + (i * 100 + j) + "";
+                            else
+                                room = (i * 100 + j) + "";
+
+                        } else { // 3 digit
+
+                            room = (i * 100 + j) + "";
+
+                            // This is for if number length 3 digit then append 0 at begging
+                            int roomLength = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(room)))) + 1;
+                            if (roomLength == 3) {
+                                room = "0" + room;
+                            }
                         }
+
                     } else {
+
+                        if (i == 0)
+                            room = (j >= 10 ? "00" + j : "000" + j);
+                        else if (i >= 1 && i <= 9)
+                            room = "0" + (i * 100 + j) + "";
+                        else
+                            room = (i * 100 + j) + "";
+
+//                        if (i < 9)
 //                            room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
-                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
+//                        else
+//                            room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
                     }
                 }
 
                 String serial_number = skipGround ? String.valueOf(totalFlatIndex) : "" + ((i - 1) * flatsOnEachfloor + j);
 //                            String label = ti1.getText().toString() + "-" + room;
-                String label = nameOfTower + "-" + Integer.parseInt(room);
-                String short_code = Integer.parseInt(room.substring(0, 2)) > 9 ? room : "0-" + Integer.parseInt(room);
+//                String label = nameOfTower + "-" + Integer.parseInt(room);
+                String label = "Flat" + "-" + Integer.parseInt(room);
+//                String short_code = Integer.parseInt(room.substring(0, 2)) > 9 ? room : "#" + Integer.parseInt(room);
+                String short_code = Integer.parseInt(room.substring(0, 2)) > 9 ? room : "#" + room;
                 String Flat_Numbers = room;
                 String Tower = nameOfTower;
-//                            String short_code = ti2.getText().toString() + room;
+//                            String short_code = ti2.getText().toString() + room; //905, 1, 9, 5
 
                 uniqueRoomList.add(Integer.valueOf(room));
 
@@ -252,7 +358,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
 //          data.add(new String[]{"SN 0", "Building id 1", "Flats 2", "Labels 3", "Short-code 4"});
         List<TowerVO> finalList = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
-            finalList.add(new TowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
+            finalList.add(new TowerVO(i == 0 ? data.get(i)[0] : String.valueOf(i), data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
         }
 
         int counter = 1;
@@ -264,7 +370,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
             counter++;
         }
 
-        Intent intent = new Intent(NewSingleTowerActivity.this, SocietyCommonPointActivity1.class);
+        Intent intent = new Intent(NewSingleTowerActivity.this, SampleActivity.class);
         intent.putParcelableArrayListExtra("LIST", (ArrayList<? extends Parcelable>) finalList);
         intent.putExtra("isSingleTower", true);
         startActivity(intent);
