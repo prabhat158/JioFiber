@@ -157,13 +157,29 @@ public class FinalMuti extends AppCompatActivity {
 
                     String towerName = t1.getText().toString();
 
-                    int startingFloor = 1;
-                    boolean skipGround = false;
+//                    int startingFloor = 1;
+                    boolean skipGround;
                     boolean addTowerName = true;
+                    String firstFlatNumber = "";
+
 
                     if (isFixFirstFlatNumber) {
-                        startingFloor = Integer.parseInt(fixFirstFlatNumber.substring(0, 1));
-                        skipGround = Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1;
+//                        startingFloor = Integer.parseInt(fixFirstFlatNumber.substring(0, 1));
+//                        skipGround = Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1;
+
+                        firstFlatNumber = fixFirstFlatNumber;
+
+                        if ((Integer.parseInt(fixFirstFlatNumber) == 1) && (Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) == 0) && (Integer.parseInt(fixFirstFlatNumber.substring(0, 2)) == 0) && (fixFirstFlatNumber.length() == 3 || fixFirstFlatNumber.length() == 4)) {
+                            skipGround = false;
+                        } else if ((Integer.parseInt(fixFirstFlatNumber) == 1) && (Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) == 0) && fixFirstFlatNumber.length() == 2) {
+                            skipGround = false;
+                        } else if ((fixFirstFlatNumber.length() == 2 || fixFirstFlatNumber.length() == 3) && Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) == 1) {
+                            skipGround = (Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1);
+                        } else if (Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) < 9 && fixFirstFlatNumber.length() == 1) {
+                            skipGround = false;
+                        } else
+                            skipGround = (Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1);
+
                     } else {
                         if (firstFlatInTowerEditText.getText().toString().equals("")) {
                             firstFlatInTowerEditText.requestFocus();
@@ -185,46 +201,142 @@ public class FinalMuti extends AppCompatActivity {
                             return;
                         }
 
-                        startingFloor = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1));
-                        skipGround = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) >= 1;
+//                        startingFloor = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1));
+//                        skipGround = Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) >= 1;
+
+                        firstFlatNumber = firstFlatInTowerEditText.getText().toString();
+
+                        if ((Integer.parseInt(firstFlatInTowerEditText.getText().toString()) == 1) && (Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) == 0) && (Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 2)) == 0) && (firstFlatInTowerEditText.getText().toString().length() == 3 || firstFlatInTowerEditText.getText().toString().length() == 4)) {
+                            skipGround = false;
+                        } else if ((Integer.parseInt(firstFlatInTowerEditText.getText().toString()) == 1) && (Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) == 0) && firstFlatInTowerEditText.getText().toString().length() == 2) {
+                            skipGround = false;
+                        } else if ((firstFlatInTowerEditText.getText().toString().length() == 2 || firstFlatInTowerEditText.getText().toString().length() == 3) && Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) == 1) {
+                            skipGround = (Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) >= 1);
+                        } else if (Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) < 9 && firstFlatInTowerEditText.getText().toString().length() == 1) {
+                            skipGround = false;
+                        } else
+                            skipGround = (Integer.parseInt(firstFlatInTowerEditText.getText().toString().substring(0, 1)) >= 1);
 
                     }
 
 
 //                        for (int i = 1; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
-                    for (int i = startingFloor; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
+//                    for (int i = startingFloor; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
+                    for (int i = skipGround ? 1 : 0; i < Integer.parseInt(t3.getText().toString()) + 1; i++) {
                         for (int j = 1; j < Integer.parseInt(t4.getText().toString()) + 1; j++) {
 
                             String room = "";
                             if (digit == 2) {
                                 if (skipGround) {
-                                    room = (i * 10 + j) + "";
+                                    //                        room = (i * 10 + j) + "";
+                                    if (firstFlatNumber.length() == 1) {
+
+                                        if (i == 1)
+                                            room = j >= 10 ? "0" + j : "0" + j;
+                                        else
+                                            room = (i * 10 + j) + "";
+
+                                    } else if (firstFlatNumber.length() == 2) {
+                                        room = (i * 10 + j) + "";
+
+                                    } else
+                                        room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
 
                                 } else {
                                     room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
                                 }
                             } else if (digit == 3) {
                                 if (skipGround) {
-                                    room = (i * 100 + j) + "";
+//                        room = (i * 100 + j) + "";
 
+                                    if (firstFlatNumber.length() == 1) {
+
+                                        if (i == 1)
+                                            room = j >= 10 ? "0" + j : "00" + j;
+                                        else if (i >= 2 && i <= 9)
+                                            room = "0" + (i * 100 + j) + "";
+                                        else
+                                            room = (i * 100 + j) + "";
+
+                                    } else if (firstFlatNumber.length() == 2) {
+
+                                        if (i == 1)
+                                            room = "0" + (i * 10 + j) + "";
+                                        else if (i >= 2 && i <= 9)
+                                            room = "0" + (i * 100 + j) + "";
+                                        else
+                                            room = (i * 100 + j) + "";
+
+                                    } else
+                                        room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
 
                                 } else {
-                                    room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+
+                                    if (i == 0)
+                                        room = (j >= 10 ? "0" + j : "00" + j);
+                                    else if (i >= 1 && i <= 9)
+                                        room = (i * 100 + j) + "";
+                                    else
+                                        room = (i * 100 + j) + "";
+
+//                        room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
                                 }
                             } else if (digit == 4) {
                                 if (skipGround) {
-//                                        room = (i * 1000 + j) + "";
-                                    room = (i * 100 + j) + "";
 
-                                    // This is for if number length 3 digit then append 0 at begging
-                                    int roomLength = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(room)))) + 1;
-                                    if (roomLength == 3) {
-                                        room = "0" + room;
+                                    int temp = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(firstFlatNumber)))) + 1;
+                                    // Check first room number is 1 or 3  or 2 digit
+
+                                    if ((firstFlatNumber.length() == 2 || firstFlatNumber.length() == 3 || firstFlatNumber.length() == 4) && temp == 1) {
+                                        if (i == 0)
+                                            room = "000" + (i * 10 + j) + "";
+                                        else if (i >= 1 && i <= 9)
+                                            room = "0" + (i * 100 + j) + "";
+                                        else
+                                            room = (i * 100 + j) + "";
+
+                                    } else if (firstFlatNumber.length() == 1) {
+
+                                        if (i == 1)
+                                            room = j >= 10 ? "00" + j : "000" + j;
+                                        else if (i >= 2 && i <= 9)
+                                            room = "0" + (i * 100 + j) + "";
+                                        else
+                                            room = (i * 100 + j) + "";
+
+                                    } else if (firstFlatNumber.length() == 2) {
+
+                                        if (i == 1)
+                                            room = "00" + (i * 10 + j) + "";
+                                        else if (i >= 2 && i <= 9)
+                                            room = "0" + (i * 100 + j) + "";
+                                        else
+                                            room = (i * 100 + j) + "";
+
+                                    } else { // 3 digit
+
+                                        room = (i * 100 + j) + "";
+
+                                        // This is for if number length 3 digit then append 0 at begging
+                                        int roomLength = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(room)))) + 1;
+                                        if (roomLength == 3) {
+                                            room = "0" + room;
+                                        }
                                     }
 
                                 } else {
-//                                        room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
-                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
+
+                                    if (i == 0)
+                                        room = (j >= 10 ? "00" + j : "000" + j);
+                                    else if (i >= 1 && i <= 9)
+                                        room = "0" + (i * 100 + j) + "";
+                                    else
+                                        room = (i * 100 + j) + "";
+
+//                        if (i < 9)
+//                            room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+//                        else
+//                            room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
                                 }
                             }
 //                                int room = i * (code == 1000 ? 100 : code) + j;
@@ -255,7 +367,7 @@ public class FinalMuti extends AppCompatActivity {
 //                  data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
                 List<TowerVO> finalList = new ArrayList<>();
                 for (int i = 0; i < data.size(); i++) {
-                    finalList.add(new TowerVO(data.get(i)[0], data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4], data.get(i)[5]));
+                    finalList.add(new TowerVO(i == 0 ? data.get(i)[0] : String.valueOf(i), data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4], data.get(i)[5]));
                 }
 
                 int counter = 1;
