@@ -40,11 +40,11 @@ public class SampleActivity extends AppCompatActivity {
     private TextInputEditText societyOfficeTextInputEditText;
     private TextInputEditText towerLiftLobbyTextInputEditText;
     private TextInputEditText clubHouseAndMoreCommonPointTextInputEditText;
-    private TextInputEditText societyManagerAndCommitteeMembersTextInputEditText;
-    private TextInputEditText parkingTextInputEditText;
-    private TextInputEditText societyHousekeepingAndStaffTextInputEditText;
-    private TextInputEditText shopsTextInputEditText;
-    private TextInputEditText servicesTextInputEditText;
+    //    private TextInputEditText societyManagerAndCommitteeMembersTextInputEditText;
+//    private TextInputEditText parkingTextInputEditText;
+//    private TextInputEditText societyHousekeepingAndStaffTextInputEditText;
+//    private TextInputEditText shopsTextInputEditText;
+//    private TextInputEditText servicesTextInputEditText;
     private MaterialButton submitButton;
     private ArrayList<TowerVO> mainList = new ArrayList<>();
 
@@ -179,136 +179,112 @@ public class SampleActivity extends AppCompatActivity {
             }
         });
 
-        societyManagerAndCommitteeMembersTextInputEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
-                    int currentValue = Integer.parseInt(s.toString());
-                    int maxValue = rangeVO.getSocietyManagerAndCommitteeMembersRange().size();
-
-                    if (currentValue > maxValue) {
-                        societyManagerAndCommitteeMembersTextInputEditText.setError("Maximum limit is " + maxValue);
-                        return;
-                    }
-                    saveVO.setSocietyManagerAndCommitteeMembers(currentValue);
-                } else
-                    saveVO.setSocietyManagerAndCommitteeMembers(0);
-            }
-        });
-
-        parkingTextInputEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
-                    int currentValue = Integer.parseInt(s.toString());
-//                    int maxValue = rangeVO.getParkingRange().size();
-
-//                    if (currentValue > maxValue) {
-//                        parkingTextInputEditText.setError("Maximum limit is " + maxValue);
-//                        return;
-//                    }
-                    saveVO.setParking(currentValue);
-                } else
-                    saveVO.setParking(0);
-            }
-        });
-
-        societyHousekeepingAndStaffTextInputEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
-                    int currentValue = Integer.parseInt(s.toString());
-//                    int maxValue = rangeVO.getHouseKeepingRange().size();
+//        societyManagerAndCommitteeMembersTextInputEditText.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.length() != 0) {
+//                    int currentValue = Integer.parseInt(s.toString());
+//                    int maxValue = rangeVO.getSocietyManagerAndCommitteeMembersRange().size();
 //
 //                    if (currentValue > maxValue) {
-//                        societyHousekeepingAndStaffTextInputEditText.setError("Maximum limit is " + maxValue);
+//                        societyManagerAndCommitteeMembersTextInputEditText.setError("Maximum limit is " + maxValue);
 //                        return;
 //                    }
-                    saveVO.setSocietyHousekeepingAndStaff(currentValue);
-                } else
-                    saveVO.setSocietyHousekeepingAndStaff(0);
-            }
-        });
+//                    saveVO.setSocietyManagerAndCommitteeMembers(currentValue);
+//                } else
+//                    saveVO.setSocietyManagerAndCommitteeMembers(0);
+//            }
+//        });
+
+//        parkingTextInputEditText.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.length() != 0) {
+//                    int currentValue = Integer.parseInt(s.toString());
+//                    saveVO.setParking(currentValue);
+//                } else
+//                    saveVO.setParking(0);
+//            }
+//        });
+
+//        societyHousekeepingAndStaffTextInputEditText.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.length() != 0) {
+//                    int currentValue = Integer.parseInt(s.toString());
+//                    saveVO.setSocietyHousekeepingAndStaff(currentValue);
+//                } else
+//                    saveVO.setSocietyHousekeepingAndStaff(0);
+//            }
+//        });
 
 
-        shopsTextInputEditText.addTextChangedListener(new TextWatcher() {
+//        shopsTextInputEditText.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.length() != 0) {
+//                    int currentValue = Integer.parseInt(s.toString());
+//                    saveVO.setShops(currentValue);
+//                } else
+//                    saveVO.setShops(0);
+//            }
+//        });
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
-                    int currentValue = Integer.parseInt(s.toString());
-//                    int maxValue = rangeVO.getCommercialShopRange().size();
-
-//                    if (currentValue > maxValue) {
-//                        shopsTextInputEditText.setError("Maximum limit is " + maxValue);
-//                        return;
-//                    }
-                    saveVO.setShops(currentValue);
-                } else
-                    saveVO.setShops(0);
-            }
-        });
-
-        servicesTextInputEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
-                    int currentValue = Integer.parseInt(s.toString());
-//                    int maxValue = rangeVO.getCommercialServicesRange().size(); 20
-
-//                    if (currentValue > maxValue) {
-//                        servicesTextInputEditText.setError("Maximum limit is " + maxValue);
-//                        return;
-//                    }
-                    saveVO.setServices(currentValue);
-                } else
-                    saveVO.setServices(0);
-            }
-        });
+//        servicesTextInputEditText.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.length() != 0) {
+//                    int currentValue = Integer.parseInt(s.toString());
+//                    saveVO.setServices(currentValue);
+//                } else
+//                    saveVO.setServices(0);
+//            }
+//        });
 
     }
 
@@ -318,11 +294,11 @@ public class SampleActivity extends AppCompatActivity {
         societyOfficeTextInputEditText = findViewById(R.id.societyOfficeTextInputEditText);
         towerLiftLobbyTextInputEditText = findViewById(R.id.towerLiftLobbyTextInputEditText);
         clubHouseAndMoreCommonPointTextInputEditText = findViewById(R.id.clubHouseAndMoreCommonPointTextInputEditText);
-        societyManagerAndCommitteeMembersTextInputEditText = findViewById(R.id.societyManagerAndCommitteeMembersTextInputEditText);
-        parkingTextInputEditText = findViewById(R.id.parkingTextInputEditText);
-        societyHousekeepingAndStaffTextInputEditText = findViewById(R.id.societyHousekeepingAndStaffTextInputEditText);
-        shopsTextInputEditText = findViewById(R.id.shopsTextInputEditText);
-        servicesTextInputEditText = findViewById(R.id.servicesTextInputEditText);
+//        societyManagerAndCommitteeMembersTextInputEditText = findViewById(R.id.societyManagerAndCommitteeMembersTextInputEditText);
+//        parkingTextInputEditText = findViewById(R.id.parkingTextInputEditText);
+//        societyHousekeepingAndStaffTextInputEditText = findViewById(R.id.societyHousekeepingAndStaffTextInputEditText);
+//        shopsTextInputEditText = findViewById(R.id.shopsTextInputEditText);
+//        servicesTextInputEditText = findViewById(R.id.servicesTextInputEditText);
 
         submitButton = findViewById(R.id.submitButton);
     }
@@ -334,11 +310,11 @@ public class SampleActivity extends AppCompatActivity {
         saveVO.setSocietyOffices(Integer.parseInt(Objects.requireNonNull(societyOfficeTextInputEditText.getText()).toString().trim().equals("") ? "0" : societyOfficeTextInputEditText.getText().toString()));
         saveVO.setTowerLiftLobby(Integer.parseInt(Objects.requireNonNull(towerLiftLobbyTextInputEditText.getText()).toString().trim().equals("") ? "0" : towerLiftLobbyTextInputEditText.getText().toString()));
         saveVO.setClubHouseAndMoreCommonPoint(Integer.parseInt(Objects.requireNonNull(clubHouseAndMoreCommonPointTextInputEditText.getText()).toString().trim().equals("") ? "0" : clubHouseAndMoreCommonPointTextInputEditText.getText().toString()));
-        saveVO.setSocietyManagerAndCommitteeMembers(Integer.parseInt(Objects.requireNonNull(societyManagerAndCommitteeMembersTextInputEditText.getText()).toString().trim().equals("") ? "0" : societyManagerAndCommitteeMembersTextInputEditText.getText().toString()));
-        saveVO.setParking(Integer.parseInt(Objects.requireNonNull(parkingTextInputEditText.getText()).toString().trim().equals("") ? "0" : parkingTextInputEditText.getText().toString()));
-        saveVO.setSocietyHousekeepingAndStaff(Integer.parseInt(Objects.requireNonNull(societyHousekeepingAndStaffTextInputEditText.getText()).toString().trim().equals("") ? "0" : societyHousekeepingAndStaffTextInputEditText.getText().toString()));
-        saveVO.setShops(Integer.parseInt(Objects.requireNonNull(shopsTextInputEditText.getText()).toString().trim().equals("") ? "0" : shopsTextInputEditText.getText().toString()));
-        saveVO.setServices(Integer.parseInt(Objects.requireNonNull(servicesTextInputEditText.getText()).toString().trim().equals("") ? "0" : servicesTextInputEditText.getText().toString()));
+//        saveVO.setSocietyManagerAndCommitteeMembers(Integer.parseInt(Objects.requireNonNull(societyManagerAndCommitteeMembersTextInputEditText.getText()).toString().trim().equals("") ? "0" : societyManagerAndCommitteeMembersTextInputEditText.getText().toString()));
+//        saveVO.setParking(Integer.parseInt(Objects.requireNonNull(parkingTextInputEditText.getText()).toString().trim().equals("") ? "0" : parkingTextInputEditText.getText().toString()));
+//        saveVO.setSocietyHousekeepingAndStaff(Integer.parseInt(Objects.requireNonNull(societyHousekeepingAndStaffTextInputEditText.getText()).toString().trim().equals("") ? "0" : societyHousekeepingAndStaffTextInputEditText.getText().toString()));
+//        saveVO.setShops(Integer.parseInt(Objects.requireNonNull(shopsTextInputEditText.getText()).toString().trim().equals("") ? "0" : shopsTextInputEditText.getText().toString()));
+//        saveVO.setServices(Integer.parseInt(Objects.requireNonNull(servicesTextInputEditText.getText()).toString().trim().equals("") ? "0" : servicesTextInputEditText.getText().toString()));
 
         if (isSingleTower) {
             try {
@@ -409,59 +385,59 @@ public class SampleActivity extends AppCompatActivity {
         }
 
         // Society manager and committee member
-        List<Integer> list5 = rangeVO.getSocietyManagerAndCommitteeMembersRange();
-        for (int i = 0; i < list5.size(); i++) {
-
-            if (i == saveVO.getSocietyManagerAndCommitteeMembers())
-                break;
-
-            int code = list5.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", (i == 0 ? "Society Manager" : "Committee member " + (i + 1)), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list5 = rangeVO.getSocietyManagerAndCommitteeMembersRange();
+//        for (int i = 0; i < list5.size(); i++) {
+//
+//            if (i == saveVO.getSocietyManagerAndCommitteeMembers())
+//                break;
+//
+//            int code = list5.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "0", (i == 0 ? "Society Manager" : "Committee member " + (i + 1)), (code == 0 ? "" : code + "")));
+//        }
 
         //Parking
-        List<Integer> list6 = rangeVO.getParkingRange();
-        for (int i = 0; i < list6.size(); i++) {
-
-            if (i == saveVO.getParking())
-                break;
-
-            int code = list6.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", (i == 0 ? "Parking" : "Parking " + (i + 1)), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list6 = rangeVO.getParkingRange();
+//        for (int i = 0; i < list6.size(); i++) {
+//
+//            if (i == saveVO.getParking())
+//                break;
+//
+//            int code = list6.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "0", (i == 0 ? "Parking" : "Parking " + (i + 1)), (code == 0 ? "" : code + "")));
+//        }
 
         //Society housekeeping and staff
-        List<Integer> list7 = rangeVO.getHouseKeepingRange();
-        for (int i = 0; i < list7.size(); i++) {
-
-            if (i == saveVO.getSocietyHousekeepingAndStaff())
-                break;
-
-            int code = list7.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Staff " + (i + 1), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list7 = rangeVO.getHouseKeepingRange();
+//        for (int i = 0; i < list7.size(); i++) {
+//
+//            if (i == saveVO.getSocietyHousekeepingAndStaff())
+//                break;
+//
+//            int code = list7.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Staff " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
 
         // Shops
-        List<Integer> list8 = rangeVO.getCommercialShopRange();
-        for (int i = 0; i < list8.size(); i++) {
-
-            if (i == saveVO.getShops())
-                break;
-
-            int code = list8.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Shop " + (i + 1), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list8 = rangeVO.getCommercialShopRange();
+//        for (int i = 0; i < list8.size(); i++) {
+//
+//            if (i == saveVO.getShops())
+//                break;
+//
+//            int code = list8.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Shop " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
 
         // Services
-        List<Integer> list9 = rangeVO.getCommercialServicesRange();
-        for (int i = 0; i < list9.size(); i++) {
-
-            if (i == saveVO.getServices())
-                break;
-
-            int code = list9.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Service " + (i + 1), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list9 = rangeVO.getCommercialServicesRange();
+//        for (int i = 0; i < list9.size(); i++) {
+//
+//            if (i == saveVO.getServices())
+//                break;
+//
+//            int code = list9.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Service " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
 
 
         StringBuilder data1 = new StringBuilder();
@@ -594,59 +570,59 @@ public class SampleActivity extends AppCompatActivity {
         }
 
         // Society manager and committee member
-        List<Integer> list5 = rangeVO.getSocietyManagerAndCommitteeMembersRange();
-        for (int i = 0; i < list5.size(); i++) {
-
-            if (i == saveVO.getSocietyManagerAndCommitteeMembers())
-                break;
-
-            int code = list5.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", (i == 0 ? "Society Manager" : "Committee member " + (i + 1)), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list5 = rangeVO.getSocietyManagerAndCommitteeMembersRange();
+//        for (int i = 0; i < list5.size(); i++) {
+//
+//            if (i == saveVO.getSocietyManagerAndCommitteeMembers())
+//                break;
+//
+//            int code = list5.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", (i == 0 ? "Society Manager" : "Committee member " + (i + 1)), (code == 0 ? "" : code + "")));
+//        }
 
         //Parking
-        List<Integer> list6 = rangeVO.getParkingRange();
-        for (int i = 0; i < list6.size(); i++) {
-
-            if (i == saveVO.getParking())
-                break;
-
-            int code = list6.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", (i == 0 ? "Parking" : "Parking " + (i + 1)), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list6 = rangeVO.getParkingRange();
+//        for (int i = 0; i < list6.size(); i++) {
+//
+//            if (i == saveVO.getParking())
+//                break;
+//
+//            int code = list6.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", (i == 0 ? "Parking" : "Parking " + (i + 1)), (code == 0 ? "" : code + "")));
+//        }
 
         //Society housekeeping and staff
-        List<Integer> list7 = rangeVO.getHouseKeepingRange();
-        for (int i = 0; i < list7.size(); i++) {
-
-            if (i == saveVO.getSocietyHousekeepingAndStaff())
-                break;
-
-            int code = list7.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Staff " + (i + 1), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list7 = rangeVO.getHouseKeepingRange();
+//        for (int i = 0; i < list7.size(); i++) {
+//
+//            if (i == saveVO.getSocietyHousekeepingAndStaff())
+//                break;
+//
+//            int code = list7.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Staff " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
 
         // Shops
-        List<Integer> list8 = rangeVO.getCommercialShopRange();
-        for (int i = 0; i < list8.size(); i++) {
-
-            if (i == saveVO.getShops())
-                break;
-
-            int code = list8.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Shop " + (i + 1), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list8 = rangeVO.getCommercialShopRange();
+//        for (int i = 0; i < list8.size(); i++) {
+//
+//            if (i == saveVO.getShops())
+//                break;
+//
+//            int code = list8.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Shop " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
 
         // Services
-        List<Integer> list9 = rangeVO.getCommercialServicesRange();
-        for (int i = 0; i < list9.size(); i++) {
-
-            if (i == saveVO.getServices())
-                break;
-
-            int code = list9.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Service " + (i + 1), (code == 0 ? "" : code + "")));
-        }
+//        List<Integer> list9 = rangeVO.getCommercialServicesRange();
+//        for (int i = 0; i < list9.size(); i++) {
+//
+//            if (i == saveVO.getServices())
+//                break;
+//
+//            int code = list9.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Service " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
 
 
 //      data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});

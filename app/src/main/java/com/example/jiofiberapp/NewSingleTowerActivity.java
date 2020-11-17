@@ -341,7 +341,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
 //                String label = nameOfTower + "-" + Integer.parseInt(room);
                 String label = "Flat" + "-" + Integer.parseInt(room);
 //                String short_code = Integer.parseInt(room.substring(0, 2)) > 9 ? room : "#" + Integer.parseInt(room);
-                String short_code = Integer.parseInt(room.substring(0, 2)) > 9 ? room : "#" + room;
+                String short_code = Integer.parseInt(room.substring(0, 2)) > 9 ? room : "'" + room;
                 String Flat_Numbers = room;
                 String Tower = nameOfTower;
 //                            String short_code = ti2.getText().toString() + room; //905, 1, 9, 5

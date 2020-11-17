@@ -125,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="D. Club House and more common point (eg.Temple, Hall, gym)">
+                    android:hint="D. More common point (eg.Club House, Temple, Hall, gym)">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/clubHouseAndMoreCommonPointTextInputEditText"
@@ -145,6 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:visibility="gone"
                     android:hint="E. Society Manager and Committee Members">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -165,6 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:visibility="gone"
                     android:hint="F. Parking">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -185,6 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:visibility="gone"
                     android:hint="G. Society Housekeeping and Staff">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -211,6 +214,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="5dp"
+                android:visibility="gone"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:textSize="16sp"
@@ -231,6 +235,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 android:hint="H. Shops (eg. Kirana, Milk Shop, Vegetables Shop)"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
@@ -252,6 +257,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 android:hint="I. Services (eg.Ironing Shop, Parlor, Electrician)"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
