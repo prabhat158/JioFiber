@@ -36,6 +36,7 @@ public class SampleActivity extends AppCompatActivity {
     SaveVO saveVO;
     RangeVO rangeVO;
     boolean isSingleTower;
+    int digit;
     private TextInputEditText gateTextInputEditText;
     private TextInputEditText societyOfficeTextInputEditText;
     private TextInputEditText towerLiftLobbyTextInputEditText;
@@ -57,6 +58,7 @@ public class SampleActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         isSingleTower = bundle.getBoolean("isSingleTower");
+        digit = bundle.getInt("digit");
         mainList = getIntent().getParcelableArrayListExtra("LIST");
 
 
@@ -340,8 +342,10 @@ public class SampleActivity extends AppCompatActivity {
 
         int count = 1;
 
+
         // Gate
-        List<Integer> list1 = rangeVO.getGateRange();
+        List<Integer> list1 = rangeVO.getGateAndTowerRange();
+        int gateTowerIndex = 0;
         for (int i = 0; i < list1.size(); i++) {
 
             if (i == saveVO.getGate())
@@ -349,10 +353,24 @@ public class SampleActivity extends AppCompatActivity {
 
             int code = list1.get(i);
             mainList.add(new TowerVO(String.valueOf(count++), "", "0", (i == 0 ? "Main Gate" : "Gate " + (i + 1)), (code == 0 ? "" : code + "")));
+            gateTowerIndex++;
         }
 
+        // Tower/lift/lobby
+        for (int i = 0; i < list1.size(); i++) {
+
+            if (i == saveVO.getTowerLiftLobby())
+                break;
+
+            int code = list1.get(gateTowerIndex);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Lobby " + (i + 1), (code == 0 ? "" : code + "")));
+            gateTowerIndex++;
+        }
+
+
         // Society Office
-        List<Integer> list2 = rangeVO.getSocietyOfficesRange();
+        int officeAndCommonPoint = 0;
+        List<Integer> list2 = rangeVO.getOfficeAndCommonPointRange();
         for (int i = 0; i < list2.size(); i++) {
 
             if (i == saveVO.getSocietyOffices())
@@ -360,28 +378,19 @@ public class SampleActivity extends AppCompatActivity {
 
             int code = list2.get(i);
             mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Society Office " + (i + 1), (code == 0 ? "" : code + "")));
-        }
-
-        // Tower/lift/lobby
-        List<Integer> list3 = rangeVO.getTowerLobbiesRange();
-        for (int i = 0; i < list3.size(); i++) {
-
-            if (i == saveVO.getTowerLiftLobby())
-                break;
-
-            int code = list3.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Lobby " + (i + 1), (code == 0 ? "" : code + "")));
+            officeAndCommonPoint++;
         }
 
         // Club house/common points
-        List<Integer> list4 = rangeVO.getClubHouseCommonHallAndMoreCommonPointsRange();
+        List<Integer> list4 = rangeVO.getOfficeAndCommonPointRange();
         for (int i = 0; i < list4.size(); i++) {
 
             if (i == saveVO.getClubHouseAndMoreCommonPoint())
                 break;
 
-            int code = list4.get(i);
+            int code = list4.get(officeAndCommonPoint);
             mainList.add(new TowerVO(String.valueOf(count++), "", "0", "Common Point " + (i + 1), (code == 0 ? "" : code + "")));
+            officeAndCommonPoint++;
         }
 
         // Society manager and committee member
@@ -443,7 +452,12 @@ public class SampleActivity extends AppCompatActivity {
         StringBuilder data1 = new StringBuilder();
         for (int i = 0; i < mainList.size(); i++) {
             TowerVO singleTowerVO = mainList.get(i);
-            data1.append("\n" + singleTowerVO.getSn() + "," + singleTowerVO.getBuildingId() + "," + (i == 0 ? singleTowerVO.getFlats() : Integer.parseInt(singleTowerVO.getFlats()) == 0 ? "" : singleTowerVO.getFlats()) + "," + singleTowerVO.getLabel() + "," + singleTowerVO.getShortCode());
+            data1.append("\n" + singleTowerVO.getSn() + ","
+                    + singleTowerVO.getBuildingId() + ","
+                    + ((digit == 2) ? (i == 0 ? singleTowerVO.getFlats() : (Integer.parseInt(singleTowerVO.getFlats()) == 0 ? "" : singleTowerVO.getFlats().substring(1))) : (i == 0 ? singleTowerVO.getFlats() : Integer.parseInt(singleTowerVO.getFlats()) == 0 ? "" : singleTowerVO.getFlats()))
+                    + ","
+                    + singleTowerVO.getLabel() + ","
+                    + singleTowerVO.getShortCode());
         }
 
 
@@ -526,7 +540,8 @@ public class SampleActivity extends AppCompatActivity {
         int count = 1;
 
         // Gate
-        List<Integer> list1 = rangeVO.getGateRange();
+        List<Integer> list1 = rangeVO.getGateAndTowerRange();
+        int gateTowerIndex = 0;
         for (int i = 0; i < list1.size(); i++) {
 
             if (i == saveVO.getGate())
@@ -534,10 +549,24 @@ public class SampleActivity extends AppCompatActivity {
 
             int code = list1.get(i);
             mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", (i == 0 ? "Main Gate" : "Gate " + (i + 1)), (code == 0 ? "" : code + "")));
+            gateTowerIndex++;
         }
 
+        // Tower/lift/lobby
+        for (int i = 0; i < list1.size(); i++) {
+
+            if (i == saveVO.getTowerLiftLobby())
+                break;
+
+            int code = list1.get(gateTowerIndex);
+            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Lobby " + (i + 1), (code == 0 ? "" : code + "")));
+            gateTowerIndex++;
+        }
+
+
         // Society Office
-        List<Integer> list2 = rangeVO.getSocietyOfficesRange();
+        int officeAndCommonPoint = 0;
+        List<Integer> list2 = rangeVO.getOfficeAndCommonPointRange();
         for (int i = 0; i < list2.size(); i++) {
 
             if (i == saveVO.getSocietyOffices())
@@ -545,29 +574,64 @@ public class SampleActivity extends AppCompatActivity {
 
             int code = list2.get(i);
             mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Society Office " + (i + 1), (code == 0 ? "" : code + "")));
-        }
-
-        // Tower/lift/lobby
-        List<Integer> list3 = rangeVO.getTowerLobbiesRange();
-        for (int i = 0; i < list3.size(); i++) {
-
-            if (i == saveVO.getTowerLiftLobby())
-                break;
-
-            int code = list3.get(i);
-            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Lobby " + (i + 1), (code == 0 ? "" : code + "")));
+            officeAndCommonPoint++;
         }
 
         // Club house/common points
-        List<Integer> list4 = rangeVO.getClubHouseCommonHallAndMoreCommonPointsRange();
+        List<Integer> list4 = rangeVO.getOfficeAndCommonPointRange();
         for (int i = 0; i < list4.size(); i++) {
 
             if (i == saveVO.getClubHouseAndMoreCommonPoint())
                 break;
 
-            int code = list4.get(i);
+            int code = list4.get(officeAndCommonPoint);
             mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Common Point " + (i + 1), (code == 0 ? "" : code + "")));
+            officeAndCommonPoint++;
         }
+
+        // Gate
+//        List<Integer> list1 = rangeVO.getGateRange();
+//        for (int i = 0; i < list1.size(); i++) {
+//
+//            if (i == saveVO.getGate())
+//                break;
+//
+//            int code = list1.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", (i == 0 ? "Main Gate" : "Gate " + (i + 1)), (code == 0 ? "" : code + "")));
+//        }
+//
+//        // Society Office
+//        List<Integer> list2 = rangeVO.getSocietyOfficesRange();
+//        for (int i = 0; i < list2.size(); i++) {
+//
+//            if (i == saveVO.getSocietyOffices())
+//                break;
+//
+//            int code = list2.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Society Office " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
+//
+//        // Tower/lift/lobby
+//        List<Integer> list3 = rangeVO.getTowerLobbiesRange();
+//        for (int i = 0; i < list3.size(); i++) {
+//
+//            if (i == saveVO.getTowerLiftLobby())
+//                break;
+//
+//            int code = list3.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Lobby " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
+//
+//        // Club house/common points
+//        List<Integer> list4 = rangeVO.getClubHouseCommonHallAndMoreCommonPointsRange();
+//        for (int i = 0; i < list4.size(); i++) {
+//
+//            if (i == saveVO.getClubHouseAndMoreCommonPoint())
+//                break;
+//
+//            int code = list4.get(i);
+//            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Common Point " + (i + 1), (code == 0 ? "" : code + "")));
+//        }
 
         // Society manager and committee member
 //        List<Integer> list5 = rangeVO.getSocietyManagerAndCommitteeMembersRange();
@@ -632,7 +696,10 @@ public class SampleActivity extends AppCompatActivity {
             data1.append("\n" + towerVO.getSn() + ","
                     + towerVO.getBuildingId() + ","
                     + towerVO.getTowers() + ","
-                    + (i == 0 ? towerVO.getFlats() : Integer.parseInt(towerVO.getFlats()) == 0 ? "" : towerVO.getFlats()) + ","
+                    + ((digit == 2) ? (i == 0 ? towerVO.getFlats() : (Integer.parseInt(towerVO.getFlats()) == 0 ? "" : towerVO.getFlats().substring(1))) : (i == 0 ? towerVO.getFlats() : Integer.parseInt(towerVO.getFlats()) == 0 ? "" : towerVO.getFlats()))
+
+//                    + (i == 0 ? towerVO.getFlats() : Integer.parseInt(towerVO.getFlats()) == 0 ? "" : towerVO.getFlats())
+                    + ","
                     + towerVO.getLabel() + ","
                     + towerVO.getShortCode());
         }

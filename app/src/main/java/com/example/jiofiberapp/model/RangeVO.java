@@ -15,6 +15,40 @@ public class RangeVO {
 //    public static final int maxShops = 99;
 //    public static final int maxServices = 99;
 
+    public List<Integer> getGateAndTowerRange() {
+        List<Integer> list = new ArrayList<>();
+        //  (800-899)
+        for (int i = 800; i < 900; i++) { // Total 100
+            list.add(i);
+        }
+
+        for (int i = 700; i < 800; i++) { // Total 100
+            list.add(i);
+        }
+
+        int index = list.size();
+        for (int i = index; i < 800; i++) { // total 800
+            list.add(0);
+        }
+
+        return list;
+    }
+
+    public List<Integer> getOfficeAndCommonPointRange() {
+        List<Integer> list = new ArrayList<>();
+        //  (900-999)
+        for (int i = 900; i < 1000; i++) { // Total 100
+            list.add(i);
+        }
+
+        int index = list.size();
+        for (int i = index; i < 900; i++) { // total 900
+            list.add(0);
+        }
+
+        return list;
+    }
+
     public List<Integer> getGateRange() {
         List<Integer> list = new ArrayList<>();
         //  (880-889)  limit 99

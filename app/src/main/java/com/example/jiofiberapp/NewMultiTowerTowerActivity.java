@@ -62,7 +62,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if (s.length() != 0 && s.length() > 2) {
+                if (s.length() != 0 && s.length() >= 2) {
                     int typeOfFlatNumber = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(s.toString())))) + 1;
                     TextInputEditText4.setText(typeOfFlatNumber > 0 ? String.valueOf(typeOfFlatNumber) : "");
                 } else {

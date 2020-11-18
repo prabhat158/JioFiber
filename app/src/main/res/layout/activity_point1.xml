@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="A. Gates">
+                    android:hint="A. Number Of Gates">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/gateTextInputEditText"
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="B. Society Offices">
+                    android:hint="B. Number Of Society Offices">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/societyOfficeTextInputEditText"
@@ -105,7 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="C. Tower/Lift/Lobby">
+                    android:hint="C. Number Of Tower/Lift/Lobby">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/towerLiftLobbyTextInputEditText"
@@ -125,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="D. More common point (eg.Club House, Temple, Hall, gym)">
+                    android:hint="D. More Common Point (eg.Club House, Temple, Hall, gym)">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/clubHouseAndMoreCommonPointTextInputEditText"
