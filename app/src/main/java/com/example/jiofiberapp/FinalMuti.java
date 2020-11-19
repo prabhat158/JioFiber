@@ -28,6 +28,9 @@ public class FinalMuti extends AppCompatActivity {
     TextView societyName;
     TextView numberOfTowerTextView;
 
+    boolean removeHashFor3Digit = false;
+    List<String> range0TO9ShortsCode = new ArrayList<>();
+    List<String> range21To99ShortsCode = new ArrayList<>();
     HashSet<Integer> uniqueRoomList = new HashSet<>();
 
 //    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
@@ -89,8 +92,8 @@ public class FinalMuti extends AppCompatActivity {
             linearLayout.addView(textEntryView);
         }
 
-        final List<String> range0TO9ShortsCode = getRange0TO9ShortsCode();
-        final List<String> range21To99ShortsCode = getRange21TO99ShortsCode();
+        range0TO9ShortsCode = getRange0TO9ShortsCode();
+        range21To99ShortsCode = getRange21TO99ShortsCode();
 
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +233,12 @@ public class FinalMuti extends AppCompatActivity {
                             String serial_number = (i + 1) + "";
                             String label = t1.getText().toString() + "-" + (i >= 10 ? "" + i : "0" + i);
 
-                            String sh = (i >= 10 ? "" + i : "0" + i);
+                            String sh = "";
+                            if (num > 9) {
+                                sh = (i >= 10 ? "" + i : "0" + i);
+                            } else
+                                sh = (m == 0) ? (i >= 10 ? "0" + i : "00" + i) : (i >= 10 ? "0" + i : "0" + i);
+
                             String short_code = getShortCodeFor2Digit(num, sh, m, range0TO9ShortsCode, range21To99ShortsCode);
                             uniqueRoomList.add(Integer.valueOf(room));
 
@@ -285,8 +293,18 @@ public class FinalMuti extends AppCompatActivity {
                                             else
                                                 room = (i * 100 + j) + "";
 
-                                        } else
-                                            room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+                                        } else {
+
+                                            if (num > 9) {
+                                                removeHashFor3Digit = false;
+                                                room = (i * 100 + j) + "";
+                                            } else {
+                                                room = (i * 100 + j) + "";
+                                                removeHashFor3Digit = true;
+                                                range0TO9ShortsCode = getRange0TO9OtherShortsCode();
+                                            }
+//                                            room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+                                        }
 
                                     } else {
 
@@ -333,12 +351,16 @@ public class FinalMuti extends AppCompatActivity {
 
                                         } else { // 3 digit
 
-                                            room = (i * 100 + j) + "";
+                                            if (i >= 1 && i <= 9)
+                                                room = "0" + (i * 100 + j) + "";
+                                            else
+                                                room = (i * 100 + j) + "";
 
-                                            // This is for if number length 3 digit then append 0 at begging
-                                            int roomLength = (int) Math.floor(Math.log10(Math.abs(Integer.parseInt(room)))) + 1;
-                                            if (roomLength == 3) {
-                                                room = "0" + room;
+                                            if (num > 9) {
+                                                removeHashFor3Digit = false;
+                                            } else {
+                                                removeHashFor3Digit = true;
+                                                range0TO9ShortsCode = getRange0TO9OtherShortsCode();
                                             }
                                         }
 
@@ -366,7 +388,8 @@ public class FinalMuti extends AppCompatActivity {
 
 //                                String short_code = t2.getText().toString() + room;
 
-                                String short_code = getShortCode(num, room, m, range0TO9ShortsCode, range21To99ShortsCode);
+//                                String short_code = getShortCode(num, room, m, range0TO9ShortsCode, range21To99ShortsCode);
+                                String short_code = getShortCodeFor2Digit(num, room, m, range0TO9ShortsCode, range21To99ShortsCode);
 
 
                                 String Flat_Numbers = room;
@@ -426,12 +449,19 @@ public class FinalMuti extends AppCompatActivity {
 
     private String getShortCodeFor2Digit(int num, String room, int index, List<String> Range0TO9ShortsCode, List<String> Range21TO99ShortsCode) {
         if (num > 9) {
-            return Range21TO99ShortsCode.get(index) + room;
+
+            return (index > 8 ? Range21TO99ShortsCode.get(index) + room : "'0" + Range21TO99ShortsCode.get(index) + room);
+
+//            return Range21TO99ShortsCode.get(index) + room;
         } else {
             if (Range0TO9ShortsCode.get(index).equals("0")) {
-                return room;
+                return "'" + room;
             } else {
-                return Range0TO9ShortsCode.get(index) + room;
+                if (removeHashFor3Digit) { // JUgad for remove 905 101 No of towers 5 Output  Tower 1 will be 1101 1102 1103....1105 upto 1901 1902 1903 1904 Tower 2 will be  2101 2102.....upto 2901 2905
+                    removeHashFor3Digit = false;
+                    return Range0TO9ShortsCode.get(index) + room;
+                } else
+                    return "'" + Range0TO9ShortsCode.get(index) + room;
             }
         }
     }
@@ -450,6 +480,7 @@ public class FinalMuti extends AppCompatActivity {
 
     private List<String> getRange0TO9ShortsCode() {
         List<String> list = new ArrayList<>();
+        list.add("0");
         list.add("2");
         list.add("3");
         list.add("4");
@@ -458,14 +489,27 @@ public class FinalMuti extends AppCompatActivity {
         list.add("7");
         list.add("8");
         list.add("9");
-        list.add("0");
+        return list;
+    }
+
+    private List<String> getRange0TO9OtherShortsCode() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        list.add("6");
+        list.add("7");
+        list.add("8");
+        list.add("9");
         return list;
     }
 
 
     private List<String> getRange21TO99ShortsCode() {
         List<String> list = new ArrayList<>();
-        for (int i = 21; i < 100; i++) {
+        for (int i = 1; i < 100; i++) {
             list.add(String.valueOf(i));
         }
         return list;
