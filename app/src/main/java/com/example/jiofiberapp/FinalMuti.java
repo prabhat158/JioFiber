@@ -237,7 +237,8 @@ public class FinalMuti extends AppCompatActivity {
                             if (num > 9) {
                                 sh = (i >= 10 ? "" + i : "0" + i);
                             } else
-                                sh = (m == 0) ? (i >= 10 ? "0" + i : "00" + i) : (i >= 10 ? "0" + i : "0" + i);
+//                                sh = (m == 0) ? (i >= 10 ? "0" + i : "00" + i) : (i >= 10 ? "0" + i : "0" + i);
+                                sh = (m == 0) ? (i >= 10 ? "0" + i : "00" + i) : (i >= 10 ? "" + i : "0" + i);
 
                             String short_code = getShortCodeFor2Digit(num, sh, m, range0TO9ShortsCode, range21To99ShortsCode);
                             uniqueRoomList.add(Integer.valueOf(room));
@@ -307,7 +308,7 @@ public class FinalMuti extends AppCompatActivity {
                                         }
 
                                     } else {
-
+                                        range0TO9ShortsCode = getRange0TO9OtherShortsCode();
                                         if (i == 0)
                                             room = (j >= 10 ? "0" + j : "00" + j);
                                         else if (i >= 1 && i <= 9)
@@ -365,7 +366,8 @@ public class FinalMuti extends AppCompatActivity {
                                         }
 
                                     } else {
-
+                                        range0TO9ShortsCode = getRange0TO9OtherShortsCode();
+                                        
                                         if (i == 0)
                                             room = (j >= 10 ? "00" + j : "000" + j);
                                         else if (i >= 1 && i <= 9)
@@ -461,7 +463,8 @@ public class FinalMuti extends AppCompatActivity {
                     removeHashFor3Digit = false;
                     return Range0TO9ShortsCode.get(index) + room;
                 } else
-                    return "'" + Range0TO9ShortsCode.get(index) + room;
+//                    return "'" + Range0TO9ShortsCode.get(index) + room;
+                    return Range0TO9ShortsCode.get(index) + room;
             }
         }
     }
