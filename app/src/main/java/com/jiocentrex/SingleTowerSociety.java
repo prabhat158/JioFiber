@@ -1,14 +1,15 @@
-package com.example.jiofiberapp;
+package com.jiocentrex;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -21,49 +22,130 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import easyfilepickerdialog.kingfisher.com.library.model.DialogConfig;
 import easyfilepickerdialog.kingfisher.com.library.model.SupportFile;
 import easyfilepickerdialog.kingfisher.com.library.view.FilePickerDialogFragment;
 
-public class Other extends AppCompatActivity {
+public class SingleTowerSociety extends AppCompatActivity {
 
-    String societyName = "";
+    //    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
+    //    AutoCompleteTextView typeOfFlatNumberExposedDropdown;
+    int digit;
+    int firstFlatNumber;
+    String nameOfTower;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_other);
+        setContentView(R.layout.activity_single_tower_society);
+
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            if (bundle.containsKey(AppConstants.SOCIETY_NAME))
-                societyName = bundle.getString(AppConstants.SOCIETY_NAME);
-        }
+        firstFlatNumber = bundle.getInt("firstFlatNumber");
+        digit = bundle.getInt("typeOfFlatNumber");
+        nameOfTower = bundle.getString("nameOfTowerOrSociety");
+
+//        ArrayAdapter<String> adapter =
+//                new ArrayAdapter<>(this,
+//                        R.layout.list_item,
+//                        TYPE_OF_FLAT_NUMBER);
+//        typeOfFlatNumberExposedDropdown = findViewById(R.id.type_of_flat_number);
+//        typeOfFlatNumberExposedDropdown.setAdapter(adapter);
+//        typeOfFlatNumberExposedDropdown.setInputType(InputType.TYPE_NULL);
+//        typeOfFlatNumberExposedDropdown.setKeyListener(null);
 
 //        final TextInputEditText ti1 = findViewById(R.id.TextInputEditText0);
+//        final TextInputEditText ti2 = findViewById(R.id.TextInputEditText01);
         final TextInputEditText ti3 = findViewById(R.id.TextInputEditText1);
+        final TextInputEditText ti4 = findViewById(R.id.TextInputEditText2);
+//        final CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
 
         MaterialButton materialButton = findViewById(R.id.nextbtn);
-
 
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (/*ti1.getText().toString().equals("") ||*/ ti3.getText().toString().equals("")) {
-                    ti3.setError("Enter Number of houses/flats/floors");
+//                typeOfFlatNumber = typeOfFlatNumberExposedDropdown.getText().toString();
+
+
+//                if (ti1.getText().toString().trim().equals("")) {
+//                    ti1.setError("Enter Name of tower");
+//                    ti1.requestFocus();
+//                    return;
+//                }
+
+//                if (ti2.getText().toString().trim().equals("")) {
+//                    ti2.setError("Enter Short Code");
+//                    ti2.requestFocus();
+//                    return;
+//                }
+
+                if (ti3.getText().toString().trim().equals("")) {
+                    ti3.setError("Enter Number of floors in the tower");
+                    ti3.requestFocus();
                     return;
                 }
+
+                if (ti4.getText().toString().trim().equals("")) {
+                    ti4.setError("Enter Number of Flats on each floor");
+                    ti4.requestFocus();
+                    return;
+                }
+
+//                if (typeOfFlatNumber.trim().equals("")) {
+//                    typeOfFlatNumberExposedDropdown.setError("Enter Type of Flat Number");
+//                    typeOfFlatNumberExposedDropdown.requestFocus();
+//                    return;
+//                }
+
                 try {
-//                    writer = new CSVWriter(new FileWriter(file));
+//                  writer = new CSVWriter(new FileWriter(file));
+
 
                     List<String[]> data = new ArrayList<String[]>();
 
                     data.add(new String[]{"serial_number", "label", "short_code"});
-//                    data.add(new String[]{"1", ti1.getText().toString()+"-"+ti3.getText().toString(), ti3.getText().toString()});
-                    data.add(new String[]{"1", societyName + "-" + ti3.getText().toString(), ti3.getText().toString()});
+                    for (int i = 1; i < Integer.parseInt(ti3.getText().toString()) + 1; i++) {
+                        for (int j = 1; j < Integer.parseInt(ti4.getText().toString()) + 1; j++) {
 
+                            String room = "";
+                            if (digit == 2) {
+//                                if (skipGroundFloorCheckBox.isChecked()) {
+//                                    room = (i * 10 + j) + "";
+//                                } else {
+                                room = (i == 1) ? (j >= 10 ? "" + j : "0" + j) : ((i - 1) * 10 + j) + "";
+//                                }
+                            } else if (digit == 3) {
+//                                if (skipGroundFloorCheckBox.isChecked()) {
+//                                    room = (i * 100 + j) + "";
+//                                } else {
+                                room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
+//                                }
+                            } else if (digit == 4) {
+//                                if (skipGroundFloorCheckBox.isChecked()) {
+//                                    room = (i * 100 + j) + "";
+//                                } else {
+//                                    room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) * 1000 + j) + "";
+                                room = (i == 1) ? (j >= 10 ? "00" + j : "000" + j) : ((i - 1) >= 10) ? (((i - 1) * 100 + j) + "") : ((i - 1) * 1000 + j) + "";
+//                                }
+                            }
+
+                            String serial_number = "" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j);
+//                            String label = ti1.getText().toString() + "-" + room;
+                            String label = nameOfTower + "-" + room;
+                            String short_code = room;
+//                            String short_code = ti2.getText().toString() + room;
+
+//                            data.add(new String[]{serial_number, label, short_code});
+                            data.add(new String[]{serial_number, label, short_code});
+
+                            /* data.add(
+                                    new String[]{"" + ((i - 1) * Integer.parseInt(ti4.getText().toString()) + j),
+                                            ti1.getText().toString() + "-" + (code == 1000 ? "0" + room : room),
+                                            ti2.getText().toString() + room
+                                    });*/
+                        }
+                    }
                     StringBuilder data1 = new StringBuilder();
                     for (int i = 0; i < data.size(); i++) {
                         data1.append("\n" + data.get(i)[0] + "," + data.get(i)[1] + "," + data.get(i)[2]);
@@ -119,11 +201,7 @@ public class Other extends AppCompatActivity {
 
                         @Override
                         public void shareFile() {
-                            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                            shareIntent.setType("image/jpg");
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),
-                                    BuildConfig.APPLICATION_ID + ".provider", file));
-                            startActivity(Intent.createChooser(shareIntent, "Share image using"));
+                            shareFileToUser(file);
                         }
                     });
 
@@ -134,7 +212,7 @@ public class Other extends AppCompatActivity {
                                                 bottomDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
                                                     @Override
                                                     public void onDismiss(DialogInterface dialogInterface) {
-                                                        Intent intent = new Intent(Other.this, HomeActivity.class);
+                                                        Intent intent = new Intent(SingleTowerSociety.this, HomeActivity.class);
                                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         startActivity(intent);
                                                         finish();
@@ -144,19 +222,15 @@ public class Other extends AppCompatActivity {
                                         }
                             , 10);
 
-
                 } catch (IOException e) {
                     Toast.makeText(getApplicationContext(), "Error " + e, Toast.LENGTH_LONG).show();
-
                     e.printStackTrace();
                 }
             }
         });
-
-
     }
 
-    private void shareFileToUser(File file) {
+    public void shareFileToUser(File file) {
         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("image/jpg");
         shareIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(),

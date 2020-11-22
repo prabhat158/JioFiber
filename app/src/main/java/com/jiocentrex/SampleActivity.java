@@ -1,4 +1,4 @@
-package com.example.jiofiberapp;
+package com.jiocentrex;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,11 +12,11 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.example.jiofiberapp.model.RangeVO;
-import com.example.jiofiberapp.model.SaveVO;
-import com.example.jiofiberapp.model.TowerVO;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.jiocentrex.model.RangeVO;
+import com.jiocentrex.model.SaveVO;
+import com.jiocentrex.model.TowerVO;
 
 import java.io.File;
 import java.io.FileOutputStream;
