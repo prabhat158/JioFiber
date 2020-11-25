@@ -49,6 +49,14 @@ public class SampleActivity extends AppCompatActivity {
     private MaterialButton submitButton;
     private ArrayList<TowerVO> mainList = new ArrayList<>();
 
+    // New
+    public String nameAuthorised;
+    public String mobileNumber;
+    public String emailId;
+    public String headQuaterName;
+    public String headQuaterId;
+    public String ornNumber;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,14 @@ public class SampleActivity extends AppCompatActivity {
         isSingleTower = bundle.getBoolean("isSingleTower");
         digit = bundle.getInt("digit");
         mainList = getIntent().getParcelableArrayListExtra("LIST");
+
+        // new
+        nameAuthorised = bundle.getString("nameAuthorised");
+        mobileNumber = bundle.getString("mobileNumber");
+        emailId = bundle.getString("emailId");
+        headQuaterName = bundle.getString("headQuaterName");
+        headQuaterId = bundle.getString("headQuaterId");
+        ornNumber = bundle.getString("ornNumber");
 
 
         rangeVO = new RangeVO();
@@ -449,6 +465,26 @@ public class SampleActivity extends AppCompatActivity {
 //        }
 
 
+        // Add New Data
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("Authorised Signatory Details", "", "0", "", ""));
+        mainList.add(new TowerVO("Name", nameAuthorised, "0", "", ""));
+        mainList.add(new TowerVO("Mobile Number", mobileNumber, "0", "", ""));
+        mainList.add(new TowerVO("Email Id", emailId, "0", "", ""));
+
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("Head Quarters Details", "", "0", "", ""));
+        mainList.add(new TowerVO("HQ Name", headQuaterName, "0", "", ""));
+        mainList.add(new TowerVO("HQ Id", headQuaterId, "0", "", ""));
+
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("ORN Number", ornNumber, "0", "", ""));
+
+
         StringBuilder data1 = new StringBuilder();
         for (int i = 0; i < mainList.size(); i++) {
             TowerVO singleTowerVO = mainList.get(i);
@@ -688,6 +724,25 @@ public class SampleActivity extends AppCompatActivity {
 //            mainList.add(new TowerVO(String.valueOf(count++), "", "", "0", "Service " + (i + 1), (code == 0 ? "" : code + "")));
 //        }
 
+
+        // Add New Data
+        mainList.add(new TowerVO("", "","" ,"0", "", ""));
+        mainList.add(new TowerVO("", "","", "0", "", ""));
+        mainList.add(new TowerVO("", "", "","0", "", ""));
+        mainList.add(new TowerVO("Authorized  Signatory Details", "","", "0", "", ""));
+        mainList.add(new TowerVO("Name", nameAuthorised, "", "0","", ""));
+        mainList.add(new TowerVO("Mobile Number", mobileNumber, "","0", "", ""));
+        mainList.add(new TowerVO("Email Id", emailId, "", "0","", ""));
+
+        mainList.add(new TowerVO("", "", "", "0","", ""));
+        mainList.add(new TowerVO("", "", "", "0", "",""));
+        mainList.add(new TowerVO("Head Quarters Details", "", "","0", "", ""));
+        mainList.add(new TowerVO("HQ Name", headQuaterName, "", "0", "",""));
+        mainList.add(new TowerVO("HQ Id", headQuaterId, "", "0", "",""));
+
+        mainList.add(new TowerVO("", "", "", "0", "",""));
+        mainList.add(new TowerVO("", "", "", "0", "",""));
+        mainList.add(new TowerVO("ORN Number", ornNumber, "", "0", "",""));
 
 //      data.add(new String[]{"SN 0", "Building id 1", "Towers 2", "Flats 3", "Labels 4", "Short-code 5"});
         StringBuilder data1 = new StringBuilder();

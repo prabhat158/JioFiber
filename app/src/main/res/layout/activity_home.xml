@@ -76,5 +76,5 @@
         android:id="@+id/nextbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"></com.google.android.material.button.MaterialButton>
+        android:text="Next"/>
 </LinearLayout>
