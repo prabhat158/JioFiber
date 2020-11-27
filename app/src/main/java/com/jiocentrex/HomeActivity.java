@@ -109,6 +109,12 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (building_id.length() != 13) {
+                    TextInputEditText1.requestFocus();
+                    TextInputEditText1.setError("Enter valid 13 alpha numeric");
+                    return;
+                }
+
 
                 // New
                 if (nameAuthorised.equals("")) {
@@ -117,9 +123,14 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (mobileNumber.equals("") || mobileNumber.length() != 10) {
+                if (mobileNumber.equals("")) {
                     mobileNumberTextInputEditText.requestFocus();
                     mobileNumberTextInputEditText.setError("Enter mobile number");
+                    return;
+                }
+                if (mobileNumber.length() != 10) {
+                    mobileNumberTextInputEditText.requestFocus();
+                    mobileNumberTextInputEditText.setError("Enter 10 digit mobile number");
                     return;
                 }
 
@@ -135,15 +146,27 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (headQuaterId.equals("") || headQuaterId.length() != 10) {
+                if (headQuaterId.equals("")) {
                     headQuaterIdInputEditText.requestFocus();
                     headQuaterIdInputEditText.setError("Enter head quoter name");
+                    return;
+                }
+
+                if (headQuaterId.length() != 10) {
+                    headQuaterIdInputEditText.requestFocus();
+                    headQuaterIdInputEditText.setError("Enter valid 10 digit head quoter id");
                     return;
                 }
 
                 if (ornNumber.equals("")) {
                     ornNumberInputEditText.requestFocus();
                     ornNumberInputEditText.setError("Enter orn number");
+                    return;
+                }
+
+                if (ornNumber.length() != 12) {
+                    ornNumberInputEditText.requestFocus();
+                    ornNumberInputEditText.setError("Enter valid 12 alpha numeric orn number");
                     return;
                 }
 
