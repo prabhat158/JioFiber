@@ -35,6 +35,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
     TextInputEditText TextInputEditText4;
     TextInputEditText TextInputEditText5;
     TextInputEditText TextInputEditText6;
+    TextInputEditText buildingIdEditText;
+
 
     public String nameAuthorised;
     public String mobileNumber;
@@ -53,7 +55,6 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_single_tower);
 
         Bundle bundle = getIntent().getExtras();
-        buildingID = bundle.getString("buildingID");
         nameOfTower = bundle.getString("nameOfTowerOrSociety");
 
         // new
@@ -69,6 +70,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         TextInputEditText4 = findViewById(R.id.TextInputEditText4);
         TextInputEditText5 = findViewById(R.id.TextInputEditText5);
         TextInputEditText6 = findViewById(R.id.TextInputEditText6);
+        buildingIdEditText = findViewById(R.id.buildingIdEditText);
+
 
         materialButton = findViewById(R.id.nextbtn);
 
@@ -133,7 +136,20 @@ public class NewSingleTowerActivity extends AppCompatActivity {
                 top_floor_last_flat_number_in_the_tallest_tower = TextInputEditText1.getText().toString();
                 first_flat_number_on_beginning_of_residential_floor = TextInputEditText2.getText().toString();
                 digits_in_flat_number = TextInputEditText4.getText().toString();
+                buildingID = buildingIdEditText.getText().toString().trim();
 
+
+                if (buildingID.equals("")) {
+                    buildingIdEditText.requestFocus();
+                    buildingIdEditText.setError("Enter building id");
+                    return;
+                }
+
+                if (buildingID.length() != 13) {
+                    buildingIdEditText.requestFocus();
+                    buildingIdEditText.setError("Enter valid 13 alpha numeric");
+                    return;
+                }
 
                 if (top_floor_last_flat_number_in_the_tallest_tower.equals("")) {
                     TextInputEditText1.requestFocus();
@@ -197,7 +213,6 @@ public class NewSingleTowerActivity extends AppCompatActivity {
                     TextInputEditText6.setError("Enter Number of Flats on each floor");
                     return;
                 }
-
 
                 manageLogic(digit, first_flat_number_on_beginning_of_residential_floor, nameOfTower, Integer.parseInt(TextInputEditText5.getText().toString()), Integer.parseInt(TextInputEditText6.getText().toString()));
 

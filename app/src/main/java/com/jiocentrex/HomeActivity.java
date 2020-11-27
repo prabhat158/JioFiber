@@ -20,7 +20,6 @@ import com.google.android.material.textfield.TextInputEditText;
 public class HomeActivity extends AppCompatActivity {
     public static String name_of_society = "";
     public static String type_of_society = "";
-    public static String building_id = "";
     // New
     public String nameAuthorised;
     public String mobileNumber;
@@ -29,7 +28,6 @@ public class HomeActivity extends AppCompatActivity {
     public String headQuaterId;
     public String ornNumber;
     String TAG = "tag";
-    TextInputEditText TextInputEditText1;
     TextInputEditText textInputEditText;
     MaterialButton materialButton;
     AutoCompleteTextView editTextFilledExposedDropdown;
@@ -65,7 +63,6 @@ public class HomeActivity extends AppCompatActivity {
         editTextFilledExposedDropdown.setKeyListener(null);
 
         textInputEditText = findViewById(R.id.TextInputEditText);
-        TextInputEditText1 = findViewById(R.id.TextInputEditText1);
 
 
         // New
@@ -83,7 +80,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 name_of_society = textInputEditText.getText().toString().trim();
                 type_of_society = editTextFilledExposedDropdown.getText().toString();
-                building_id = TextInputEditText1.getText().toString().trim();
 
                 nameAuthorised = nameAuthorisedInputEditText.getText().toString().trim();
                 mobileNumber = mobileNumberTextInputEditText.getText().toString().trim();
@@ -100,18 +96,6 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (type_of_society.equals("")) {
                     editTextFilledExposedDropdown.setError("Select type of society");
-                    return;
-                }
-
-                if (building_id.equals("")) {
-                    TextInputEditText1.requestFocus();
-                    TextInputEditText1.setError("Enter building id");
-                    return;
-                }
-
-                if (building_id.length() != 13) {
-                    TextInputEditText1.requestFocus();
-                    TextInputEditText1.setError("Enter valid 13 alpha numeric");
                     return;
                 }
 
@@ -178,7 +162,7 @@ public class HomeActivity extends AppCompatActivity {
                     intent = new Intent(HomeActivity.this, NewMultiTowerTowerActivity.class);
                 }
                 intent.putExtra("nameOfTowerOrSociety", name_of_society);
-                intent.putExtra("buildingID", building_id);
+
 
                 // NEw
                 intent.putExtra("nameAuthorised", nameAuthorised);

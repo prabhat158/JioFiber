@@ -43,7 +43,6 @@ public class FinalMuti extends AppCompatActivity {
     List<String> range21To99ShortsCode = new ArrayList<>();
     HashSet<Integer> uniqueRoomList = new HashSet<>();
     boolean isFixFirstFlatNumber;
-    String buildingID;
     String fixFirstFlatNumber;
     int digit;
 
@@ -53,7 +52,6 @@ public class FinalMuti extends AppCompatActivity {
         setContentView(R.layout.activity_final_muti);
 
         Bundle bundle = getIntent().getExtras();
-        buildingID = bundle.getString("buildingID");
         nameOfSociety = bundle.getString("nameOfTowerOrSociety");
         final int num = Integer.parseInt(bundle.getString("number"));
         fixFirstFlatNumber = bundle.getString("fixFirstFlatNumber");
@@ -130,7 +128,6 @@ public class FinalMuti extends AppCompatActivity {
 
 
                 int k = 1;
-                boolean isBuildingId = true;
                 List<String[]> data = new ArrayList<String[]>();
                 data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Labels", "Short-code"});
 
@@ -145,6 +142,9 @@ public class FinalMuti extends AppCompatActivity {
                     TextInputEditText t4 = view1.findViewById(R.id.TextInputEditText2);
                     TextInputEditText firstFlatInTowerEditText = view1.findViewById(R.id.TextInputEditText4);
 //                        CheckBox skipGroundFloorCheckBox = findViewById(R.id.skipGroundFloorCheckBox);
+                    TextInputEditText buildingIdEditText = view1.findViewById(R.id.buildingIdEditText);
+
+                    String buildingID = buildingIdEditText.getText().toString();
 
 
                     if (t1.getText().toString().trim().equals("")) {
@@ -170,6 +170,19 @@ public class FinalMuti extends AppCompatActivity {
                         t4.requestFocus();
                         return;
                     }
+
+                    if (buildingIdEditText.getText().toString().equals("")) {
+                        buildingIdEditText.requestFocus();
+                        buildingIdEditText.setError("Enter building id");
+                        return;
+                    }
+
+                    if (buildingIdEditText.getText().toString().trim().length() != 13) {
+                        buildingIdEditText.requestFocus();
+                        buildingIdEditText.setError("Enter valid 13 alpha numeric");
+                        return;
+                    }
+
 
                     String towerName = t1.getText().toString();
 
@@ -256,9 +269,8 @@ public class FinalMuti extends AppCompatActivity {
                             String short_code = getShortCodeFor2Digit(num, sh, m, range0TO9ShortsCode, range21To99ShortsCode);
                             uniqueRoomList.add(Integer.valueOf(room));
 
-                            data.add(new String[]{serial_number, (isBuildingId ? buildingID : ""), (addTowerName ? towerName : ""), "0", label, short_code});
+                            data.add(new String[]{serial_number, (addTowerName ? buildingID : ""), (addTowerName ? towerName : ""), "0", label, short_code});
                             addTowerName = false;
-                            isBuildingId = false;
                         }
 
                     } else {
@@ -411,9 +423,8 @@ public class FinalMuti extends AppCompatActivity {
 
                                 uniqueRoomList.add(Integer.valueOf(room));
 
-                                data.add(new String[]{serial_number, (isBuildingId ? buildingID : ""), (addTowerName ? towerName : ""), "0", label, short_code});
+                                data.add(new String[]{serial_number, (addTowerName ? buildingID : ""), (addTowerName ? towerName : ""), "0", label, short_code});
                                 addTowerName = false;
-                                isBuildingId = false;
                                 k++;
                             }
                         }
@@ -450,6 +461,22 @@ public class FinalMuti extends AppCompatActivity {
                 for (int i = 0; i < towerNameList.size(); i++) {
                     TowerVO towerVO = finalList.get(i + 1);
                     towerVO.setTowers(towerNameList.get(i));
+                    finalList.set(i + 1, towerVO);
+                }
+
+                List<String> buildingList = new ArrayList<>();
+                for (int i = 1; i < finalList.size(); i++) {
+                    TowerVO towerVO = finalList.get(i);
+                    if (towerVO.getBuildingId().length() > 0) {
+                        buildingList.add(towerVO.getBuildingId());
+                        towerVO.setBuildingId("");
+                        finalList.set(i, towerVO);
+                    }
+                }
+
+                for (int i = 0; i < buildingList.size(); i++) {
+                    TowerVO towerVO = finalList.get(i + 1);
+                    towerVO.setBuildingId(buildingList.get(i));
                     finalList.set(i + 1, towerVO);
                 }
 
