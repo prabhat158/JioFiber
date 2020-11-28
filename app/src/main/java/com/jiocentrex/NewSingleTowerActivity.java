@@ -316,9 +316,15 @@ public class NewSingleTowerActivity extends AppCompatActivity {
                                 else
                                     room = (i * 100 + j) + "";
 
-                            } else
-                                room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + "";
-
+                            } else {
+//                                room = (i == 1) ? (j >= 10 ? "0" + j : "00" + j) : ((i - 1) * 100 + j) + ""; ??????
+                                if (i == 0)
+                                    room = (j >= 10 ? "0" + j : "00" + j);
+                                else if (i >= 1 && i <= 9)
+                                    room = (i * 100 + j) + "";
+                                else
+                                    room = (i * 100 + j) + "";
+                            }
                         } else {
 
                             if (i == 0)
