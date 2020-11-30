@@ -29,6 +29,10 @@ public class FinalMuti extends AppCompatActivity {
     public String headQuaterName;
     public String headQuaterId;
     public String ornNumber;
+    public String address;
+    public String pincode;
+
+
     LinearLayout linearLayout;
     MaterialButton materialButton;
     String nameOfSociety;
@@ -65,6 +69,9 @@ public class FinalMuti extends AppCompatActivity {
         headQuaterName = bundle.getString("headQuaterName");
         headQuaterId = bundle.getString("headQuaterId");
         ornNumber = bundle.getString("ornNumber");
+        address = bundle.getString("address");
+        pincode = bundle.getString("pincode");
+
 
 
         numberOfTowerTextView = findViewById(R.id.numberOfTowerTextView);
@@ -129,7 +136,8 @@ public class FinalMuti extends AppCompatActivity {
 
                 int k = 1;
                 List<String[]> data = new ArrayList<String[]>();
-                data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Labels", "Short-code"});
+//                data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Labels", "Short-code"});
+                data.add(new String[]{"SN", "Building id", "Towers", "Flats", "Address Label", "Short-code"});
 
                 for (int m = 0; m < list.size(); m++) {
 
@@ -492,6 +500,10 @@ public class FinalMuti extends AppCompatActivity {
                 intent.putExtra("headQuaterName", headQuaterName);
                 intent.putExtra("headQuaterId", headQuaterId);
                 intent.putExtra("ornNumber", ornNumber);
+
+                intent.putExtra("address", address);
+                intent.putExtra("pincode", pincode);
+                intent.putExtra("nameOfTowerOrSociety", nameOfSociety);
 
                 startActivity(intent);
             }

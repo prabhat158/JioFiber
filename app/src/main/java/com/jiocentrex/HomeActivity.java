@@ -27,6 +27,8 @@ public class HomeActivity extends AppCompatActivity {
     public String headQuaterName;
     public String headQuaterId;
     public String ornNumber;
+    public String address;
+    public String pincode;
     String TAG = "tag";
     TextInputEditText textInputEditText;
     MaterialButton materialButton;
@@ -38,6 +40,8 @@ public class HomeActivity extends AppCompatActivity {
     TextInputEditText headQuaterNameInputEditText;
     TextInputEditText headQuaterIdInputEditText;
     TextInputEditText ornNumberInputEditText;
+    TextInputEditText addressInputEditText;
+    TextInputEditText pincodeInputEditText;
 
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -72,6 +76,8 @@ public class HomeActivity extends AppCompatActivity {
         headQuaterNameInputEditText = findViewById(R.id.headQuaterNameInputEditText);
         headQuaterIdInputEditText = findViewById(R.id.headQuaterIdInputEditText);
         ornNumberInputEditText = findViewById(R.id.ornNumberInputEditText);
+        pincodeInputEditText = findViewById(R.id.pincodeInputEditText);
+        addressInputEditText = findViewById(R.id.addressInputEditText);
 
 
         materialButton = findViewById(R.id.nextbtn);
@@ -88,6 +94,9 @@ public class HomeActivity extends AppCompatActivity {
                 headQuaterId = headQuaterIdInputEditText.getText().toString().trim();
                 ornNumber = ornNumberInputEditText.getText().toString().trim();
 
+                address = addressInputEditText.getText().toString().trim();
+                pincode = pincodeInputEditText.getText().toString().trim();
+
                 if (name_of_society.equals("")) {
                     textInputEditText.requestFocus();
                     textInputEditText.setError("Enter name of society");
@@ -98,7 +107,14 @@ public class HomeActivity extends AppCompatActivity {
                     editTextFilledExposedDropdown.setError("Select type of society");
                     return;
                 }
-
+                if (address.equals("")) {
+                    addressInputEditText.setError("Enter address");
+                    return;
+                }
+                if (pincode.equals("") || pincode.length() != 6) {
+                    pincodeInputEditText.setError("Enter pincode");
+                    return;
+                }
 
                 // New
                 if (nameAuthorised.equals("")) {
@@ -171,6 +187,8 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("headQuaterName", headQuaterName);
                 intent.putExtra("headQuaterId", headQuaterId);
                 intent.putExtra("ornNumber", ornNumber);
+                intent.putExtra("address", address);
+                intent.putExtra("pincode", pincode);
                 startActivity(intent);
 
 

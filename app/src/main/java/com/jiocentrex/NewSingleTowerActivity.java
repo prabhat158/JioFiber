@@ -44,7 +44,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
     public String headQuaterName;
     public String headQuaterId;
     public String ornNumber;
-
+    public String address;
+    public String pincode;
 
 
     MaterialButton materialButton;
@@ -64,6 +65,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         headQuaterName = bundle.getString("headQuaterName");
         headQuaterId = bundle.getString("headQuaterId");
         ornNumber = bundle.getString("ornNumber");
+        address = bundle.getString("address");
+        pincode = bundle.getString("pincode");
 
         TextInputEditText1 = findViewById(R.id.TextInputEditText1);
         TextInputEditText2 = findViewById(R.id.TextInputEditText2);
@@ -241,7 +244,8 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         boolean isGreaterThanOne = Integer.parseInt(firstFlatNumber.substring(0, 1)) > 1;
 
         List<String[]> data = new ArrayList<String[]>();
-        data.add(new String[]{"SN", "Building id", "Flats", "Labels", "Short-code"});
+//        data.add(new String[]{"SN", "Building id", "Flats", "Labels", "Short-code"});
+        data.add(new String[]{"SN", "Building id", "Flats", "Address Label", "Short-code"});
 
         int totalFlatIndex = 1;
         boolean isBuildingId = true;
@@ -423,14 +427,15 @@ public class NewSingleTowerActivity extends AppCompatActivity {
             finalList.add(new TowerVO(i == 0 ? data.get(i)[0] : String.valueOf(i), data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4]));
         }
 
-        int counter = 1;
-        TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
-        for (Integer key : temp) {
-            TowerVO singleTowerVO = finalList.get(counter);
-            singleTowerVO.setFlats(String.valueOf(key));
-            finalList.set(counter, singleTowerVO);
-            counter++;
-        }
+        // Remove unique flat number
+//        int counter = 1;
+//        TreeSet<Integer> temp = new TreeSet<>(uniqueRoomList);
+//        for (Integer key : temp) {
+//            TowerVO singleTowerVO = finalList.get(counter);
+//            singleTowerVO.setFlats(String.valueOf(key));
+//            finalList.set(counter, singleTowerVO);
+//            counter++;
+//        }
 
         Intent intent = new Intent(NewSingleTowerActivity.this, SampleActivity.class);
         intent.putParcelableArrayListExtra("LIST", (ArrayList<? extends Parcelable>) finalList);
@@ -444,6 +449,9 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         intent.putExtra("headQuaterName", headQuaterName);
         intent.putExtra("headQuaterId", headQuaterId);
         intent.putExtra("ornNumber", ornNumber);
+        intent.putExtra("address", address);
+        intent.putExtra("pincode", pincode);
+        intent.putExtra("nameOfTowerOrSociety", nameOfTower);
 
         startActivity(intent);
     }

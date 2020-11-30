@@ -34,6 +34,8 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
     public String headQuaterName;
     public String headQuaterId;
     public String ornNumber;
+    public String address;
+    public String pincode;
 
     MaterialButton materialButton;
 
@@ -53,6 +55,9 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
         headQuaterName = bundle.getString("headQuaterName");
         headQuaterId = bundle.getString("headQuaterId");
         ornNumber = bundle.getString("ornNumber");
+        address = bundle.getString("address");
+        pincode = bundle.getString("pincode");
+
 
 
 
@@ -167,6 +172,8 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
                 intent.putExtra("headQuaterName", headQuaterName);
                 intent.putExtra("headQuaterId", headQuaterId);
                 intent.putExtra("ornNumber", ornNumber);
+                intent.putExtra("address", address);
+                intent.putExtra("pincode", pincode);
 
                 startActivity(intent);
             }

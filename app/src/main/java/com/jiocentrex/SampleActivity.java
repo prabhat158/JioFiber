@@ -50,12 +50,15 @@ public class SampleActivity extends AppCompatActivity {
     private ArrayList<TowerVO> mainList = new ArrayList<>();
 
     // New
+    public String nameOfTowerOrSociety;
     public String nameAuthorised;
     public String mobileNumber;
     public String emailId;
     public String headQuaterName;
     public String headQuaterId;
     public String ornNumber;
+    public String address;
+    public String pincode;
 
 
     @Override
@@ -76,6 +79,9 @@ public class SampleActivity extends AppCompatActivity {
         headQuaterName = bundle.getString("headQuaterName");
         headQuaterId = bundle.getString("headQuaterId");
         ornNumber = bundle.getString("ornNumber");
+        address = bundle.getString("address");
+        pincode = bundle.getString("pincode");
+        nameOfTowerOrSociety = bundle.getString("nameOfTowerOrSociety");
 
 
         rangeVO = new RangeVO();
@@ -354,7 +360,8 @@ public class SampleActivity extends AppCompatActivity {
         mainList.add(new TowerVO("", "", "0", "", ""));
         mainList.add(new TowerVO("", "", "0", "", ""));
         mainList.add(new TowerVO("", "", "0", "", ""));
-        mainList.add(new TowerVO("Common Point SN", "", "0", "Labels", "Short-code"));
+        mainList.add(new TowerVO("Common Point SN", "", "0", "Address Label", "Short-code"));
+//        mainList.add(new TowerVO("Common Point SN", "", "0", "Labels", "Short-code"));
 
         int count = 1;
 
@@ -469,6 +476,14 @@ public class SampleActivity extends AppCompatActivity {
         mainList.add(new TowerVO("", "", "0", "", ""));
         mainList.add(new TowerVO("", "", "0", "", ""));
         mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("Society Information", "", "0", "", ""));
+        mainList.add(new TowerVO("Name", nameOfTowerOrSociety, "0", "", ""));
+        mainList.add(new TowerVO("Address", address, "0", "", ""));
+        mainList.add(new TowerVO("Pincode", pincode, "0", "", ""));
+
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("", "", "0", "", ""));
         mainList.add(new TowerVO("Authorised Signatory Details", "", "0", "", ""));
         mainList.add(new TowerVO("Name", nameAuthorised, "0", "", ""));
         mainList.add(new TowerVO("Mobile Number", mobileNumber, "0", "", ""));
@@ -570,7 +585,8 @@ public class SampleActivity extends AppCompatActivity {
         mainList.add(new TowerVO("", "", "", "0", "", ""));
         mainList.add(new TowerVO("", "", "", "0", "", ""));
         mainList.add(new TowerVO("", "", "", "0", "", ""));
-        mainList.add(new TowerVO("Common Point SN", "", "", "0", "Labels", "Short-code"));
+//        mainList.add(new TowerVO("Common Point SN", "", "", "0", "Labels", "Short-code"));
+        mainList.add(new TowerVO("Common Point SN", "", "", "0", "Address Label", "Short-code"));
 
 
         int count = 1;
@@ -726,6 +742,14 @@ public class SampleActivity extends AppCompatActivity {
 
 
         // Add New Data
+        mainList.add(new TowerVO("", "", "","0", "", ""));
+        mainList.add(new TowerVO("", "","", "0", "", ""));
+        mainList.add(new TowerVO("", "","", "0", "", ""));
+        mainList.add(new TowerVO("Society Information", "","", "0", "", ""));
+        mainList.add(new TowerVO("Name", nameOfTowerOrSociety, "","0", "", ""));
+        mainList.add(new TowerVO("Address", address, "","0", "", ""));
+        mainList.add(new TowerVO("Pincode", pincode, "","0", "", ""));
+
         mainList.add(new TowerVO("", "","" ,"0", "", ""));
         mainList.add(new TowerVO("", "","", "0", "", ""));
         mainList.add(new TowerVO("", "", "","0", "", ""));
