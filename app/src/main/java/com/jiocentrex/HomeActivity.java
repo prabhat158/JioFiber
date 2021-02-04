@@ -10,12 +10,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
+import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HomeActivity extends AppCompatActivity {
     public static String name_of_society = "";
@@ -26,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     public String emailId;
     public String headQuaterName;
     public String headQuaterId;
+    public String jioCenterId;
     public String ornNumber;
     public String address;
     public String pincode;
@@ -42,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
     TextInputEditText ornNumberInputEditText;
     TextInputEditText addressInputEditText;
     TextInputEditText pincodeInputEditText;
-
+    EditText jioIdInputEditText;
 
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
@@ -67,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
         editTextFilledExposedDropdown.setKeyListener(null);
 
         textInputEditText = findViewById(R.id.TextInputEditText);
-
+        setupPrefixSample();
 
         // New
         nameAuthorisedInputEditText = findViewById(R.id.nameAuthorisedInputEditText);
@@ -164,6 +173,12 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (jioCenterId == null || jioCenterId.equals("") || jioCenterId.length() != 18) {
+                    jioIdInputEditText.requestFocus();
+                    jioIdInputEditText.setError("Enter jio center id");
+                    return;
+                }
+
                 if (ornNumber.length() != 12) {
                     ornNumberInputEditText.requestFocus();
                     ornNumberInputEditText.setError("Enter valid 12 alpha numeric orn number");
@@ -187,6 +202,7 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("headQuaterName", headQuaterName);
                 intent.putExtra("headQuaterId", headQuaterId);
                 intent.putExtra("ornNumber", ornNumber);
+                intent.putExtra("jioCenterId", jioCenterId);
                 intent.putExtra("address", address);
                 intent.putExtra("pincode", pincode);
                 startActivity(intent);
@@ -258,4 +274,30 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void setupPrefixSample() {
+        jioIdInputEditText = findViewById(R.id.jioIdInputEditText);
+        final List<String> affineFormats = new ArrayList<>();
+        affineFormats.add("[A]-[AA]-[AAAA]-[AAA]-[AAAA]");
+        final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
+                jioIdInputEditText,
+                "[A]-[AA]-[AAAA]-[AAA]-[AAAA]",
+                affineFormats,
+                AffinityCalculationStrategy.PREFIX,
+                new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue, @NonNull String formattedText) {
+                        logValueListener(maskFilled, extractedValue, formattedText);
+                        jioCenterId = formattedText;
+                    }
+                }
+        );
+//        editText.setHint(listener.placeholder());
+    }
+
+    private void logValueListener(boolean maskFilled, @NonNull String extractedValue, @NonNull String formattedText) {
+        final String className = MainActivity.class.getSimpleName();
+        Log.d(className, extractedValue);
+        Log.d(className, String.valueOf(maskFilled));
+        Log.d(className, formattedText);
+    }
 }

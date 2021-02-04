@@ -33,6 +33,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
     public String emailId;
     public String headQuaterName;
     public String headQuaterId;
+    public String jioCenterId;
     public String ornNumber;
     public String address;
     public String pincode;
@@ -47,6 +48,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         buildingID = bundle.getString("buildingID");
         nameOfSociety = bundle.getString("nameOfTowerOrSociety");
+        jioCenterId = bundle.getString("jioCenterId");
 
         // new
         nameAuthorised = bundle.getString("nameAuthorised");
@@ -171,6 +173,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
                 intent.putExtra("emailId", emailId);
                 intent.putExtra("headQuaterName", headQuaterName);
                 intent.putExtra("headQuaterId", headQuaterId);
+                intent.putExtra("jioCenterId", jioCenterId);
                 intent.putExtra("ornNumber", ornNumber);
                 intent.putExtra("address", address);
                 intent.putExtra("pincode", pincode);

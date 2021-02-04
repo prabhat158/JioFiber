@@ -25,6 +25,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
     public static String digits_in_flat_number = "";
 
     String buildingID;
+    String jioCenterId;
     String nameOfTower;
     HashSet<Integer> uniqueRoomList = new HashSet<>();
 
@@ -57,6 +58,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         nameOfTower = bundle.getString("nameOfTowerOrSociety");
+        jioCenterId = bundle.getString("jioCenterId");
 
         // new
         nameAuthorised = bundle.getString("nameAuthorised");
@@ -448,6 +450,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         intent.putExtra("emailId", emailId);
         intent.putExtra("headQuaterName", headQuaterName);
         intent.putExtra("headQuaterId", headQuaterId);
+        intent.putExtra("jioCenterId", jioCenterId);
         intent.putExtra("ornNumber", ornNumber);
         intent.putExtra("address", address);
         intent.putExtra("pincode", pincode);

@@ -56,6 +56,7 @@ public class SampleActivity extends AppCompatActivity {
     public String emailId;
     public String headQuaterName;
     public String headQuaterId;
+    public String jioCenterId;
     public String ornNumber;
     public String address;
     public String pincode;
@@ -82,6 +83,7 @@ public class SampleActivity extends AppCompatActivity {
         address = bundle.getString("address");
         pincode = bundle.getString("pincode");
         nameOfTowerOrSociety = bundle.getString("nameOfTowerOrSociety");
+        jioCenterId = bundle.getString("jioCenterId");
 
 
         rangeVO = new RangeVO();
@@ -497,6 +499,7 @@ public class SampleActivity extends AppCompatActivity {
 
         mainList.add(new TowerVO("", "", "0", "", ""));
         mainList.add(new TowerVO("", "", "0", "", ""));
+        mainList.add(new TowerVO("Jio Center ID", jioCenterId, "0", "", ""));
         mainList.add(new TowerVO("ORN Number", ornNumber, "0", "", ""));
 
 

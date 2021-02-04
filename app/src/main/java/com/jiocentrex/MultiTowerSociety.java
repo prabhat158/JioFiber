@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class MultiTowerSociety extends AppCompatActivity {
 
     String nameOfSociety;
+    String jioCenterId;
     TextView societyName;
     TextInputEditText textInputEditText;
     MaterialButton materialButton;
@@ -27,6 +28,7 @@ public class MultiTowerSociety extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         nameOfSociety = bundle.getString("nameOfSociety");
+        jioCenterId = bundle.getString("jioCenterId");
 
         societyName.setText(nameOfSociety);
 
@@ -38,6 +40,7 @@ public class MultiTowerSociety extends AppCompatActivity {
                         Intent intent = new Intent(MultiTowerSociety.this, FinalMuti.class);
                         intent.putExtra("number", (textInputEditText.getText().toString()));
                         intent.putExtra("nameOfSociety", nameOfSociety);
+                        intent.putExtra("jioCenterId", jioCenterId);
                         startActivity(intent);
                     } else
                         textInputEditText.setError("Enter Number of towers in the society");

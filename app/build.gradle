@@ -41,4 +41,9 @@ dependencies {
     implementation 'com.opencsv:opencsv:4.6'
 
     implementation 'com.kingfisherphuoc:easy-file-folder-picker-dialog:1.4'
+
+//    implementation 'ru.egslava:MaskedEditText:1.0.5'
+//    implementation 'com.github.pinball83:masked-edittext:1.0.4'
+    implementation 'com.redmadrobot:input-mask-android:6.0.0'
+
 }

@@ -279,6 +279,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:hint="Jiocenter id">
+
+                <EditText
+                    android:id="@+id/jioIdInputEditText"
+                    android:layout_width="match_parent"
+                    android:imeOptions="actionNext"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_light"
+                    android:inputType="text" />
+
+                <!--    <br.com.sapereaude.maskedEditText.MaskedEditText
+                        android:id="@+id/jioIdInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blue_light"
+                        android:imeOptions="actionNext"
+                        android:textSize="16sp"
+                        app:char_representation="c"
+                        app:mask="c@cc-cccc-ccc-cccc" />-->
+                <!--#-##-####-###-####   -->
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:hint="ORN Number">
 
                 <com.google.android.material.textfield.TextInputEditText

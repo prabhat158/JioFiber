@@ -28,6 +28,7 @@ public class FinalMuti extends AppCompatActivity {
     public String emailId;
     public String headQuaterName;
     public String headQuaterId;
+    public String jioCenterId;
     public String ornNumber;
     public String address;
     public String pincode;
@@ -61,6 +62,7 @@ public class FinalMuti extends AppCompatActivity {
         fixFirstFlatNumber = bundle.getString("fixFirstFlatNumber");
         digit = bundle.getInt("digit");
         isFixFirstFlatNumber = bundle.getBoolean("isStartFlatNumberSame");
+        jioCenterId = bundle.getString("jioCenterId");
 
         // new
         nameAuthorised = bundle.getString("nameAuthorised");
@@ -504,6 +506,7 @@ public class FinalMuti extends AppCompatActivity {
                 intent.putExtra("address", address);
                 intent.putExtra("pincode", pincode);
                 intent.putExtra("nameOfTowerOrSociety", nameOfSociety);
+                intent.putExtra("jioCenterId", jioCenterId);
 
                 startActivity(intent);
             }
