@@ -53,7 +53,10 @@ public class HomeActivity extends AppCompatActivity {
     TextInputEditText pincodeInputEditText;
     EditText jioIdInputEditText;
 
-    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+    private boolean isValidEmail(String text) {
+        return text.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+") || text.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (emailId.equals("") || !emailId.matches(emailPattern)) {
+                if (emailId.equals("") || !isValidEmail(emailId)) {
                     emailIdInputEditText.requestFocus();
                     emailIdInputEditText.setError("Enter valid email");
                     return;
