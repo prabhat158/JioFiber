@@ -280,10 +280,10 @@ public class HomeActivity extends AppCompatActivity {
     private void setupPrefixSample() {
         jioIdInputEditText = findViewById(R.id.jioIdInputEditText);
         final List<String> affineFormats = new ArrayList<>();
-        affineFormats.add("[A]-[AA]-[AAAA]-[AAA]-[AAAA]");
+        affineFormats.add("[A]-[AA]-[AAAA]-[AAA]-[0000]"); // [A]-[AA]-[AAAA]-[AAA]-[AAAA]
         final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
                 jioIdInputEditText,
-                "[A]-[AA]-[AAAA]-[AAA]-[AAAA]",
+                "[A]-[AA]-[AAAA]-[AAA]-[0000]",
                 affineFormats,
                 AffinityCalculationStrategy.PREFIX,
                 new MaskedTextChangedListener.ValueListener() {
