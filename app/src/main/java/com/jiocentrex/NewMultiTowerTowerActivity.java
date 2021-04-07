@@ -28,6 +28,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
     TextInputEditText TextInputEditText4;
     CheckBox isStartFlatNumberSameCheckBox;
 
+    public String societyId;
     public String nameAuthorised;
     public String mobileNumber;
     public String emailId;
@@ -51,6 +52,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
         jioCenterId = bundle.getString("jioCenterId");
 
         // new
+        societyId = bundle.getString("societyId");
         nameAuthorised = bundle.getString("nameAuthorised");
         mobileNumber = bundle.getString("mobileNumber");
         emailId = bundle.getString("emailId");
@@ -168,6 +170,7 @@ public class NewMultiTowerTowerActivity extends AppCompatActivity {
 
 
                 //new
+                intent.putExtra("societyId", societyId);
                 intent.putExtra("nameAuthorised", nameAuthorised);
                 intent.putExtra("mobileNumber", mobileNumber);
                 intent.putExtra("emailId", emailId);

@@ -78,6 +78,24 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/societyIdField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Society ID">
+
+                    <EditText
+                        android:id="@+id/societyIdEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blue_light"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLength="13"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -274,33 +292,61 @@
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <com.google.android.material.textfield.TextInputLayout
+            <RadioGroup
+                android:id="@+id/jioCenterIdRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/digit4RadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="4 Digit" />
+
+                <RadioButton
+                    android:id="@+id/digit14RadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="14 Digit" />
+
+            </RadioGroup>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/jioId4TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Jiocenter id">
 
                 <EditText
-                    android:id="@+id/jioIdInputEditText"
+                    android:id="@+id/jioId4InputEditText"
                     android:layout_width="match_parent"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content"
                     android:background="@color/blue_light"
                     android:inputType="text" />
 
-                <!--    <br.com.sapereaude.maskedEditText.MaskedEditText
-                        android:id="@+id/jioIdInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/blue_light"
-                        android:imeOptions="actionNext"
-                        android:textSize="16sp"
-                        app:char_representation="c"
-                        app:mask="c@cc-cccc-ccc-cccc" />-->
-                <!--#-##-####-###-####   -->
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/jioId14TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Jiocenter id"
+                android:visibility="gone">
 
+                <EditText
+                    android:id="@+id/jioId14InputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_light"
+                    android:imeOptions="actionNext"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

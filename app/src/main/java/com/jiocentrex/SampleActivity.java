@@ -50,6 +50,7 @@ public class SampleActivity extends AppCompatActivity {
     private ArrayList<TowerVO> mainList = new ArrayList<>();
 
     // New
+    public String societyId;
     public String nameOfTowerOrSociety;
     public String nameAuthorised;
     public String mobileNumber;
@@ -74,6 +75,7 @@ public class SampleActivity extends AppCompatActivity {
         mainList = getIntent().getParcelableArrayListExtra("LIST");
 
         // new
+        societyId = bundle.getString("societyId");
         nameAuthorised = bundle.getString("nameAuthorised");
         mobileNumber = bundle.getString("mobileNumber");
         emailId = bundle.getString("emailId");
@@ -480,6 +482,7 @@ public class SampleActivity extends AppCompatActivity {
         mainList.add(new TowerVO("", "", "0", "", ""));
         mainList.add(new TowerVO("Society Information", "", "0", "", ""));
         mainList.add(new TowerVO("Name", nameOfTowerOrSociety, "0", "", ""));
+        mainList.add(new TowerVO("ID", societyId, "0", "", ""));
         mainList.add(new TowerVO("Address", address, "0", "", ""));
         mainList.add(new TowerVO("Pincode", pincode, "0", "", ""));
 

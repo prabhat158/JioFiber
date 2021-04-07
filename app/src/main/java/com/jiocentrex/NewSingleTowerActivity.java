@@ -16,7 +16,6 @@ import com.jiocentrex.model.TowerVO;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
 
 public class NewSingleTowerActivity extends AppCompatActivity {
     public static String top_floor_last_flat_number_in_the_tallest_tower = "";
@@ -39,6 +38,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
     TextInputEditText buildingIdEditText;
 
 
+    public String societyId;
     public String nameAuthorised;
     public String mobileNumber;
     public String emailId;
@@ -61,6 +61,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         jioCenterId = bundle.getString("jioCenterId");
 
         // new
+        societyId = bundle.getString("societyId");
         nameAuthorised = bundle.getString("nameAuthorised");
         mobileNumber = bundle.getString("mobileNumber");
         emailId = bundle.getString("emailId");
@@ -445,6 +446,7 @@ public class NewSingleTowerActivity extends AppCompatActivity {
         intent.putExtra("digit", digit);
 
         //new
+        intent.putExtra("societyId", societyId);
         intent.putExtra("nameAuthorised", nameAuthorised);
         intent.putExtra("mobileNumber", mobileNumber);
         intent.putExtra("emailId", emailId);

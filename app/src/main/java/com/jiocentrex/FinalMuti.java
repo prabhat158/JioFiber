@@ -36,6 +36,7 @@ public class FinalMuti extends AppCompatActivity {
 
     LinearLayout linearLayout;
     MaterialButton materialButton;
+    String societyId;
     String nameOfSociety;
 
 //    String[] TYPE_OF_FLAT_NUMBER = new String[]{"Two Digit", "Three Digit", "Four Digit"};
@@ -65,6 +66,7 @@ public class FinalMuti extends AppCompatActivity {
         jioCenterId = bundle.getString("jioCenterId");
 
         // new
+        societyId = bundle.getString("societyId");
         nameAuthorised = bundle.getString("nameAuthorised");
         mobileNumber = bundle.getString("mobileNumber");
         emailId = bundle.getString("emailId");
@@ -220,6 +222,8 @@ public class FinalMuti extends AppCompatActivity {
                             skipGround = (Integer.parseInt(fixFirstFlatNumber.substring(0, 1)) >= 1);
 
                     } else {
+
+                        // this validation put out side the if else  statement for apply to both and remove "Enter 3 digit number" as per dissiussion
                         if (firstFlatInTowerEditText.getText().toString().equals("")) {
                             firstFlatInTowerEditText.requestFocus();
                             firstFlatInTowerEditText.setError("Enter first flat number on beginning of residential floor");
@@ -274,7 +278,7 @@ public class FinalMuti extends AppCompatActivity {
                                 sh = (i >= 10 ? "" + i : "0" + i);
                             } else
 //                                sh = (m == 0) ? (i >= 10 ? "0" + i : "00" + i) : (i >= 10 ? "0" + i : "0" + i);
-                                sh = (m == 0) ? (i >= 10 ? "0" + i : "00" + i) : (i >= 10 ? "" + i : "0" + i);
+                                sh = (m == 0) ? (i >= 10 ? "0" + i : "0" + i) : (i >= 10 ? "" + i : "0" + i);
 
                             String short_code = getShortCodeFor2Digit(num, sh, m, range0TO9ShortsCode, range21To99ShortsCode);
                             uniqueRoomList.add(Integer.valueOf(room));
@@ -496,6 +500,7 @@ public class FinalMuti extends AppCompatActivity {
                 intent.putExtra("digit", digit);
 
                 //new
+                intent.putExtra("societyId", societyId);
                 intent.putExtra("nameAuthorised", nameAuthorised);
                 intent.putExtra("mobileNumber", mobileNumber);
                 intent.putExtra("emailId", emailId);
@@ -547,7 +552,16 @@ public class FinalMuti extends AppCompatActivity {
 
     private List<String> getRange0TO9ShortsCode() {
         List<String> list = new ArrayList<>();
-        list.add("0");
+//        list.add("0");
+//        list.add("2");
+//        list.add("3");
+//        list.add("4");
+//        list.add("5");
+//        list.add("6");
+//        list.add("7");
+//        list.add("8");
+//        list.add("9");
+        list.add("1");
         list.add("2");
         list.add("3");
         list.add("4");

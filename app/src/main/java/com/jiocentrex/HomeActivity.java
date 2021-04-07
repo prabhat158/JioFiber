@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
 import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy;
 
@@ -35,14 +38,21 @@ public class HomeActivity extends AppCompatActivity {
     public String headQuaterName;
     public String headQuaterId;
     public String jioCenterId;
+    public String societyId;
     public String ornNumber;
     public String address;
     public String pincode;
     String TAG = "tag";
+
+    RadioGroup jioCenterIdRadioGroup;
+    RadioButton digit4RadioButton;
+    RadioButton digit14RadioButton;
+
     TextInputEditText textInputEditText;
     MaterialButton materialButton;
     AutoCompleteTextView editTextFilledExposedDropdown;
     // New
+    EditText societyIdEditText;
     TextInputEditText nameAuthorisedInputEditText;
     TextInputEditText mobileNumberTextInputEditText;
     TextInputEditText emailIdInputEditText;
@@ -51,7 +61,11 @@ public class HomeActivity extends AppCompatActivity {
     TextInputEditText ornNumberInputEditText;
     TextInputEditText addressInputEditText;
     TextInputEditText pincodeInputEditText;
-    EditText jioIdInputEditText;
+    EditText jioId4InputEditText;
+    boolean is4Digit;
+    EditText jioId14InputEditText;
+    TextInputLayout jioId14TextInputLayout;
+    TextInputLayout jioId4TextInputLayout;
 
 
     private boolean isValidEmail(String text) {
@@ -79,9 +93,21 @@ public class HomeActivity extends AppCompatActivity {
         editTextFilledExposedDropdown.setKeyListener(null);
 
         textInputEditText = findViewById(R.id.TextInputEditText);
-        setupPrefixSample();
+        jioId4TextInputLayout = findViewById(R.id.jioId4TextInputLayout);
+        jioId14TextInputLayout = findViewById(R.id.jioId14TextInputLayout);
+        jioId4InputEditText = findViewById(R.id.jioId4InputEditText);
+        jioId14InputEditText = findViewById(R.id.jioId14InputEditText);
+
+        jioId4TextInputLayout.setVisibility(View.VISIBLE);
+        jioId14TextInputLayout.setVisibility(View.GONE);
+
+        is4Digit = true;
+        setupPrefixSample(is4Digit, jioId4InputEditText);
 
         // New
+        societyIdEditText = findViewById(R.id.societyIdEditText);
+        setupPrefixToSocietyId();
+
         nameAuthorisedInputEditText = findViewById(R.id.nameAuthorisedInputEditText);
         mobileNumberTextInputEditText = findViewById(R.id.mobileNumberTextInputEditText);
         emailIdInputEditText = findViewById(R.id.emailIdInputEditText);
@@ -90,7 +116,25 @@ public class HomeActivity extends AppCompatActivity {
         ornNumberInputEditText = findViewById(R.id.ornNumberInputEditText);
         pincodeInputEditText = findViewById(R.id.pincodeInputEditText);
         addressInputEditText = findViewById(R.id.addressInputEditText);
+        jioCenterIdRadioGroup = findViewById(R.id.jioCenterIdRadioGroup);
 
+        jioCenterIdRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                if (null != rb) {
+                    is4Digit = rb.getText().equals("4 Digit");
+                    setupPrefixSample(is4Digit, is4Digit ? jioId4InputEditText : jioId14InputEditText);
+                    if (is4Digit) {
+                        jioId4TextInputLayout.setVisibility(View.VISIBLE);
+                        jioId14TextInputLayout.setVisibility(View.GONE);
+                    } else {
+                        jioId14TextInputLayout.setVisibility(View.VISIBLE);
+                        jioId4TextInputLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
 
         materialButton = findViewById(R.id.nextbtn);
         materialButton.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +156,12 @@ public class HomeActivity extends AppCompatActivity {
                 if (name_of_society.equals("")) {
                     textInputEditText.requestFocus();
                     textInputEditText.setError("Enter name of society");
+                    return;
+                }
+
+                if ((societyId == null || societyId.equals(""))) {
+                    societyIdEditText.requestFocus();
+                    societyIdEditText.setError("Enter society id");
                     return;
                 }
 
@@ -176,9 +226,14 @@ public class HomeActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (jioCenterId == null || jioCenterId.equals("") || jioCenterId.length() != 18) {
-                    jioIdInputEditText.requestFocus();
-                    jioIdInputEditText.setError("Enter jio center id");
+                if (jioCenterId == null || jioCenterId.equals("") || (jioCenterId.length() != 18 /*|| jioIdInputEditText.length() != 4*/)) {
+                    if (is4Digit) {
+                        jioId4InputEditText.requestFocus();
+                        jioId4InputEditText.setError("Enter jio center id");
+                    } else {
+                        jioId14InputEditText.requestFocus();
+                        jioId14InputEditText.setError("Enter jio center id");
+                    }
                     return;
                 }
 
@@ -199,6 +254,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
                 // NEw
+                intent.putExtra("societyId", societyIdEditText.getText().toString());
                 intent.putExtra("nameAuthorised", nameAuthorised);
                 intent.putExtra("mobileNumber", mobileNumber);
                 intent.putExtra("emailId", emailId);
@@ -277,13 +333,18 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void setupPrefixSample() {
-        jioIdInputEditText = findViewById(R.id.jioIdInputEditText);
+    private void setupPrefixSample(boolean is4Digit, EditText editText) {
+        editText.setText("");
         final List<String> affineFormats = new ArrayList<>();
-        affineFormats.add("[A]-[AA]-[AAAA]-[AAA]-[0000]"); // [A]-[AA]-[AAAA]-[AAA]-[AAAA]
-        final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
-                jioIdInputEditText,
-                "[A]-[AA]-[AAAA]-[AAA]-[0000]",
+        if (is4Digit) {
+            affineFormats.add("[A000]"); // [A000]
+        } else {
+            affineFormats.add("[A]-[AA]-[AAAA]-[AAA]-[0000]"); // [A]-[AA]-[AAAA]-[AAA]-[AAAA]
+        }
+
+        MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
+                editText,
+                is4Digit ? "[A000]" : "[A]-[AA]-[AAAA]-[AAA]-[0000]",
                 affineFormats,
                 AffinityCalculationStrategy.PREFIX,
                 new MaskedTextChangedListener.ValueListener() {
@@ -291,6 +352,27 @@ public class HomeActivity extends AppCompatActivity {
                     public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue, @NonNull String formattedText) {
                         logValueListener(maskFilled, extractedValue, formattedText);
                         jioCenterId = formattedText;
+                    }
+                }
+        );
+        editText.setHint(is4Digit ? "A000" : "A-AA-AAAA-AAA-0000");
+        editText.requestFocus();
+    }
+
+
+    private void setupPrefixToSocietyId() {
+        final List<String> affineFormats = new ArrayList<>();
+        affineFormats.add("[AAA000000000]");
+        final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
+                societyIdEditText,
+                "[AAA000000000]",
+                affineFormats,
+                AffinityCalculationStrategy.PREFIX,
+                new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue, @NonNull String formattedText) {
+                        logValueListener(maskFilled, extractedValue, formattedText);
+                        societyId = formattedText;
                     }
                 }
         );
